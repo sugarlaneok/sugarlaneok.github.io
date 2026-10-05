@@ -1011,7 +1011,10 @@
         $('#apple-pay-button').onclick = function () { tokenizeAndSubmit(function () { return applePay.tokenize(); }, 'Apple Pay'); };
       }).catch(function () { /* not available on this device */ }));
 
-      tasks.push(payments.googlePay(request()).then(function (googlePay) {
+      // Google Pay on iPhones/iPads runs through a pop-up that often fails (especially in in-app browsers
+      // like Messages or Instagram), so iOS shoppers get Apple Pay, Cash App Pay and card instead.
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (!isIOS) tasks.push(payments.googlePay(request()).then(function (googlePay) {
         payWidgets.push(googlePay);
         return googlePay.attach('#google-pay-button', { buttonSizeMode: 'fill', buttonType: 'long' }).then(function () {
           $('#google-pay-button').hidden = false; walletShown();
