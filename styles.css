@@ -392,7 +392,6 @@ a.product { color: inherit; text-decoration: none; }
 @media (max-width: 480px) {
   /* Category tiles: photo, name, link. Captions made the cards uneven. */
   .tile p { display: none; }
-  .tile img { aspect-ratio: 1 / 1; }
 }
 
 /* ---------- Home hero: Laney's photo + bio, with Order now on the first screen ---------- */
@@ -404,4 +403,13 @@ a.product { color: inherit; text-decoration: none; }
   .hero-meet .hero-inner { grid-template-columns: 1fr; padding-top: 16px; gap: 18px; }
   .hero-photo { aspect-ratio: 5 / 4; max-height: 255px; object-position: center 22%; }
   .hero-meet .hero-lead { margin: 10px 0 20px; font-size: 17px; }
+}
+
+/* Section right under the hero: tighter and centered on phones so it reads as one block with the tiles */
+@media (max-width: 820px) {
+  .hero-meet { padding-bottom: 8px; }
+  .home-intro { padding-top: 28px; }
+  .home-intro h2, .home-intro .section-lead { text-align: center; }
+  .home-intro h2 { font-size: 26px; text-wrap: balance; }
+  .home-intro .section-lead { margin: 8px auto 20px; font-size: 16px; text-wrap: balance; }
 }
