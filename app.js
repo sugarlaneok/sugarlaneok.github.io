@@ -48,9 +48,22 @@
 
   function apiGet() {
     if (!CONFIG.API_URL) return window.SLMock.init();
-    var load = function () { return fetch(CONFIG.API_URL + '?action=init&t=' + Date.now()).then(function (r) { return r.json(); }); };
-    // Google occasionally returns a one-off error page; try once more before giving up.
-    return load().catch(function () { return new Promise(function (r) { setTimeout(r, 1500); }).then(load); }).then(function (d) {
+    // Google's script server occasionally hangs or returns a one-off error page,
+    // so give each try 12 seconds and retry up to 3 times.
+    var load = function () {
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = ctrl && setTimeout(function () { ctrl.abort(); }, 12000);
+      return fetch(CONFIG.API_URL + '?action=init&t=' + Date.now(), ctrl ? { signal: ctrl.signal } : {})
+        .then(function (r) { return r.json(); })
+        .then(function (d) { clearTimeout(timer); return d; }, function (e) { clearTimeout(timer); throw e; });
+    };
+    var retry = function (n) {
+      return load().catch(function (e) {
+        if (n <= 1) throw e;
+        return new Promise(function (r) { setTimeout(r, 1000); }).then(function () { return retry(n - 1); });
+      });
+    };
+    return retry(3).then(function (d) {
       if (d && d.ok) { try { localStorage.setItem(INIT_CACHE, JSON.stringify({ t: Date.now(), d: d })); } catch (e) { /* ignore */ } }
       return d;
     });
