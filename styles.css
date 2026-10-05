@@ -353,3 +353,5 @@ textarea { min-height: 96px; resize: vertical; }
 .contact-card span { color: var(--pink-dark); }
 @media (max-width: 700px) { .contact-cards { grid-template-columns: 1fr; } }
 .showcase.grid .big-row img { max-height: 620px; }
+.meet .about-photo { aspect-ratio: 4 / 5; object-position: center 35%; max-height: 620px; }
+.meet .eyebrow { margin-bottom: 6px; }
