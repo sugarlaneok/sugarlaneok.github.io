@@ -48,13 +48,12 @@ window.SUGAR_LANE_CONTENT = {
     },
     cakepops: {
       layout: 'grid', // photos stay in the order listed (left to right)
-      big: 3,         // the first 3 photos show large across the top
+      big: 2,         // the first 2 photos show large across the top
       featured: 7,
       // 3rd value = size in the small grid: 'tall' (2 rows), 'wide tall' (2 columns x 2 rows)
       photos: [
         ['pops-fiesta.jpg', 'Fiesta cake pops with tiny sombreros'],
         ['minnie-pops.jpg', 'Minnie bow cake pops in a mason jar'],
-        ['pops-honey-bee.jpg', 'Honey bee cake pops on a gold tray'],
         ['pops-pink-tray.jpg', 'Pink bow cake pops on a silver tray', 'tall'],
         ['pops-navy-gold-fan.jpg', 'Navy and gold graduation cake pops fanned on a plate', 'wide tall'],
         ['pops-honey-bee-2.jpg', 'Honey bee cake pops with honey dippers'],

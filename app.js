@@ -215,7 +215,7 @@
       if (g.layout === 'grid') {
         el.classList.add('grid');
         var big = g.big || 0;
-        el.innerHTML = (big ? '<div class="big-row">' + g.photos.slice(0, big).map(tile).join('') + '</div>' : '') +
+        el.innerHTML = (big ? '<div class="big-row" style="grid-template-columns:repeat(' + big + ',1fr)">' + g.photos.slice(0, big).map(tile).join('') + '</div>' : '') +
           '<div class="small-grid">' + g.photos.slice(big).map(function (p, j) { return tile(p, j + big); }).join('') + '</div>';
       } else {
         el.innerHTML = g.photos.map(tile).join('');

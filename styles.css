@@ -352,3 +352,4 @@ textarea { min-height: 96px; resize: vertical; }
 .contact-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); text-decoration: none; color: var(--ink); display: flex; flex-direction: column; gap: 4px; }
 .contact-card span { color: var(--pink-dark); }
 @media (max-width: 700px) { .contact-cards { grid-template-columns: 1fr; } }
+.showcase.grid .big-row img { max-height: 620px; }
