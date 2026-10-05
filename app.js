@@ -136,6 +136,23 @@
 
   function lockScroll(on) { document.body.classList.toggle('locked', !!on); }
 
+  // Phone browsers (iOS Chrome/Safari) draw toolbars over the page, so 100vh/inset:0 runs under them.
+  // Track the part of the screen that's actually visible and size the overlays to it.
+  function fitViewport() {
+    var vv = window.visualViewport, root = document.documentElement.style;
+    root.setProperty('--vv-h', (vv ? vv.height : window.innerHeight) + 'px');
+    root.setProperty('--vv-top', (vv ? vv.offsetTop : 0) + 'px');
+    // How far fixed-to-bottom bars would sit under a toolbar: compare the fixed-position box to what's visible.
+    if (!fitViewport.probe) {
+      fitViewport.probe = document.createElement('div');
+      fitViewport.probe.style.cssText = 'position:fixed;top:0;bottom:0;width:0;visibility:hidden;pointer-events:none';
+      document.body.appendChild(fitViewport.probe);
+    }
+    var visibleBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
+    var gap = Math.max(0, Math.round(fitViewport.probe.getBoundingClientRect().height - visibleBottom));
+    root.setProperty('--vv-gap', gap + 'px');
+  }
+
   function toast(msg) {
     var t = document.getElementById('toast');
     t.textContent = msg; t.hidden = false;
@@ -1104,6 +1121,12 @@
 
   function boot() {
     wireChrome();
+    fitViewport();
+    window.addEventListener('resize', fitViewport);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', fitViewport);
+      window.visualViewport.addEventListener('scroll', fitViewport);
+    }
     // Photos don't depend on the menu, so show them right away.
     renderShowcases();
     document.querySelectorAll('.custom-link').forEach(function (a) {

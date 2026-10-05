@@ -169,11 +169,12 @@ body.locked { overflow: hidden; }
 @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr; gap: 20px; } }
 
 /* ---------- Overlays: product sheet + cart drawer ---------- */
-.overlay { position: fixed; inset: 0; z-index: 50; background: rgba(43, 31, 36, .45); display: flex; animation: fade .15s ease; }
+/* Sized to the visible screen (set from app.js) so phone browser toolbars never cover the bottom buttons. */
+.overlay { position: fixed; left: 0; right: 0; top: var(--vv-top, 0); height: 100vh; height: 100dvh; height: var(--vv-h, 100dvh); z-index: 50; background: rgba(43, 31, 36, .45); display: flex; animation: fade .15s ease; }
 @keyframes fade { from { opacity: 0; } }
-.sheet { background: #fff; margin: auto; width: min(640px, 100%); max-height: 92vh; border-radius: 24px; overflow: auto; display: flex; flex-direction: column; animation: rise .2s ease; }
+.sheet { background: #fff; margin: auto; width: min(640px, 100%); max-height: 92%; border-radius: 24px; overflow: auto; display: flex; flex-direction: column; animation: rise .2s ease; }
 @keyframes rise { from { transform: translateY(24px); opacity: 0; } }
-@media (max-width: 600px) { .sheet { margin: auto 0 0; border-radius: 24px 24px 0 0; max-height: 94vh; } }
+@media (max-width: 600px) { .sheet { margin: auto 0 0; border-radius: 24px 24px 0 0; max-height: calc(100% - 16px); } }
 .sheet-photo { aspect-ratio: 16 / 9; max-height: 30vh; width: 100%; flex-shrink: 0; background: var(--pink-soft); position: relative; overflow: hidden; }
 .sheet-photo.collage { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3px; }
 .sheet-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -221,7 +222,7 @@ textarea { min-height: 96px; resize: vertical; }
 .empty { text-align: center; padding: 48px 0; color: var(--muted); }
 .total-row { display: flex; justify-content: space-between; font-weight: 700; font-size: 18px; margin-bottom: 4px; }
 
-.floatbar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 40; display: none; }
+.floatbar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + var(--vv-gap, 0px) + env(safe-area-inset-bottom)); z-index: 40; display: none; }
 .floatbar button { width: 100%; box-shadow: 0 8px 24px rgba(255, 0, 130, .35); justify-content: space-between; }
 @media (max-width: 820px) { .floatbar:not([hidden]) { display: block; } }
 
@@ -270,7 +271,7 @@ textarea { min-height: 96px; resize: vertical; }
 #card-container { min-height: 90px; }
 .apple-pay-button { display: block; width: 100%; height: 48px; border-radius: 10px; cursor: pointer; -webkit-appearance: -apple-pay-button; -apple-pay-button-type: plain; -apple-pay-button-style: black; }
 #google-pay-button, #cash-app-pay { min-height: 48px; }
-.checkout-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -4px 20px rgba(43, 31, 36, .08); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); }
+.checkout-bar { position: fixed; left: 0; right: 0; bottom: var(--vv-gap, 0px); z-index: 20; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -4px 20px rgba(43, 31, 36, .08); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); }
 .checkout-bar-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
 .checkout-bar .sum { flex: 1; min-width: 0; }
 .checkout-bar .sum b { font-size: 18px; }
@@ -290,7 +291,7 @@ textarea { min-height: 96px; resize: vertical; }
 @media (max-width: 600px) { .showcase { columns: 2; column-gap: 8px; } .showcase button { margin-bottom: 8px; border-radius: 12px; } }
 
 /* ---------- Lightbox ---------- */
-.lightbox { position: fixed; inset: 0; z-index: 70; background: rgba(20, 12, 16, .92); display: flex; align-items: center; justify-content: center; }
+.lightbox { position: fixed; left: 0; right: 0; top: var(--vv-top, 0); height: 100vh; height: 100dvh; height: var(--vv-h, 100dvh); z-index: 70; background: rgba(20, 12, 16, .92); display: flex; align-items: center; justify-content: center; }
 .lightbox figure { margin: 0; max-width: 92vw; max-height: 88vh; text-align: center; }
 .lightbox img { max-width: 92vw; max-height: 80vh; border-radius: 12px; margin: 0 auto; }
 .lightbox figcaption { color: #f6e9ee; margin-top: 10px; font-size: 15px; }
