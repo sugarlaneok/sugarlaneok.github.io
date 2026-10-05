@@ -221,7 +221,7 @@
     renderMenu();
     renderEvents();
     renderCartButton();
-    var customHref = data.customFormUrl ||
+    var customHref = data.customFormUrl || CONFIG.CUSTOM_FORM_URL ||
       'mailto:' + (data.business.email || 'sugarlaneok@gmail.com') + '?subject=' + encodeURIComponent('Custom order request');
     document.querySelectorAll('.custom-link').forEach(function (a) { a.href = customHref; });
     renderShowcases();
@@ -1130,7 +1130,7 @@
     // Photos don't depend on the menu, so show them right away.
     renderShowcases();
     document.querySelectorAll('.custom-link').forEach(function (a) {
-      a.href = 'mailto:sugarlaneok@gmail.com?subject=' + encodeURIComponent('Custom order request');
+      a.href = CONFIG.CUSTOM_FORM_URL || 'mailto:sugarlaneok@gmail.com?subject=' + encodeURIComponent('Custom order request');
     });
     var cached = CONFIG.API_URL && cachedInit();
     if (cached) {

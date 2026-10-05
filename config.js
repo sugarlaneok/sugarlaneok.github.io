@@ -5,5 +5,7 @@ window.SUGAR_LANE_CONFIG = {
   // From developer.squareup.com > your app > Credentials. Must match the environment the script uses.
   SQUARE_ENV: 'production', // 'sandbox' for testing, 'production' for real orders
   SQUARE_APP_ID: 'sq0idp-7lH48uRppMEqfOriJTFetw',
-  SQUARE_LOCATION_ID: 'LMM5EW07JAZVG' // Sugar Lane, Norman
+  SQUARE_LOCATION_ID: 'LMM5EW07JAZVG', // Sugar Lane, Norman
+  // Custom order request form (Tally). The Sheet's Settings > "Custom order form link" overrides this.
+  CUSTOM_FORM_URL: 'https://tally.so/r/Npe75j'
 };
