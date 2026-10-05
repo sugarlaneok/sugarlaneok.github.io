@@ -375,3 +375,18 @@ a.product { color: inherit; text-decoration: none; }
   .order-cta { padding: 8px 12px; font-size: 13px; }
   .cart-btn, .menu-toggle { width: 40px; height: 40px; }
 }
+
+/* ---------- Phone-first fixes ---------- */
+@media (max-width: 700px) {
+  /* Cake pop grid: no tall/wide tiles on phones, so there are no gaps */
+  .showcase.grid .big-row { grid-template-columns: 1fr !important; } /* overrides the inline column count */
+  .showcase.grid .small-grid .tall { grid-row: auto; }
+  .showcase.grid .small-grid .wide { grid-column: auto; }
+  .showcase.grid .small-grid .wide img, .showcase.grid .small-grid .tall img,
+  .showcase.grid .small-grid .wide.tall img { aspect-ratio: 1 / 1; height: auto; }
+}
+@media (max-width: 480px) {
+  /* Category tiles: photo, name, link. Captions made the cards uneven. */
+  .tile p { display: none; }
+  .tile img { aspect-ratio: 1 / 1; }
+}
