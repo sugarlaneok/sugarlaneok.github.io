@@ -338,9 +338,38 @@
     var r = data.rules;
     document.getElementById('menuLead').textContent = 'Order at least ' + r.standardDays + ' days ahead' +
       (r.rushDays < r.standardDays ? ' (rush orders ' + r.rushDays + '–' + (r.standardDays - 1) + ' days out add ' + r.rushPct + '%)' : '') +
-      '. Tap a treat to choose flavors. Your card isn\'t charged until ' + data.business.ownerName + ' confirms your order.';
+      '. Tap a treat to choose flavors. Your card isn\'t charged until ' + data.business.ownerName + ' confirms your order.' +
+      (r.deliveryFeeCents ? ' Pick up in Norman, or get delivery within 15 miles of West Norman for ' + money(r.deliveryFeeCents) + '.' : '');
     var grid = document.getElementById('menuGrid');
-    grid.innerHTML = groups().map(function (g) {
+    var customHref = data.customFormUrl || CONFIG.CUSTOM_FORM_URL || 'mailto:sugarlaneok@gmail.com';
+    var sections = (CONTENT.menuSections || [{ title: '', match: '.' }]).map(function (sec) { return { sec: sec, groups: [] }; });
+    groups().forEach(function (g) {
+      var hit = sections.filter(function (s) { return new RegExp(s.sec.match, 'i').test(g.name); })[0] || sections[sections.length - 1];
+      hit.groups.push(g);
+    });
+    grid.innerHTML = sections.filter(function (s) { return s.groups.length || s.sec.custom; }).map(function (s) {
+      var cards = s.groups.map(productCard);
+      if (s.sec.custom) cards.push(customCard(s.sec.custom, customHref));
+      return '<section class="menu-section">' + (s.sec.title ? '<h2>' + esc(s.sec.title) + '</h2>' : '') +
+        '<div class="menu-grid">' + cards.join('') + '</div></section>';
+    }).join('');
+    grid.onclick = function (e) {
+      var b = e.target.closest('.product[data-group]');
+      if (b) openProduct(b.getAttribute('data-group'));
+    };
+  }
+
+  // A card on the order page that opens the custom request form instead of the cart.
+  function customCard(c, href) {
+    return '<a class="product product-custom" href="' + esc(href) + '" target="_blank" rel="noopener">' +
+      '<div class="product-photo"><img src="' + esc(c.photo) + '" alt="' + esc(c.name) + '" loading="lazy"></div>' +
+      '<div class="product-body"><h3>' + esc(c.name) + '</h3>' +
+      '<div class="product-price">' + esc(c.price) + '</div>' +
+      '<p class="product-blurb">' + esc(c.blurb) + '</p>' +
+      '<span class="btn btn-outline product-cta">Request a quote</span></div></a>';
+  }
+
+  function productCard(g) {
       var n = groupCount(g);
       var isPack = g.items[0].picks;
       var unitWord = isPack ? (n === 1 ? 'pack' : 'packs') : 'dozen';
@@ -350,11 +379,6 @@
         '<div class="product-price">' + priceLabel(g.items) + '</div>' +
         '<p class="product-blurb">' + esc(CONTENT.blurbs[g.name] || '') + '</p>' +
         '<span class="btn btn-primary product-cta">' + (isPack ? 'Build a pack' : 'Choose flavors') + '</span></div></button>';
-    }).join('');
-    grid.onclick = function (e) {
-      var b = e.target.closest('.product');
-      if (b) openProduct(b.getAttribute('data-group'));
-    };
   }
 
   function renderEvents() {

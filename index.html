@@ -12,8 +12,8 @@
 <link rel="icon" href="images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600;6..96,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=10">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=11">
 </head>
 <body>
   <header class="topbar">
@@ -27,10 +27,11 @@
         <a href="#/cookies" data-nav="cookies">Cookies</a>
         <a href="#/cake-pops" data-nav="cake-pops">Cake Pops</a>
         <a href="#/cakes" data-nav="cakes">Cakes</a>
-        <a href="#/order" data-nav="order">Order</a>
+        <a href="#/order" data-nav="order">Order now</a>
         <a href="#/events" data-nav="events">Events</a>
         <a href="#/about" data-nav="about">About</a>
       </nav>
+      <a class="btn btn-primary order-cta" href="#/order">Order now</a>
       <button class="cart-btn" id="cartBtn" aria-label="Open cart">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
         <span class="cart-count" id="cartCount" hidden>0</span>
@@ -54,7 +55,7 @@
             <p class="hero-lead">Hand-decorated sugar cookies, cake pops and cakes designed around your party, plus our classic cookies by the dozen. Made from scratch by Laney and her mom, Kelly.</p>
             <div class="hero-btns">
               <a class="btn btn-primary" href="#/cookies">See our cookies</a>
-              <a class="btn btn-outline" href="#/order">Order treats</a>
+              <a class="btn btn-outline" href="#/order">Order now</a>
             </div>
           </div>
           <div class="hero-collage" aria-hidden="true">
@@ -155,7 +156,8 @@
       <section class="page-head">
         <div class="wrap">
           <h1>Custom cakes</h1>
-          <p class="section-lead">Vintage piping, bows and sprinkles in Swiss meringue buttercream. Round, heart, star, sheet and tiered cakes, starting at $30. We don't do fondant-covered or character cakes, or real florals.</p>
+          <p class="section-lead">Vintage piping, bows and sprinkles in Swiss meringue buttercream. Round, heart, star, sheet and tiered cakes from $30, plus cookie cakes and wedding cakes. We don't do fondant-covered or character cakes, or real florals.</p>
+          <p class="small muted">Pick up in Norman, or get delivery within 15 miles of West Norman for $25.</p>
           <div class="hero-btns"><a class="btn btn-primary custom-link" href="#" target="_blank" rel="noopener">Request a custom cake</a></div>
         </div>
       </section>
@@ -173,7 +175,7 @@
         </div>
       </section>
       <section class="section section-tight">
-        <div class="wrap"><div class="menu-grid" id="menuGrid"></div></div>
+        <div class="wrap"><div id="menuGrid"></div></div>
       </section>
       <section class="how">
         <div class="wrap how-grid">
@@ -251,7 +253,7 @@
       </div>
       <div>
         <h3>Ordering</h3>
-        <p><a href="#/order">Order treats</a><br><a href="#/cookies">Decorated cookies</a><br><a href="#/cake-pops">Cake pops</a><br><a href="#/cakes">Custom cakes</a><br><a href="#/events">Pop-up events</a><br><a href="#/about">About us</a></p>
+        <p><a href="#/order">Order now</a><br><a href="#/cookies">Decorated cookies</a><br><a href="#/cake-pops">Cake pops</a><br><a href="#/cakes">Custom cakes</a><br><a href="#/events">Pop-up events</a><br><a href="#/about">About us</a></p>
         <p class="muted small">Homemade food license OKFFA-553. Made in a home kitchen that handles wheat, eggs, dairy, peanuts and tree nuts.</p>
       </div>
     </div>
@@ -277,8 +279,8 @@
   <div class="floatbar" id="floatbar" hidden></div>
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="config.js?v=10"></script>
-  <script src="content.js?v=10"></script>
-  <script src="app.js?v=10"></script>
+  <script src="config.js?v=11"></script>
+  <script src="content.js?v=11"></script>
+  <script src="app.js?v=11"></script>
 </body>
 </html>

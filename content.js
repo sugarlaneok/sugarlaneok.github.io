@@ -89,6 +89,7 @@ window.SUGAR_LANE_CONTENT = {
   itemPhotos: {
     'Classic Cookies|Chocolate Chip': ['flavor-chocolate-chip.jpg', 'flavor-chocolate-chip-styled.jpg', 'chocolate-chip.jpg'],
     'Classic Cookies|M&M': ['flavor-mm.jpg'],
+    'Specialty Cookies|M&M': ['flavor-mm.jpg'],
     'Classic Cookies|Iced Lemon': ['flavor-iced-lemon.jpg'],
     'Specialty Cookies|Big Bubba': ['big-bubba.jpg'],
     'Specialty Cookies|Mr. Gibbs': ['flavor-mr-gibbs.jpg'],
@@ -104,6 +105,18 @@ window.SUGAR_LANE_CONTENT = {
     'Mini Cookies': 'Bite-size versions of our cookies – perfect for parties and dessert tables.',
     'Cupcakes': 'Fluffy cupcakes with Swiss meringue buttercream, decorated to match your party.',
     'Cake Pops': 'Dipped, decorated and ready for photos. Tell us your colors and theme!',
-    'Party Packs': 'Mix and match dozens of treats for birthdays, tailgates and showers.'
-  }
+    'Party Packs': 'Mix and match dozens of cookies, cake pops, brownies, dipped Rice Krispie treats or pretzel rods. Great for birthdays, tailgates and showers.'
+  },
+
+  // ---- Order page sections. Each menu group goes in the first section whose "match" (a regex) fits its name. ----
+  // "custom" adds a card that opens the custom request form.
+  menuSections: [
+    { title: 'Cookies', match: 'cookie',
+      custom: { name: 'Decorated Cookies', price: 'Quoted by design', photo: 'images/cookies-pink-grad.jpg',
+        blurb: 'Royal-iced sugar cookies in your colors, shapes and names. Tell us about your party and we\'ll send a quote.' } },
+    { title: 'Cakes & Cupcakes', match: 'cupcake',
+      custom: { name: 'Custom Cakes', price: 'From $30', photo: 'images/cake-wedding-tiered.jpg',
+        blurb: 'Round, heart, star, tiered, cookie and wedding cakes in Swiss meringue buttercream. Quoted by design.' } },
+    { title: 'Treats & Party Packs', match: '.' }
+  ]
 };
