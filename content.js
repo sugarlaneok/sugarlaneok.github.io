@@ -111,12 +111,12 @@ window.SUGAR_LANE_CONTENT = {
   // ---- Order page sections. Each menu group goes in the first section whose "match" (a regex) fits its name. ----
   // "custom" adds a card that opens the custom request form.
   menuSections: [
-    { title: 'Cookies', match: 'cookie',
-      custom: { name: 'Decorated Cookies', price: 'Quoted by design', photo: 'images/cookies-pink-grad.jpg',
+    { id: 'cookies', title: 'Cookies', match: 'cookie',
+      custom: { name: 'Decorated Cookies', price: 'From $45 / dozen', photo: 'images/cookies-pink-grad.jpg',
         blurb: 'Royal-iced sugar cookies in your colors, shapes and names. Tell us about your party and we\'ll send a quote.' } },
-    { title: 'Cakes & Cupcakes', match: 'cupcake',
+    { id: 'cakes', title: 'Cakes & Cupcakes', match: 'cupcake',
       custom: { name: 'Custom Cakes', price: 'From $30', photo: 'images/cake-wedding-tiered.jpg',
         blurb: 'Round, heart, star, tiered, cookie and wedding cakes in Swiss meringue buttercream. Quoted by design.' } },
-    { title: 'Treats & Party Packs', match: '.' }
+    { id: 'treats', title: 'Treats & Party Packs', match: '.' }
   ]
 };

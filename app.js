@@ -176,9 +176,20 @@
     else renderCheckout();
   }
 
-  function showPage(page) {
+  function showPage(page, full) {
+    full = full || page;
     document.querySelectorAll('#shop [data-page]').forEach(function (el) { el.hidden = el.getAttribute('data-page') !== page; });
-    document.querySelectorAll('#nav [data-nav]').forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-nav') === page); });
+    document.querySelectorAll('#nav [data-nav]').forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-nav') === full); });
+  }
+
+  // #/order/cookies scrolls to that section once the menu has rendered.
+  function scrollToSection(id, tries) {
+    var el = document.getElementById('menu-' + id);
+    if (el) {
+      setTimeout(function () { window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 84, behavior: 'instant' }); }, 60);
+      return;
+    }
+    if ((tries || 0) < 40) setTimeout(function () { scrollToSection(id, (tries || 0) + 1); }, 150);
   }
 
   /** Show whatever the address bar says: #/cookies, #/order, #/checkout ... */
@@ -191,11 +202,14 @@
       else location.replace('#/order');
       return;
     }
-    if (PAGES.indexOf(r) < 0) r = 'home';
-    showPage(r);
+    var parts = r.split('/'), full = r;
+    r = parts[0];
+    if (PAGES.indexOf(r) < 0) r = full = 'home';
+    showPage(r, full);
     if (data) showView('shop'); else document.getElementById('shop').hidden = false;
     document.getElementById('checkout').hidden = true;
     window.scrollTo(0, 0);
+    if (parts[1]) scrollToSection(parts[1]);
   }
 
   function goPage(page) {
@@ -338,8 +352,8 @@
     var r = data.rules;
     document.getElementById('menuLead').textContent = 'Order at least ' + r.standardDays + ' days ahead' +
       (r.rushDays < r.standardDays ? ' (rush orders ' + r.rushDays + '–' + (r.standardDays - 1) + ' days out add ' + r.rushPct + '%)' : '') +
-      '. Tap a treat to choose flavors. Your card isn\'t charged until ' + data.business.ownerName + ' confirms your order.' +
-      (r.deliveryFeeCents ? ' Pick up in Norman, or get delivery within 15 miles of West Norman for ' + money(r.deliveryFeeCents) + '.' : '');
+      '. Tap a treat to choose flavors. Your card isn\'t charged until we confirm your order.' +
+      ' Need delivery? Just ask \u2013 a delivery fee may be added at Sugar Lane\u2019s discretion.';
     var grid = document.getElementById('menuGrid');
     var customHref = data.customFormUrl || CONFIG.CUSTOM_FORM_URL || 'mailto:sugarlaneok@gmail.com';
     var sections = (CONTENT.menuSections || [{ title: '', match: '.' }]).map(function (sec) { return { sec: sec, groups: [] }; });
@@ -350,7 +364,7 @@
     grid.innerHTML = sections.filter(function (s) { return s.groups.length || s.sec.custom; }).map(function (s) {
       var cards = s.groups.map(productCard);
       if (s.sec.custom) cards.push(customCard(s.sec.custom, customHref));
-      return '<section class="menu-section">' + (s.sec.title ? '<h2>' + esc(s.sec.title) + '</h2>' : '') +
+      return '<section class="menu-section"' + (s.sec.id ? ' id="menu-' + esc(s.sec.id) + '"' : '') + '>' + (s.sec.title ? '<h2>' + esc(s.sec.title) + '</h2>' : '') +
         '<div class="menu-grid">' + cards.join('') + '</div></section>';
     }).join('');
     grid.onclick = function (e) {
@@ -632,8 +646,7 @@
     html += '</div>';
     if (lines.length) {
       html += '<div class="drawer-foot"><div class="total-row"><span>Subtotal</span><span>' + money2(subtotal()) + '</span></div>' +
-        '<p class="muted small" style="margin:0 0 12px">Tax and any rush or delivery fee are added at checkout. You won\'t be charged until ' +
-        esc(data.business.ownerName) + ' confirms your order.</p>' +
+        '<p class="muted small" style="margin:0 0 12px">Tax and any rush fee are added at checkout. You won\'t be charged until we confirm your order.</p>' +
         '<button class="btn btn-primary btn-block" id="checkoutBtn">Choose pickup time →</button></div>';
     }
     d.innerHTML = html;
@@ -714,7 +727,8 @@
         return '<label class="choice' + (sel ? ' selected' : '') + '"><input type="radio" name="loc" value="' + esc(loc) + '"' + (sel ? ' checked' : '') + '><span>' + esc(loc) + fee + '</span></label>';
       }).join('') + '</div></div>' +
       '<div class="field" id="addrField"' + (isDelivery(cust.location) ? '' : ' hidden') + '>' +
-      '<label for="addr">Delivery address</label><input type="text" id="addr" autocomplete="street-address" value="' + esc(cust.address) + '"></div></div>';
+      '<label for="addr">Delivery address</label><input type="text" id="addr" autocomplete="street-address" value="' + esc(cust.address) + '"></div>' +
+      '<p class="muted small" style="margin:10px 0 0">Need delivery instead? Tell us in the notes on the next step &ndash; a delivery fee may be added at Sugar Lane&rsquo;s discretion.</p></div>';
 
     html += '<div class="panel"><div class="field" style="margin-top:0"><span class="label">Pickup day</span>';
     if (!data.slots.length) {
@@ -818,7 +832,7 @@
       '</div>';
 
     html += '<div class="panel policy"><b style="color:var(--ink)">Before you order</b>' +
-      '<p>🕑 ' + esc(data.business.ownerName) + ' reviews every order and will approve or decline it within ' + data.rules.reviewHours + ' hours. ' +
+      '<p>🕑 We review every order and will approve or decline it within ' + data.rules.reviewHours + ' hours. ' +
       'We place a hold on your card when you order and only charge it if your order is approved.</p>' +
       (data.cancellationPolicy ? '<p>↩︎ ' + esc(data.cancellationPolicy) + '</p>' : '') +
       (data.allergenNote ? '<p>⚠️ ' + esc(data.allergenNote) + '</p>' : '') +
@@ -909,7 +923,7 @@
       '<p class="muted" style="margin:12px 0 0;font-size:14px">' + esc(slotText()) + ' · ' + esc(c.location) +
       (c.address ? ' – ' + esc(c.address) : '') + '<br>' + esc(c.name) + ' · ' + esc(c.email) + ' · ' + esc(c.phone) + '</p></div>' +
       '<div class="notice">🔒 <b>You won\'t be charged yet.</b> We\'ll place a hold of ' + money2(t.total) + '. ' +
-      esc(data.business.ownerName) + ' will approve or decline your order within ' + data.rules.reviewHours + ' hours. You\'re only charged if it\'s approved; otherwise the hold is released.</div>' +
+      'We\'ll approve or decline your order within ' + data.rules.reviewHours + ' hours. You\'re only charged if it\'s approved; otherwise the hold is released.</div>' +
       '<div id="payError"></div>' +
       '<div class="panel"><div class="pay-methods" id="payMethods"><p class="muted" style="margin:0">Loading payment options…</p></div></div>';
     app.innerHTML = html;
@@ -1088,8 +1102,8 @@
     var d = state.done || {};
     app.innerHTML = '<div class="done"><img src="images/logo-badge.png" alt=""><h2>Order received!</h2>' +
       '<p>Order <b>' + esc(d.orderNo) + '</b>' + (d.when ? ' for <b>' + esc(d.when) + '</b>' : '') + '.</p>' +
-      '<div class="notice" style="text-align:left">You have <b>not</b> been charged yet. ' + esc(data.business.ownerName) +
-      ' will review your order within ' + data.rules.reviewHours + ' hours. We\'ll email <b>' + esc(d.email) +
+      '<div class="notice" style="text-align:left">You have <b>not</b> been charged yet. ' +
+      'We\'ll review your order within ' + data.rules.reviewHours + ' hours. We\'ll email <b>' + esc(d.email) +
       '</b> when it\'s approved (that\'s when your card is charged ' + money2(d.total || 0) + ') or if we can\'t make it (the hold is released).</div>' +
       '<button class="btn btn-ghost" id="again">Back to the site</button></div>';
     $('#again').onclick = function () { state.step = 'pickup'; state.done = null; save(); backToShop('home'); };
