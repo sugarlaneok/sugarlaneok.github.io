@@ -111,12 +111,17 @@ window.SUGAR_LANE_CONTENT = {
   // ---- Order page sections. Each menu group goes in the first section whose "match" (a regex) fits its name. ----
   // "custom" adds a card that opens the custom request form.
   menuSections: [
-    { id: 'cookies', title: 'Cookies', match: 'cookie',
-      custom: { name: 'Decorated Cookies', price: 'From $45 / dozen', photo: 'images/cookies-pink-grad.jpg',
-        blurb: 'Royal-iced sugar cookies in your colors, shapes and names. Tell us about your party and we\'ll send a quote.' } },
-    { id: 'cakes', title: 'Cakes & Cupcakes', match: 'cupcake',
-      custom: { name: 'Custom Cakes', price: 'From $30', photo: 'images/cake-wedding-tiered.jpg',
-        blurb: 'Round, heart, star, tiered, cookie and wedding cakes in Swiss meringue buttercream. Quoted by design.' } },
-    { id: 'treats', title: 'Treats & Party Packs', match: '.' }
+    { id: 'custom', title: 'Custom orders', lead: 'Our specialty and most-requested treats, designed around your party. Tell us your idea and we\'ll send a quote.',
+      customs: [
+        { name: 'Decorated Cookies', price: 'From $45 / dozen', photo: 'images/cookies-pink-grad.jpg', tag: 'Most popular',
+          blurb: 'Royal-iced sugar cookies in your colors, shapes and names.' },
+        { name: 'Custom Cakes', price: 'From $30', photo: 'images/cake-wedding-tiered.jpg',
+          blurb: 'Round, heart, star, tiered, cookie and wedding cakes in Swiss meringue buttercream.' },
+        { name: 'Custom Cake Pops', price: 'Quoted by design', photo: 'images/tile-pops.jpg',
+          blurb: 'Dipped and decorated to match your theme.' }
+      ] },
+    { id: 'cookies', title: 'Cookies by the dozen', match: 'cookie' },
+    { id: 'cakes', title: 'Cake Pops & Cupcakes', match: 'cupcake|cake pop' },
+    { id: 'treats', title: 'Party Packs', match: '.' }
   ]
 };

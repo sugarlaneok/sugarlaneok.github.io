@@ -352,20 +352,20 @@
     var r = data.rules;
     document.getElementById('menuLead').textContent = 'Order at least ' + r.standardDays + ' days ahead' +
       (r.rushDays < r.standardDays ? ' (rush orders ' + r.rushDays + '–' + (r.standardDays - 1) + ' days out add ' + r.rushPct + '%)' : '') +
-      '. Tap a treat to choose flavors. Your card isn\'t charged until we confirm your order.' +
+      '. Your card isn\'t charged until we confirm your order.' +
       ' Need delivery? Just ask \u2013 a delivery fee may be added at Sugar Lane\u2019s discretion.';
     var grid = document.getElementById('menuGrid');
     var customHref = data.customFormUrl || CONFIG.CUSTOM_FORM_URL || 'mailto:sugarlaneok@gmail.com';
     var sections = (CONTENT.menuSections || [{ title: '', match: '.' }]).map(function (sec) { return { sec: sec, groups: [] }; });
     groups().forEach(function (g) {
-      var hit = sections.filter(function (s) { return new RegExp(s.sec.match, 'i').test(g.name); })[0] || sections[sections.length - 1];
+      var hit = sections.filter(function (s) { return s.sec.match && new RegExp(s.sec.match, 'i').test(g.name); })[0] || sections[sections.length - 1];
       hit.groups.push(g);
     });
-    grid.innerHTML = sections.filter(function (s) { return s.groups.length || s.sec.custom; }).map(function (s) {
-      var cards = s.groups.map(productCard);
-      if (s.sec.custom) cards.push(customCard(s.sec.custom, customHref));
+    grid.innerHTML = sections.filter(function (s) { return s.groups.length || s.sec.customs; }).map(function (s) {
+      var cards = (s.sec.customs || []).map(function (c) { return customCard(c, customHref); }).concat(s.groups.map(productCard));
       return '<section class="menu-section"' + (s.sec.id ? ' id="menu-' + esc(s.sec.id) + '"' : '') + '>' + (s.sec.title ? '<h2>' + esc(s.sec.title) + '</h2>' : '') +
-        '<div class="menu-grid">' + cards.join('') + '</div></section>';
+        (s.sec.lead ? '<p class="menu-section-lead">' + esc(s.sec.lead) + '</p>' : '') +
+        '<div class="menu-grid' + (s.sec.customs ? ' menu-grid-featured' : '') + '">' + cards.join('') + '</div></section>';
     }).join('');
     grid.onclick = function (e) {
       var b = e.target.closest('.product[data-group]');
@@ -376,11 +376,12 @@
   // A card on the order page that opens the custom request form instead of the cart.
   function customCard(c, href) {
     return '<a class="product product-custom" href="' + esc(href) + '" target="_blank" rel="noopener">' +
-      '<div class="product-photo"><img src="' + esc(c.photo) + '" alt="' + esc(c.name) + '" loading="lazy"></div>' +
+      '<div class="product-photo"><img src="' + esc(c.photo) + '" alt="' + esc(c.name) + '" loading="lazy">' +
+      (c.tag ? '<span class="product-tag">' + esc(c.tag) + '</span>' : '') + '</div>' +
       '<div class="product-body"><h3>' + esc(c.name) + '</h3>' +
       '<div class="product-price">' + esc(c.price) + '</div>' +
       '<p class="product-blurb">' + esc(c.blurb) + '</p>' +
-      '<span class="btn btn-outline product-cta">Request a quote</span></div></a>';
+      '<span class="btn btn-primary product-cta">Request a quote</span></div></a>';
   }
 
   function productCard(g) {
