@@ -1126,15 +1126,24 @@
     document.getElementById('cartBtn').onclick = openCart;
     var toggle = document.getElementById('menuToggle');
     var nav = document.getElementById('nav');
-    toggle.onclick = function () {
-      var open = !nav.classList.contains('open');
+    var scrim = document.getElementById('navScrim');
+    function setMenu(open) {
       nav.classList.toggle('open', open);
+      scrim.hidden = !open;
+      document.body.classList.toggle('menu-open', open);
       toggle.setAttribute('aria-expanded', open);
-    };
+      if (open) document.getElementById('navClose').focus();
+    }
+    toggle.onclick = function () { setMenu(!nav.classList.contains('open')); };
+    document.getElementById('navClose').onclick = function () { setMenu(false); toggle.focus(); };
+    scrim.onclick = function () { setMenu(false); };
     nav.onclick = function (e) {
       if (!e.target.closest('a')) return;
-      nav.classList.remove('open');
+      setMenu(false);
     };
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) { setMenu(false); toggle.focus(); }
+    });
     ['productOverlay', 'cartOverlay'].forEach(function (id) {
       document.getElementById(id).addEventListener('click', function (e) {
         if (e.target.id !== id) return;
