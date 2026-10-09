@@ -84,6 +84,9 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-white-gold-bow.jpg', 'White vintage cake with a gold bow'],
         ['cake-peach-heart.jpg', 'Peach vintage heart cake'],
         ['cake-peach-rosette.jpg', 'Peach buttercream rosette cake'],
+        ['cake-minnie.jpg', 'Minnie Mouse ears cake with red hearts and a polka-dot bow'],
+        ['cupcakes-toy-story.jpg', 'Toy Story cupcakes'],
+        ['toy-story-party.jpg', 'Toy Story party with a cupcake tower and Oreo pops'],
         ['cake-ruffle.jpg', 'White ruffle cake'],
         ['cake-wedding-tiered-2.jpg', 'Vintage wedding cake detail']
       ]
@@ -113,7 +116,7 @@ window.SUGAR_LANE_CONTENT = {
     'Specialty Cookies|White Chocolate Dipped Red Velvet': ['flavor-red-velvet-dipped.jpg', 'flavor-red-velvet-dipped-2.jpg'],
     'Specialty Cookies|White Chocolate Dipped Sugar Cookie': ['flavor-sugar-dipped.jpg'],
     'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan.jpg', 'pops-honey-bee-2.jpg', 'minnie-pops.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
-    'Cupcakes – Classic|*': ['cupcakes-rosette.jpg', 'cupcakes-floral.jpg'],
+    'Cupcakes – Classic|*': ['cupcakes-rosette.jpg', 'cupcakes-floral.jpg', 'cupcakes-toy-story.jpg', 'toy-story-party.jpg'],
     'Cupcakes – Specialty|*': ['cupcakes-floral.jpg', 'cupcakes-rosette.jpg'],
     'Cupcakes – Specialty|German Chocolate': ['cupcakes-german-chocolate.jpg'],
     'Party Packs|*': ['flavor-assortment.jpg', 'flavor-assortment-2.jpg']
