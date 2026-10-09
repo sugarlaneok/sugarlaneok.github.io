@@ -829,7 +829,12 @@
       }).join('') + '</div></div>' +
       '<div class="field"><label for="notes">Anything we should know? <span class="hint">(optional)</span></label>' +
       '<textarea id="notes" placeholder="Colors, theme, the occasion, allergies…">' + esc(state.notes) + '</textarea></div>' +
-      field('heard', 'How did you hear about us?', 'text', c.heard, 'off', '', true) +
+      '<div class="field"><span class="label">How did you hear about us? <span class="hint">(optional)</span></span><div class="heard-chips">' +
+      HEARD_OPTIONS.map(function (o) {
+        return '<button class="chip heard-chip' + (c.heard === o ? ' selected' : '') + '" data-v="' + o + '">' + o + '</button>';
+      }).join('') + '</div>' +
+      '<input type="text" id="heardOther" placeholder="Where did you find us?" autocomplete="off" value="' + esc(c.heardOther || '') + '"' +
+      (c.heard === 'Other' ? '' : ' hidden') + ' style="margin-top:8px"></div>' +
       '</div>';
 
     html += '<div class="panel policy"><b style="color:var(--ink)">Before you order</b>' +
@@ -843,6 +848,7 @@
     app.oninput = function (e) {
       var id = e.target.id;
       if (id === 'notes') state.notes = e.target.value;
+      else if (id === 'heardOther') c.heardOther = e.target.value;
       else if (id === 'agree') c.agree = e.target.checked;
       else if (Object.prototype.hasOwnProperty.call(c, id)) c[id] = e.target.value;
       save();
@@ -850,6 +856,17 @@
     };
     app.onchange = app.oninput;
     app.onclick = function (e) {
+      var h = e.target.closest('.heard-chip');
+      if (h) {
+        // Tap again to unselect: the question is optional.
+        c.heard = c.heard === h.getAttribute('data-v') ? '' : h.getAttribute('data-v');
+        save();
+        app.querySelectorAll('.heard-chip').forEach(function (x) { x.classList.toggle('selected', x.getAttribute('data-v') === c.heard); });
+        var other = $('#heardOther');
+        other.hidden = c.heard !== 'Other';
+        if (!other.hidden) other.focus();
+        return;
+      }
       var s = e.target.closest('.seg-chip');
       if (!s) return;
       c.contactBy = s.getAttribute('data-v');
@@ -857,6 +874,15 @@
       app.querySelectorAll('.seg-chip').forEach(function (x) { x.classList.toggle('selected', x === s); });
     };
     renderDetailsBar();
+  }
+
+  var HEARD_OPTIONS = ['Instagram', 'Facebook', 'Google', 'Friend or family', 'Pop-up event', 'Other'];
+
+  // "Other" plus what they typed, e.g. "Other: church bulletin".
+  function heardAnswer() {
+    var c = state.customer;
+    var other = String(c.heardOther || '').trim();
+    return c.heard === 'Other' && other ? 'Other: ' + other : (c.heard || '');
   }
 
   function field(id, label, type, value, autocomplete, hint, optional) {
@@ -1068,7 +1094,7 @@
 
     apiPost({
       action: 'placeOrder', draftId: state.draftId, cart: apiCart(), slot: state.slot,
-      customer: state.customer, notes: state.notes, token: token,
+      customer: Object.assign({}, state.customer, { heard: heardAnswer() }), notes: state.notes, token: token,
       quotedTotal: state.quote.totals.total, paymentMethod: method
     }).then(function (res) {
       busy = false;
