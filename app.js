@@ -464,9 +464,6 @@
     var el = document.getElementById('seasonalPage');
     if (!el || !data) return;
     var seasons = data.seasonal || [];
-    var live = seasons.filter(function (s) { return s.open; })[0] || seasons[0];
-    var nav = document.querySelector('#nav [data-nav="seasonal"]');
-    if (nav) nav.textContent = live ? live.name : 'Seasonal';
     if (!seasons.length) {
       var th0 = CONTENT.seasonDefault;
       el.innerHTML = '<section class="season" style="' + themeVars(th0, 0) + '"><div class="wrap"><div class="season-card">' +
