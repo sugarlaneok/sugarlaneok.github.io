@@ -192,10 +192,25 @@
     if ((tries || 0) < 40) setTimeout(function () { scrollToSection(id, (tries || 0) + 1); }, 150);
   }
 
+  /** Google Analytics, if it loaded (ad blockers can stop it). */
+  function track(name, params) {
+    try { if (window.gtag) window.gtag('event', name, params || {}); } catch (e) { /* never break the site */ }
+  }
+
+  // #/order/cookies is reported as the page /order/cookies, so each page shows up separately.
+  var lastTracked = null;
+  function trackPage(r) {
+    var path = '/' + (r === 'home' ? '' : r);
+    if (path === lastTracked) return;
+    lastTracked = path;
+    track('page_view', { page_location: location.origin + path, page_path: path, page_title: document.title });
+  }
+
   /** Show whatever the address bar says: #/cookies, #/order, #/checkout ... */
   function route() {
     var r = currentRoute();
     document.title = (PAGE_TITLES[r] ? PAGE_TITLES[r] + ' – ' : '') + 'Sugar Lane – Home Bakery in Norman, OK';
+    trackPage(r || 'home');
     if (r === 'checkout') {
       if (!data) return;
       if (state.cart.length || state.step === 'done') { showView('checkout'); window.scrollTo(0, 0); }
@@ -1100,6 +1115,7 @@
       busy = false;
       if (res.ok) {
         var summary = { orderNo: res.orderNo, total: state.quote.totals.total, email: state.customer.email, when: slotText() };
+        track('purchase', { transaction_id: res.orderNo, value: summary.total / 100, currency: 'USD' });
         destroyPay();
         var keep = state.customer;
         state = freshState();
@@ -1206,6 +1222,11 @@
     }
     // Photos don't depend on the menu, so show them right away.
     renderShowcases();
+    // Taps on any "custom order" link or card count as a lead.
+    document.addEventListener('click', function (e) {
+      var l = e.target.closest && e.target.closest('.custom-link, .product-custom');
+      if (l) track('generate_lead', { link_text: (l.textContent || '').trim().slice(0, 60), page_path: '/' + (currentRoute() || '') });
+    });
     document.querySelectorAll('.custom-link').forEach(function (a) {
       a.href = CONFIG.CUSTOM_FORM_URL || 'mailto:sugarlaneok@gmail.com?subject=' + encodeURIComponent('Custom order request');
     });
