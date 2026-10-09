@@ -126,8 +126,27 @@
   function selectedDay() {
     if (!state.slot) return null;
     var date = state.slot.split(' ')[0];
-    return data.slots.filter(function (d) { return d.date === date; })[0] || null;
+    return availSlots().filter(function (d) { return d.date === date; })[0] || null;
   }
+
+  // ----- seasonal presales -----
+  function seasonFor(key) { return (data.seasonal || []).filter(function (s) { return s.key === key; })[0] || null; }
+  /** The presale this cart is for, or null for regular treats. */
+  function cartSeason() {
+    for (var i = 0; i < state.cart.length; i++) {
+      var it = byId(state.cart[i].id);
+      if (it && it.presale) return seasonFor(it.presale);
+    }
+    return null;
+  }
+  /** Pickup days on offer: the presale's own day for seasonal boxes, otherwise the usual calendar. */
+  function availSlots() { var s = cartSeason(); return s ? s.slots : data.slots; }
+  /** Seasonal boxes are picked up on their own day, so they can't share a cart with other treats. */
+  function cartConflict(id) {
+    var it = byId(id);
+    return !!it && state.cart.some(function (c) { var o = byId(c.id); return o && (o.presale || '') !== (it.presale || ''); });
+  }
+  var CONFLICT_MSG = 'Seasonal boxes have their own pickup day, so please check out your cart first and order them separately.';
   function slotText() {
     var day = selectedDay();
     var t = day && day.times.filter(function (x) { return x.key === state.slot; })[0];
@@ -162,8 +181,8 @@
 
   // ================= view switching =================
 
-  var PAGES = ['home', 'cookies', 'cake-pops', 'cakes', 'order', 'events', 'about'];
-  var PAGE_TITLES = { home: '', cookies: 'Decorated Cookies', 'cake-pops': 'Cake Pops', cakes: 'Custom Cakes', order: 'Order Online', events: 'Pop-up Events', about: 'About', checkout: 'Checkout' };
+  var PAGES = ['home', 'seasonal', 'cookies', 'cake-pops', 'cakes', 'order', 'events', 'about'];
+  var PAGE_TITLES = { home: '', seasonal: 'Seasonal Presale', cookies: 'Decorated Cookies', 'cake-pops': 'Cake Pops', cakes: 'Custom Cakes', order: 'Order Online', events: 'Pop-up Events', about: 'About', checkout: 'Checkout' };
 
   function currentRoute() { return location.hash.replace(/^#\/?/, '').split('?')[0] || 'home'; }
 
@@ -248,6 +267,7 @@
 
   function renderShop() {
     renderMenu();
+    renderSeasonal();
     renderEvents();
     renderCartButton();
     var customHref = data.customFormUrl || CONFIG.CUSTOM_FORM_URL ||
@@ -384,7 +404,10 @@
     }).join('');
     grid.onclick = function (e) {
       var b = e.target.closest('.product[data-group]');
-      if (b) openProduct(b.getAttribute('data-group'));
+      if (!b) return;
+      // Seasonal boxes live on their own themed page.
+      if (/presale$/i.test(b.getAttribute('data-group'))) return goPage('seasonal');
+      openProduct(b.getAttribute('data-group'));
     };
   }
 
@@ -408,7 +431,104 @@
         '<div class="product-body"><h3>' + esc(g.name) + '</h3>' +
         '<div class="product-price">' + priceLabel(g.items) + '</div>' +
         '<p class="product-blurb">' + esc(CONTENT.blurbs[g.name] || '') + '</p>' +
-        '<span class="btn btn-primary product-cta">' + (isPack ? 'Build a pack' : 'Choose flavors') + '</span></div></button>';
+        '<span class="btn btn-primary product-cta">' + (isPack ? 'Build a pack' : g.items[0].presale ? 'See the boxes' : 'Choose flavors') + '</span></div></button>';
+  }
+
+  // ----- seasonal presale page (#/seasonal) -----
+
+  var WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  /** '2026-10-24' -> 'Sat, Oct 24' */
+  function seasonDate(ymd) {
+    var p = String(ymd || '').split('-').map(Number);
+    if (p.length !== 3) return '';
+    var d = new Date(Date.UTC(p[0], p[1] - 1, p[2]));
+    return WEEKDAYS[d.getUTCDay()] + ', ' + MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate();
+  }
+
+  /** The season's look comes from its name: "Halloween" gets the Halloween colors, and so on. */
+  function seasonTheme(name) {
+    var list = CONTENT.seasonThemes || [];
+    for (var i = 0; i < list.length; i++) if (new RegExp(list[i].match, 'i').test(name)) return list[i];
+    return CONTENT.seasonDefault;
+  }
+
+  /** "Walmart Neighborhood Market – Rock Creek Rd..., Norman" -> "Walmart Neighborhood Market (Norman)" */
+  function shortSpot(loc) {
+    var name = String(loc).split(/\s+[–-]\s+/)[0];
+    var city = String(loc).split(',').pop().trim();
+    return city && city !== loc ? name + ' (' + city + ')' : name;
+  }
+
+  function renderSeasonal() {
+    var el = document.getElementById('seasonalPage');
+    if (!el || !data) return;
+    var seasons = data.seasonal || [];
+    var live = seasons.filter(function (s) { return s.open; })[0] || seasons[0];
+    var nav = document.querySelector('#nav [data-nav="seasonal"]');
+    if (nav) nav.textContent = live ? live.name : 'Seasonal';
+    if (!seasons.length) {
+      var th0 = CONTENT.seasonDefault;
+      el.innerHTML = '<section class="season" style="' + themeVars(th0, 0) + '"><div class="wrap"><div class="season-card">' +
+        '<p class="season-kicker">Sugar Lane</p><h1 class="season-title season-title-sm">Seasonal treats</h1>' +
+        '<p class="season-intro">There\u2019s no presale open right now. Follow us on Instagram to hear about the next one, ' +
+        'or send us a custom request any time.</p>' +
+        '<a class="btn btn-primary custom-link" href="' + esc(data.customFormUrl || CONFIG.CUSTOM_FORM_URL || '#') + '" target="_blank" rel="noopener">Start a custom order</a>' +
+        '</div></div></section>';
+      return;
+    }
+    var spots = (data.locations || []).filter(function (l) { return !isDelivery(l); }).map(shortSpot);
+    var inCart = cartSeason();
+    el.innerHTML = seasons.map(function (s, si) {
+      var th = seasonTheme(s.name);
+      var boxes = s.boxes.map(function (b, i) {
+        var it = byId(b.id), q = qtyOf(b.id), soldOut = b.left === 0;
+        var right = !s.open ? '' : soldOut ? '<span class="box-flag">Sold out</span>' : !it ? ''
+          : q ? stepperHtml(it, q) : '<button class="box-add add" data-id="' + b.id + '">Add</button>';
+        var few = s.open && b.left !== null && b.left > 0 && b.left <= 5 ? ' \u00b7 only ' + b.left + ' left' : '';
+        return '<div class="season-box' + (soldOut || !s.open ? ' off' : '') + '" style="--box:' + th.colors[i % th.colors.length] + '">' +
+          '<span class="box-emoji" aria-hidden="true">' + th.emoji[i % th.emoji.length] + '</span>' +
+          '<div class="box-text"><b>' + esc(b.name) + '</b><span>' + esc(b.inside) + (b.inside ? ' \u00b7 ' : '') + money(b.priceCents) + few + '</span></div>' +
+          right + '</div>';
+      }).join('');
+      var mine = inCart && inCart.key === s.key;
+      var count = mine ? state.cart.reduce(function (t, c) { return t + c.qty; }, 0) : 0;
+      return '<section class="season" style="' + themeVars(th, si) + '"><div class="wrap"><div class="season-card">' +
+        '<div class="season-orn" aria-hidden="true">' + th.ornament[0] + '<span>\u2726</span>' + th.ornament[1] + '</div>' +
+        '<p class="season-kicker">Sugar Lane</p>' +
+        '<h1 class="season-title" style="--len:' + longestWord(s.name) + '">' + esc(s.name) + '</h1>' +
+        '<p class="season-sub">' + esc(th.subtitle) + '</p>' +
+        '<p class="season-tag">' + esc(th.tagline) + '</p>' +
+        (s.open
+          ? '<p class="season-intro">Add your boxes and check out right here. Every box is decorated by hand and picked up on ' + esc(seasonDate(s.pickupDate)) + '.</p>'
+          : '<p class="season-closed">Orders for this presale are closed. Thank you!</p>') +
+        '<div class="season-boxes">' + boxes + '</div>' +
+        (mine ? '<button class="btn btn-primary season-checkout">Check out \u00b7 ' + count + (count === 1 ? ' box' : ' boxes') + ' \u00b7 ' + money2(subtotal()) + '</button>' : '') +
+        '<hr><div class="season-info">' +
+        (s.close ? '<div><span>Orders close</span><b>' + esc(seasonDate(s.close)) + '</b></div>' : '') +
+        '<div><span>Pickup</span><b>' + esc(seasonDate(s.pickupDate)) + (s.time ? ' \u00b7 ' + esc(s.time.replace(/\s*-\s*/, ' \u2013 ')) : '') + '</b></div>' +
+        (spots.length ? '<div><span>Where</span><b>' + esc(spots.join(' or ')) + '</b></div>' : '') +
+        '</div><p class="season-note">Limited quantities. We hold your card and only charge it once we confirm your order.</p>' +
+        '</div></div></section>';
+    }).join('');
+    el.onclick = function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      if (b.classList.contains('season-checkout')) return startCheckout();
+      var id = b.getAttribute('data-id');
+      if (!id) return;
+      if (b.classList.contains('add')) changeQty(id, +1); else if (b.classList.contains('sub')) changeQty(id, -1);
+      renderSeasonal();
+    };
+  }
+
+  // The title is sized so its longest word fits on one line ("THANKSGIVING" gets smaller than "EASTER").
+  function longestWord(name) {
+    return Math.max(5, Math.max.apply(null, String(name).split(/\s+/).map(function (w) { return w.length; })));
+  }
+
+  function themeVars(th, i) {
+    return '--s-accent:' + th.colors[0] + ';--s-bg:' + th.bg + ';--s-stripe:' + th.stripe;
   }
 
   function renderEvents() {
@@ -588,6 +708,7 @@
   function changeQty(id, dir) {
     var it = byId(id);
     var q = qtyOf(id);
+    if (dir > 0 && !q && cartConflict(id)) return toast(CONFLICT_MSG);
     var before = q;
     if (dir > 0) q = q === 0 ? it.minQty : Math.min(99, q + 1);
     else q = q <= it.minQty ? 0 : q - 1;
@@ -608,6 +729,7 @@
 
   function addPack(id) {
     var it = byId(id);
+    if (cartConflict(id)) return toast(CONFLICT_MSG);
     var picks = (state.packs[id] || []).slice(0, it.picks);
     var err = document.getElementById('packerr-' + id);
     if (picks.filter(Boolean).length !== it.picks) {
@@ -747,10 +869,12 @@
       '<p class="muted small" style="margin:10px 0 0">Need delivery instead? Tell us in the notes on the next step &ndash; a delivery fee may be added at Sugar Lane&rsquo;s discretion.</p></div>';
 
     html += '<div class="panel"><div class="field" style="margin-top:0"><span class="label">Pickup day</span>';
-    if (!data.slots.length) {
+    var slots = availSlots(), season = cartSeason();
+    if (season) html += '<p class="notice" style="margin:0 0 12px">' + esc(season.name) + ' presale boxes are picked up on ' + esc(seasonDate(season.pickupDate)) + '.</p>';
+    if (!slots.length) {
       html += '<p class="muted">There are no open pickup times right now. Please check back soon or contact us.</p>';
     } else {
-      html += '<div class="dates" id="dates">' + data.slots.map(function (d) {
+      html += '<div class="dates" id="dates">' + slots.map(function (d) {
         var p = d.label.split(', ');
         var sel = state.date === d.date;
         return '<button class="chip date-chip' + (sel ? ' selected' : '') + '" data-date="' + d.date + '">' +
@@ -795,6 +919,10 @@
       }
     };
     if (!state.date && state.slot) state.date = state.slot.split(' ')[0];
+    if (slots.length === 1 && state.date !== slots[0].date) {
+      state.date = slots[0].date;
+      app.querySelectorAll('.date-chip').forEach(function (c) { c.classList.add('selected'); });
+    }
     renderTimes();
     renderPickupBar();
     var selDate = $('.date-chip.selected');
@@ -802,15 +930,16 @@
   }
 
   function findSlot(key) {
-    for (var i = 0; i < data.slots.length; i++) {
-      for (var j = 0; j < data.slots[i].times.length; j++) if (data.slots[i].times[j].key === key) return data.slots[i];
+    var slots = availSlots();
+    for (var i = 0; i < slots.length; i++) {
+      for (var j = 0; j < slots[i].times.length; j++) if (slots[i].times[j].key === key) return slots[i];
     }
     return null;
   }
 
   function renderTimes() {
     var f = $('#timesField');
-    var day = data.slots.filter(function (d) { return d.date === state.date; })[0];
+    var day = availSlots().filter(function (d) { return d.date === state.date; })[0];
     if (!day) { f.innerHTML = ''; return; }
     f.innerHTML = '<span class="label">Pickup time on ' + esc(day.label) + '</span>' +
       (day.rush ? '<p class="notice" style="margin:4px 0 10px">This date is less than ' + data.rules.standardDays + ' days away, so a ' + data.rules.rushPct + '% rush fee applies.</p>' : '') +

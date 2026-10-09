@@ -133,6 +133,41 @@ window.SUGAR_LANE_CONTENT = {
 
   // ---- Order page sections. Each menu group goes in the first section whose "match" (a regex) fits its name. ----
   // "custom" adds a card that opens the custom request form.
+  // ---- Seasonal presale page: the season's name in the Seasonal tab picks one of these looks ----
+  // colors: one per box (white text sits on them, so keep them deep). bg/stripe: the striped page background.
+  seasonThemes: [
+    { match: 'hallow|spooky|boo', subtitle: 'Cookie Presale', tagline: 'Spooky sweets from our kitchen',
+      ornament: ['\ud83e\udd87', '\ud83e\udd87'], emoji: ['\ud83c\udf83', '\ud83d\udc7b', '\ud83d\udd78\ufe0f', '\ud83e\udd87'],
+      colors: ['#c4501a', '#6f5478', '#55613f'], bg: '#fbefe0', stripe: '#f5e2c9' },
+    { match: 'thank|fall|autumn|harvest|friendsgiving', subtitle: 'Cookie Presale', tagline: 'Grateful for every bite',
+      ornament: ['\ud83c\udf42', '\ud83c\udf42'], emoji: ['\ud83e\udd67', '\ud83e\udd83', '\ud83c\udf41', '\ud83c\udf3e'],
+      colors: ['#a24a24', '#8a5d14', '#5f4330'], bg: '#fbf0e3', stripe: '#f3e1cb' },
+    { match: 'christmas|holiday|xmas|winter|noel', subtitle: 'Cookie Presale', tagline: 'Merry little treats',
+      ornament: ['\u2744\ufe0f', '\u2744\ufe0f'], emoji: ['\ud83c\udf84', '\ud83c\udf81', '\u26c4', '\ud83c\udf6a'],
+      colors: ['#b3262e', '#2d6a47', '#7a5f18'], bg: '#fbf2ee', stripe: '#f2e0da' },
+    { match: 'valentine|galentine|love', subtitle: 'Cookie Presale', tagline: 'Baked with love',
+      ornament: ['\ud83d\udc8c', '\ud83d\udc8c'], emoji: ['\ud83d\udc95', '\ud83c\udf39', '\ud83d\udc8c', '\ud83d\udc9d'],
+      colors: ['#c2185b', '#8f1838', '#a33d78'], bg: '#fff1f5', stripe: '#ffe0ea' },
+    { match: 'easter|spring|bunny', subtitle: 'Cookie Presale', tagline: 'Hoppy little treats',
+      ornament: ['\ud83c\udf37', '\ud83c\udf37'], emoji: ['\ud83d\udc23', '\ud83c\udf37', '\ud83d\udc30', '\ud83e\udd5a'],
+      colors: ['#7a5fb0', '#3b7d62', '#93611a'], bg: '#f6f2fb', stripe: '#ebe3f6' },
+    { match: 'grad|class of|senior', subtitle: 'Cookie Presale', tagline: 'Celebrate your grad',
+      ornament: ['\ud83c\udf93', '\ud83c\udf93'], emoji: ['\ud83c\udf93', '\u2b50', '\ud83d\udcdc', '\ud83c\udf89'],
+      colors: ['#22324f', '#806410', '#b0105c'], bg: '#f3f4f8', stripe: '#e4e8f0' },
+    { match: 'mother|mom', subtitle: 'Cookie Presale', tagline: 'Sweet treats for sweet moms',
+      ornament: ['\ud83c\udf38', '\ud83c\udf38'], emoji: ['\ud83d\udc90', '\ud83c\udf38', '\ud83c\udf37'],
+      colors: ['#b8336a', '#6f4f99', '#3b7356'], bg: '#fff3f7', stripe: '#fae1eb' },
+    { match: 'july|4th|fourth|independence|summer', subtitle: 'Cookie Presale', tagline: 'Red, white and sweet',
+      ornament: ['\u2b50', '\u2b50'], emoji: ['\ud83c\udf86', '\u2b50', '\ud83c\uddfa\ud83c\uddf8'],
+      colors: ['#b3262e', '#23407a', '#4f5d6b'], bg: '#f4f6fb', stripe: '#e3e8f2' },
+    { match: 'school|teacher', subtitle: 'Cookie Presale', tagline: 'Sweet treats for the new year',
+      ornament: ['\ud83c\udf4e', '\ud83c\udf4e'], emoji: ['\ud83c\udf4e', '\u270f\ufe0f', '\ud83d\udcda'],
+      colors: ['#b3262e', '#2d6a47', '#7f5810'], bg: '#f7f5ef', stripe: '#ebe6d8' }
+  ],
+  seasonDefault: { subtitle: 'Presale', tagline: 'Limited-time treats from our kitchen',
+    ornament: ['\u2726', '\u2726'], emoji: ['\ud83c\udf6a', '\ud83e\uddc1', '\ud83c\udf82'],
+    colors: ['#c2006a', '#7a3f63', '#9c3b67'], bg: '#fff4f8', stripe: '#ffe5ef' },
+
   menuSections: [
     { id: 'custom', title: 'Custom orders', lead: 'Our specialty and most-requested treats, designed around your party. Tell us your idea and we\'ll send a quote.',
       customs: [
@@ -143,6 +178,7 @@ window.SUGAR_LANE_CONTENT = {
         { name: 'Custom Cake Pops', price: 'Quoted by design', photo: 'images/tile-pops.jpg',
           blurb: 'Dipped and decorated to match your theme.' }
       ] },
+    { id: 'seasonal', title: 'Seasonal presale', match: 'presale' },
     { id: 'cookies', title: 'Cookies by the dozen', match: 'cookie' },
     { id: 'cakes', title: 'Cake Pops & Cupcakes', match: 'cupcake|cake pop' },
     { id: 'treats', title: 'Party Packs', match: '.' }
