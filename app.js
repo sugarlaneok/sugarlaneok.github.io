@@ -297,7 +297,21 @@
         el.innerHTML = (big ? '<div class="big-row" style="grid-template-columns:repeat(' + big + ',1fr)">' + g.photos.slice(0, big).map(tile).join('') + '</div>' : '') +
           '<div class="small-grid">' + g.photos.slice(big).map(function (p, j) { return tile(p, j + big); }).join('') + '</div>';
       } else {
-        el.innerHTML = g.photos.map(tile).join('');
+        // Photos fill left to right, row by row, so the first ones in the list are the first ones people see.
+        var layout = function () {
+          var w = Math.min(1088, window.innerWidth - 32);
+          var cols = window.innerWidth <= 600 ? 2 : Math.max(2, Math.min(3, Math.floor((w + 14) / 274)));
+          if (el.getAttribute('data-cols') === String(cols)) return;
+          el.setAttribute('data-cols', cols);
+          var lead = g.lead ? tile(g.photos[0], 0) : '';
+          var html = [];
+          for (var c = 0; c < cols; c++) html.push('');
+          g.photos.forEach(function (p, i) { if (!(g.lead && i === 0)) html[(g.lead ? i - 1 : i) % cols] += tile(p, i); });
+          el.innerHTML = lead + '<div class="cols">' + html.map(function (h) { return '<div class="col">' + h + '</div>'; }).join('') + '</div>';
+        };
+        el.classList.add('masonry');
+        layout();
+        window.addEventListener('resize', layout);
       }
       el.onclick = function (e) {
         var b = e.target.closest('button');

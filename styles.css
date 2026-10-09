@@ -510,3 +510,10 @@ a.product { color: inherit; text-decoration: none; }
   .box-text b { font-size: 18px; }
   .box-emoji { font-size: 22px; }
 }
+
+/* Gallery columns filled row by row (see renderShowcases) */
+.showcase.masonry { columns: auto; }
+.showcase.masonry .cols { display: flex; gap: 14px; align-items: flex-start; }
+.showcase.masonry .col { flex: 1; min-width: 0; }
+.showcase.masonry .lead { margin-bottom: 14px; }
+@media (max-width: 600px) { .showcase.masonry .cols { gap: 8px; } .showcase.masonry .lead { margin-bottom: 8px; } }
