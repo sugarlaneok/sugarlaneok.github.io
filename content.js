@@ -15,6 +15,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-pink-grad.jpg', 'Pink and gold class of 2026 graduation cookies'],
         ['cookies-pooh-baby-shower.jpg', 'Winnie the Pooh baby shower cookies'],
         ['cookies-tropical-baby-shower.jpg', 'Tropical flamingo baby shower cookie set'],
+        ['cookies-cherry-baby.jpg', '"She's the cherry on top" baby shower cookies'],
         ['cookies-washburn-grad.jpg', 'Washburn University graduation cookies'],
         ['cookies-hatching-soon.jpg', '"Hatching soon" dinosaur baby shower cookies'],
         ['cookies-teacher.jpg', 'Teacher appreciation cookies with apples, rainbows and flowers'],
@@ -43,13 +44,14 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-navy-gold-grad-2.jpg', 'Class of 2026 navy and gold cookies'],
         ['cookies-hatching-soon-2.jpg', 'Dinosaur and baby bottle cookies'],
         ['cookies-teacher-2.jpg', 'Teacher appreciation cookie plate'],
-        ['cookies-dino-atlas-2.jpg', 'Dinosaur and palm leaf cookies']
+        ['cookies-dino-atlas-2.jpg', 'Dinosaur and palm leaf cookies'],
+        ['cookies-cherry-baby-2.jpg', 'Cherry and bow baby shower cookie platter']
       ]
     },
     cakepops: {
       layout: 'grid', // photos stay in the order listed (left to right)
       big: 2,         // the first 2 photos show large across the top
-      featured: 7,
+      featured: 10,
       // 3rd value = size in the small grid: 'tall' (2 rows), 'wide tall' (2 columns x 2 rows)
       photos: [
         ['pops-fiesta.jpg', 'Fiesta cake pops with tiny sombreros'],
@@ -57,18 +59,31 @@ window.SUGAR_LANE_CONTENT = {
         ['pops-pink-tray.jpg', 'Pink bow cake pops on a silver tray', 'tall'],
         ['pops-navy-gold-fan.jpg', 'Navy and gold graduation cake pops fanned on a plate', 'wide tall'],
         ['pops-honey-bee-2.jpg', 'Honey bee cake pops with honey dippers'],
-        ['pops-baby-feet.jpg', 'Pink baby feet cake pops']
+        ['pops-baby-feet.jpg', 'Pink baby feet cake pops'],
+        ['pops-reindeer.jpg', 'Reindeer cake pops with pretzel antlers'],
+        ['pops-butterfly.jpg', 'Pink and lavender butterfly Oreo pops'],
+        ['pops-patriotic.jpg', 'Red, white and blue Oreo pops'],
+        ['pops-grinch.jpg', 'Green cake pops with red hearts'],
+        ['pops-pink-gold.jpg', 'Pink, white and gold cake pops'],
+        ['pops-dino.jpg', 'Dinosaur Oreo pops'],
+        ['pops-purple-gold.jpg', 'Purple and gold Oreo pops'],
+        ['pops-ice-cream.jpg', 'Ice cream cone cake pops']
       ]
     },
     cakes: {
-      featured: 6,
+      featured: 9,
       photos: [
         ['cake-wedding-tiered.jpg', 'Three-tier white vintage wedding cake'],
+        ['cake-navy-floral.jpg', 'Navy cake with piped coral roses and spring flowers'],
         ['drip-cake.jpg', 'Caramel drip cake with chocolate pieces'],
+        ['cake-black-gold.jpg', 'Black and gold birthday cake with gold leaf'],
         ['bow-cake.jpg', 'Pink vintage cake with satin bows'],
+        ['cake-cherry-heart.jpg', 'Vintage pink heart cake with cherries'],
         ['cake-vintage-pink.jpg', 'Pink and peach vintage piped birthday cake'],
+        ['cake-sweet-sixteen.jpg', 'Pastel vintage sweet sixteen cake'],
         ['cake-white-gold-bow.jpg', 'White vintage cake with a gold bow'],
         ['cake-peach-heart.jpg', 'Peach vintage heart cake'],
+        ['cake-peach-rosette.jpg', 'Peach buttercream rosette cake'],
         ['cake-ruffle.jpg', 'White ruffle cake'],
         ['cake-wedding-tiered-2.jpg', 'Vintage wedding cake detail']
       ]
@@ -80,6 +95,7 @@ window.SUGAR_LANE_CONTENT = {
   photos: {
     'Classic Cookies': 'images/flavor-chocolate-chip-styled.jpg',
     'Specialty Cookies': 'images/flavor-cookies-styled.jpg',
+    'Cupcakes': 'images/cupcakes-rosette.jpg',
     'Cake Pops': 'images/pops-honey-bee.jpg',
     'Party Packs': ['images/flavor-assortment.jpg', 'images/pops-pink-tray.jpg', 'images/flavor-red-velvet-dipped.jpg']
   },
@@ -93,9 +109,13 @@ window.SUGAR_LANE_CONTENT = {
     'Classic Cookies|Iced Lemon': ['flavor-iced-lemon.jpg'],
     'Specialty Cookies|Big Bubba': ['big-bubba.jpg'],
     'Specialty Cookies|Mr. Gibbs': ['flavor-mr-gibbs.jpg'],
+    'Specialty Cookies|Hey Buddies': ['flavor-hey-buddies.jpg'],
     'Specialty Cookies|White Chocolate Dipped Red Velvet': ['flavor-red-velvet-dipped.jpg', 'flavor-red-velvet-dipped-2.jpg'],
     'Specialty Cookies|White Chocolate Dipped Sugar Cookie': ['flavor-sugar-dipped.jpg'],
-    'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan.jpg', 'pops-honey-bee-2.jpg', 'minnie-pops.jpg'],
+    'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan.jpg', 'pops-honey-bee-2.jpg', 'minnie-pops.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
+    'Cupcakes – Classic|*': ['cupcakes-rosette.jpg', 'cupcakes-floral.jpg'],
+    'Cupcakes – Specialty|*': ['cupcakes-floral.jpg', 'cupcakes-rosette.jpg'],
+    'Cupcakes – Specialty|German Chocolate': ['cupcakes-german-chocolate.jpg'],
     'Party Packs|*': ['flavor-assortment.jpg', 'flavor-assortment-2.jpg']
   },
 
