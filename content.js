@@ -15,7 +15,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-pink-grad.jpg', 'Pink and gold class of 2026 graduation cookies'],
         ['cookies-pooh-baby-shower.jpg', 'Winnie the Pooh baby shower cookies'],
         ['cookies-tropical-baby-shower.jpg', 'Tropical flamingo baby shower cookie set'],
-        ['cookies-cherry-baby.jpg', '"She's the cherry on top" baby shower cookies'],
+        ['cookies-cherry-baby.jpg', '"She’s the cherry on top" baby shower cookies'],
         ['cookies-washburn-grad.jpg', 'Washburn University graduation cookies'],
         ['cookies-hatching-soon.jpg', '"Hatching soon" dinosaur baby shower cookies'],
         ['cookies-teacher.jpg', 'Teacher appreciation cookies with apples, rainbows and flowers'],
