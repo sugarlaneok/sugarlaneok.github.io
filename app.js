@@ -1213,6 +1213,10 @@
   }
 
   function boot() {
+    // Count the visit right away; the menu can take a few seconds to load.
+    var first = currentRoute();
+    document.title = (PAGE_TITLES[first] ? PAGE_TITLES[first] + ' – ' : '') + 'Sugar Lane – Home Bakery in Norman, OK';
+    trackPage(first);
     wireChrome();
     fitViewport();
     window.addEventListener('resize', fitViewport);
