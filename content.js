@@ -50,16 +50,17 @@ window.SUGAR_LANE_CONTENT = {
     },
     cakepops: {
       layout: 'grid', // photos stay in the order listed (left to right)
-      big: 2,         // the first 2 photos show large across the top
-      featured: 10,
+      big: 3,         // the first 3 photos show large across the top
+      featured: 11,
       // 3rd value = size in the small grid: 'tall' (2 rows), 'wide tall' (2 columns x 2 rows)
       photos: [
         ['pops-fiesta.jpg', 'Fiesta cake pops with tiny sombreros'],
         ['minnie-pops.jpg', 'Minnie bow cake pops in a mason jar'],
+        ['pops-honey-bee-2.jpg', 'Honey bee cake pops with honey dippers'],
         ['pops-pink-tray.jpg', 'Pink bow cake pops on a silver tray', 'tall'],
         ['pops-navy-gold-fan.jpg', 'Navy and gold graduation cake pops fanned on a plate', 'wide tall'],
-        ['pops-honey-bee-2.jpg', 'Honey bee cake pops with honey dippers'],
         ['pops-baby-feet.jpg', 'Pink baby feet cake pops'],
+        ['pops-halloween.jpg', 'Halloween cake pops with orange, black and white sprinkles'],
         ['pops-reindeer.jpg', 'Reindeer cake pops with pretzel antlers'],
         ['pops-butterfly.jpg', 'Pink and lavender butterfly Oreo pops'],
         ['pops-patriotic.jpg', 'Red, white and blue Oreo pops'],
@@ -85,8 +86,6 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-peach-heart.jpg', 'Peach vintage heart cake'],
         ['cake-peach-rosette.jpg', 'Peach buttercream rosette cake'],
         ['cake-minnie.jpg', 'Minnie Mouse ears cake with red hearts and a polka-dot bow'],
-        ['cupcakes-toy-story.jpg', 'Toy Story cupcakes'],
-        ['toy-story-party.jpg', 'Toy Story party with a cupcake tower and Oreo pops'],
         ['cake-ruffle.jpg', 'White ruffle cake'],
         ['cake-wedding-tiered-2.jpg', 'Vintage wedding cake detail']
       ]
@@ -115,7 +114,7 @@ window.SUGAR_LANE_CONTENT = {
     'Specialty Cookies|Hey Buddies': ['flavor-hey-buddies.jpg'],
     'Specialty Cookies|White Chocolate Dipped Red Velvet': ['flavor-red-velvet-dipped.jpg', 'flavor-red-velvet-dipped-2.jpg'],
     'Specialty Cookies|White Chocolate Dipped Sugar Cookie': ['flavor-sugar-dipped.jpg'],
-    'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan.jpg', 'pops-honey-bee-2.jpg', 'minnie-pops.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
+    'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan.jpg', 'pops-honey-bee-2.jpg', 'minnie-pops.jpg', 'pops-halloween.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
     'Cupcakes – Classic|*': ['cupcakes-rosette.jpg', 'cupcakes-floral.jpg', 'cupcakes-toy-story.jpg', 'toy-story-party.jpg'],
     'Cupcakes – Specialty|*': ['cupcakes-floral.jpg', 'cupcakes-rosette.jpg'],
     'Cupcakes – Specialty|German Chocolate': ['cupcakes-german-chocolate.jpg'],
