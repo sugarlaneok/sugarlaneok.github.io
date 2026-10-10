@@ -76,6 +76,7 @@ window.SUGAR_LANE_CONTENT = {
       featured: 9,
       photos: [
         ['cake-wedding-tiered.jpg', 'Three-tier white vintage wedding cake'],
+        ['cake-heart-wj.jpg', 'White vintage heart cake with gold W & J lettering'],
         ['cake-navy-floral.jpg', 'Navy cake with piped coral roses and spring flowers'],
         ['cupcakes-toy-story-tray.jpg', 'Toy Story character cupcakes on a marble board'],
         ['drip-cake.jpg', 'Caramel drip cake with chocolate pieces'],
@@ -87,7 +88,6 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-sweet-sixteen.jpg', 'Pastel vintage sweet sixteen cake'],
         ['cupcakes-floral.jpg', 'Cupcakes with piped buttercream flowers'],
         ['cake-white-gold-bow.jpg', 'White vintage cake with a gold bow'],
-        ['cake-heart-wj.jpg', 'White vintage heart cake with gold W & J lettering'],
         ['cake-peach-rosette.jpg', 'Peach buttercream rosette cake'],
         ['cupcakes-german-chocolate.jpg', 'German chocolate cupcakes'],
         ['cake-minnie.jpg', 'Minnie Mouse ears cake with red hearts and a polka-dot bow'],
