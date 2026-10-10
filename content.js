@@ -14,11 +14,10 @@ window.SUGAR_LANE_CONTENT = {
       photos: [
         ['cookies-pink-grad.jpg', 'Pink and gold class of 2026 graduation cookies'],
         ['cookies-pooh-baby-shower.jpg', 'Winnie the Pooh baby shower cookies'],
+        ['cookies-teacher.jpg', 'Teacher appreciation cookies with apples, rainbows and flowers'],
         ['cookies-tropical-baby-shower.jpg', 'Tropical flamingo baby shower cookie set'],
         ['cookies-cherry-baby.jpg', '"She’s the cherry on top" baby shower cookies'],
-        ['cookies-washburn-grad.jpg', 'Washburn University graduation cookies'],
         ['cookies-hatching-soon.jpg', '"Hatching soon" dinosaur baby shower cookies'],
-        ['cookies-teacher.jpg', 'Teacher appreciation cookies with apples, rainbows and flowers'],
         ['cookies-sage-wedding.jpg', 'Sage and blush wedding cookies'],
         ['cookies-monogram-wedding-2.jpg', 'Pink, sage and gold monogram wedding cookies'],
         ['cookies-nurse-grad.jpg', 'Maroon nursing school graduation cookies'],
@@ -32,6 +31,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-pink-green-grad.jpg', 'Pink and green graduation cookies'],
         ['cookies-pooh-box.jpg', 'Winnie the Pooh cookies in a gold box'],
         ['cookies-electrician.jpg', 'Electrician-themed cookies with light bulbs and outlets'],
+        ['cookies-washburn-grad.jpg', 'Washburn University graduation cookies'],
         ['cookies-western-bridal.jpg', 'Western cowboy boot bridal cookies'],
         ['cookies-monogram-wedding-detail.jpg', 'J and M monogram, I Do ring and wedding cake cookies, close up'],
         ['cookies-bridal-shower.jpg', 'White and sage bridal shower cookies'],
@@ -58,7 +58,7 @@ window.SUGAR_LANE_CONTENT = {
         ['pops-fiesta.jpg', 'Fiesta cake pops with tiny sombreros'],
         ['minnie-pops.jpg', 'Minnie bow cake pops in a mason jar'],
         ['pops-toy-story.jpg', 'Toy Story birthday cake pops on a white stand'],
-        ['pops-honey-bee-3.jpg', 'Honey bee cake pops with honey dippers'],
+        ['pops-hunny.jpg', 'Honey bee cake pops with honey dippers'],
         ['pops-pink-tray.jpg', 'Pink bow cake pops on a silver tray', 'tall'],
         ['pops-navy-gold-fan-2.jpg', 'Navy and gold graduation cake pops fanned on a plate', 'wide tall'],
         ['pops-navy-gold-close.jpg', 'Navy and gold graduation pops, close up'],
@@ -87,9 +87,9 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-heart-wj.jpg', 'White vintage heart cake with gold W & J lettering'],
         ['cake-cherry-heart.jpg', 'Vintage pink heart cake with cherries'],
         ['cake-twenty-four.jpg', 'White vintage heart cake with gold bows and Twenty four lettering'],
+        ['cupcakes-toy-story-tray.jpg', 'Toy Story character cupcakes on a marble board'],
         ['cake-tulip-piped.jpg', 'Pink piped buttercream cake with tulips'],
         ['cake-navy-floral.jpg', 'Navy cake with piped coral roses and spring flowers'],
-        ['cupcakes-toy-story-tray.jpg', 'Toy Story character cupcakes on a marble board'],
         ['drip-cake.jpg', 'Caramel drip cake with chocolate pieces'],
         ['cupcakes-rosette.jpg', 'Buttercream rosette cupcakes'],
         ['cake-black-gold.jpg', 'Black and gold birthday cake with gold leaf'],
@@ -127,7 +127,7 @@ window.SUGAR_LANE_CONTENT = {
   // ---- Photos for individual menu items, shown when someone taps that item ----
   // Key: "Category|Item" exactly as in the Menu tab, or "Category|*" for every item in that category.
   itemPhotos: {
-    'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan-2.jpg', 'pops-honey-bee-3.jpg', 'minnie-pops.jpg', 'pops-halloween.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
+    'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan-2.jpg', 'pops-hunny.jpg', 'minnie-pops.jpg', 'pops-halloween.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
     'Cupcakes – Classic|*': ['cupcakes-rosette.jpg', 'cupcakes-floral.jpg', 'cupcakes-toy-story.jpg', 'toy-story-party.jpg'],
     'Cupcakes – Specialty|*': ['cupcakes-floral.jpg', 'cupcakes-rosette.jpg'],
     'Party Packs|*': ['flavor-assortment.jpg', 'flavor-assortment-2.jpg']
@@ -186,7 +186,7 @@ window.SUGAR_LANE_CONTENT = {
           blurb: 'Royal-iced sugar cookies in your colors, shapes and names.' },
         { name: 'Custom Cakes & Cupcakes', price: 'From $30', photo: 'images/cake-wedding-vintage-a.jpg', photo2: 'images/cupcakes-rosette.jpg',
           blurb: 'Round, heart, star, tiered, cookie and wedding cakes, plus cupcakes by the dozen, in Swiss meringue buttercream.' },
-        { name: 'Custom Cake Pops', price: 'From $18 / dozen', photo: 'images/tile-pops.jpg', photo2: 'images/pops-honey-bee-3.jpg',
+        { name: 'Custom Cake Pops', price: 'From $18 / dozen', photo: 'images/tile-pops.jpg', photo2: 'images/pops-hunny.jpg',
           blurb: 'Dipped and decorated to match your theme.' }
       ] },
     { id: 'seasonal', title: 'Seasonal presale', match: 'presale' },
