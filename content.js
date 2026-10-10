@@ -163,7 +163,7 @@ window.SUGAR_LANE_CONTENT = {
   menuSections: [
     { id: 'custom', title: 'Custom orders', lead: 'Our specialty and most-requested treats, designed around your party. Tell us your idea and we\'ll send a quote.',
       customs: [
-        { name: 'Decorated Cookies', price: 'From $45 / dozen', photo: 'images/cookies-pooh-baby-shower-2.jpg', tag: 'Most popular',
+        { name: 'Decorated Cookies', price: 'From $45 / dozen', photo: 'images/cookies-pooh-baby-shower-2.jpg', pos: '50% 85%', tag: 'Most popular',
           blurb: 'Royal-iced sugar cookies in your colors, shapes and names.' },
         { name: 'Custom Cakes & Cupcakes', price: 'From $30', photo: 'images/cake-wedding-tiered.jpg', photo2: 'images/cupcakes-rosette.jpg',
           blurb: 'Round, heart, star, tiered, cookie and wedding cakes, plus cupcakes by the dozen, in Swiss meringue buttercream.' },

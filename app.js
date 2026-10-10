@@ -435,7 +435,7 @@
   function customCard(c, href) {
     return '<a class="product product-custom" href="' + esc(href) + '" target="_blank" rel="noopener">' +
       // Tall photos sit side by side so the whole cake / pop shows in a wide card.
-      '<div class="product-photo' + (c.photo2 ? ' split' : '') + '"><img src="' + esc(c.photo) + '" alt="' + esc(c.name) + '" loading="lazy">' +
+      '<div class="product-photo' + (c.photo2 ? ' split' : '') + '"><img src="' + esc(c.photo) + '" alt="' + esc(c.name) + '" loading="lazy"' + (c.pos ? ' style="object-position:' + esc(c.pos) + '"' : '') + '>' +
       (c.photo2 ? '<img src="' + esc(c.photo2) + '" alt="" loading="lazy">' : '') +
       (c.tag ? '<span class="product-tag">' + esc(c.tag) + '</span>' : '') + '</div>' +
       '<div class="product-body"><h3>' + esc(c.name) + '</h3>' +
