@@ -552,3 +552,8 @@ a.product { color: inherit; text-decoration: none; }
   .product-photo.split { display: block; aspect-ratio: 4 / 5; }
   .product-photo.split img + img { display: none; }
 }
+
+/* Two-photo custom cards: each half is 4:5 so both portrait photos show whole */
+@media (min-width: 601px) {
+  .menu-grid-featured .product-photo { aspect-ratio: 8 / 5; }
+}

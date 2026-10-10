@@ -186,7 +186,7 @@ window.SUGAR_LANE_CONTENT = {
           blurb: 'Royal-iced sugar cookies in your colors, shapes and names.' },
         { name: 'Custom Cakes & Cupcakes', price: 'From $30', photo: 'images/cake-wedding-vintage-a.jpg', photo2: 'images/cupcakes-rosette.jpg',
           blurb: 'Round, heart, star, tiered, cookie and wedding cakes, plus cupcakes by the dozen, in Swiss meringue buttercream.' },
-        { name: 'Custom Cake Pops', price: 'From $18 / dozen', photo: 'images/tile-pops.jpg', photo2: 'images/pops-hunny-2.jpg',
+        { name: 'Custom Cake Pops', price: 'From $18 / dozen', photo: 'images/pops-toy-story.jpg', photo2: 'images/pops-hunny-2.jpg',
           blurb: 'Dipped and decorated to match your theme.' }
       ] },
     { id: 'seasonal', title: 'Seasonal presale', match: 'presale' },
