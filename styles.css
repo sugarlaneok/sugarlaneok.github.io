@@ -525,3 +525,14 @@ a.product { color: inherit; text-decoration: none; }
   .nav a.nav-order { background: var(--pink); color: #fff; padding: 8px 16px; border-radius: 999px; font-weight: 700; }
   .nav a.nav-order:hover, .nav a.nav-order.active { background: var(--pink-dark); color: #fff; }
 }
+
+/* Header on computers: the logo never shrinks under the menu; tighter spacing on smaller laptops */
+.logo { flex-shrink: 0; }
+.topbar .wrap.topbar-inner { max-width: 1240px; }
+@media (min-width: 821px) and (max-width: 1180px) {
+  .nav { gap: 16px; }
+  .nav a { font-size: 14.5px; }
+}
+@media (min-width: 821px) and (max-width: 1060px) {
+  .logo span { display: none; }
+}
