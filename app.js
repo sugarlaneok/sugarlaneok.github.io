@@ -182,9 +182,30 @@
   // ================= view switching =================
 
   var PAGES = ['home', 'seasonal', 'cookies', 'cake-pops', 'cakes', 'order', 'events', 'about'];
-  var PAGE_TITLES = { home: '', seasonal: 'Seasonal Presale', cookies: 'Decorated Cookies', 'cake-pops': 'Cake Pops', cakes: 'Cakes & Cupcakes', order: 'Order Online', events: 'Pop-up Events', about: 'About', checkout: 'Checkout' };
 
-  function currentRoute() { return location.hash.replace(/^#\/?/, '').split('?')[0] || 'home'; }
+  var SEO = (function () { try { return JSON.parse(document.getElementById('seoPages').textContent); } catch (e) { return {}; } })();
+
+  // Pages live at real addresses (/cookies/, /order/cookies/) so Google can find each one.
+  // Old #/cookies links still work and are swapped for the real address.
+  function hashRoute() { return location.hash.indexOf('#/') === 0 ? location.hash.slice(2).split('?')[0] : ''; }
+  function currentRoute() {
+    return hashRoute() || location.pathname.replace(/index\.html$/, '').replace(/^\/+|\/+$/g, '') || 'home';
+  }
+  function pathFor(r) { return r === 'home' || !r ? '/' : '/' + r.replace(/\/+$/, '') + '/'; }
+  function navigate(path, replace) {
+    if (location.pathname !== path || location.hash) history[replace ? 'replaceState' : 'pushState'](null, '', path);
+    route();
+  }
+  function forwardHash() {
+    var h = hashRoute();
+    if (h || location.hash === '#/') history.replaceState(null, '', pathFor(h || 'home'));
+  }
+  function pageTitle(r) {
+    var p = SEO[r] || SEO[r.split('/')[0]];
+    if (!p) return 'Sugar Lane – Home Bakery in Norman, OK';
+    var season = (data && data.seasonal && data.seasonal[0] && data.seasonal[0].name) || 'Seasonal';
+    return p.title.replace('{season}', season);
+  }
 
   function showView(view) {
     state.view = view;
@@ -234,12 +255,12 @@
   /** Show whatever the address bar says: #/cookies, #/order, #/checkout ... */
   function route() {
     var r = currentRoute();
-    document.title = (PAGE_TITLES[r] ? PAGE_TITLES[r] + ' – ' : '') + 'Sugar Lane – Home Bakery in Norman, OK';
+    document.title = pageTitle(r);
     trackPage(r || 'home');
     if (r === 'checkout') {
       if (!data) return;
       if (state.cart.length || state.step === 'done') { showView('checkout'); window.scrollTo(0, 0); }
-      else location.replace('#/order');
+      else navigate('/order/', true);
       return;
     }
     var parts = r.split('/'), full = r;
@@ -253,8 +274,7 @@
   }
 
   function goPage(page) {
-    var target = page === 'home' ? '#/' : '#/' + page;
-    if (location.hash === target || (page === 'home' && !location.hash)) route(); else location.hash = target;
+    navigate(pathFor(page));
   }
 
   function startCheckout() {
@@ -262,12 +282,22 @@
     if (!state.cart.length) return;
     state.step = 'pickup';
     save();
-    if (location.hash === '#/checkout') route(); else location.hash = '#/checkout';
+    navigate('/checkout/');
   }
 
   function backToShop(anchor) { goPage(anchor || 'order'); }
 
-  window.addEventListener('hashchange', route);
+  window.addEventListener('hashchange', function () { forwardHash(); route(); });
+  window.addEventListener('popstate', route);
+  // Site links switch pages without a full reload.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="/"]');
+    if (!a || a.target || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    var r = a.getAttribute('href').replace(/^\/+|\/+$/g, '') || 'home';
+    if (PAGES.indexOf(r.split('/')[0]) < 0 && r !== 'checkout') return;
+    e.preventDefault();
+    navigate(pathFor(r));
+  });
 
   // ================= SHOP =================
 
@@ -1212,7 +1242,7 @@
         });
       }).catch(function () { /* not available */ }));
 
-      tasks.push(payments.cashAppPay(request(), { redirectURL: location.href.split('#')[0] + '#/checkout', referenceId: state.draftId }).then(function (cashApp) {
+      tasks.push(payments.cashAppPay(request(), { redirectURL: location.origin + '/checkout/', referenceId: state.draftId }).then(function (cashApp) {
         payWidgets.push(cashApp);
         cashApp.addEventListener('ontokenization', function (event) {
           var d = event.detail || {};
@@ -1362,8 +1392,9 @@
 
   function boot() {
     // Count the visit right away; the menu can take a few seconds to load.
+    forwardHash();
     var first = currentRoute();
-    document.title = (PAGE_TITLES[first] ? PAGE_TITLES[first] + ' – ' : '') + 'Sugar Lane – Home Bakery in Norman, OK';
+    document.title = pageTitle(first);
     trackPage(first);
     wireChrome();
     fitViewport();
