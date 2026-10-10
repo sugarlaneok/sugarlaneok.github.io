@@ -4,17 +4,379 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Opening… | Sugar Lane</title>
-<!-- Links in Sugar Lane's own emails and Sheet point here (sugarlaneok.com/go/#view=dashboard&k=...).
-     Google's apps rewrite direct script.google.com links to /u/N/, which fails when a browser is signed
-     into several Google accounts; a link to this site isn't rewritten. The part after # never reaches the server. -->
+<title>Sugar Lane</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<!-- Built by tools/build_go.py from tools/go_template.html + apps-script/Dashboard.html. Edit those, not this file.
+     Laney's private pages: dashboard, order review, Send invoice, quote replies. Links look like
+     sugarlaneok.com/go/#view=dashboard&k=... The part after # never reaches the web server, and nothing
+     loads without the secret key. Data comes from the order system the same way the order page gets it,
+     so it works in any browser (Google's own script pages fail when a browser has several Google accounts). -->
+<style>
+  :root {
+    color-scheme: light;
+    --page: #fbf6f8; --card: #ffffff; --line: #efe3e8; --grid: #f1e9ec;
+    --ink: #2b1f24; --ink-2: #6f6267; --ink-3: #9a8c92;
+    --series: #c2006a; --series-soft: #f7d9e8; --up: #1d7a3a; --down: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --page: #121111; --card: #1c1b1b; --line: #2e2b2c; --grid: #2a2728;
+      --ink: #f6f1f3; --ink-2: #c4b9be; --ink-3: #8d8287;
+      --series: #e0388a; --series-soft: #4a2235; --up: #5cc27d; --down: #f08a80;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 16px 16px 40px; }
+  header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin: 4px 0 16px; }
+  h1 { font-size: 24px; margin: 0; letter-spacing: -.01em; }
+  h1 small { display: block; font-size: 13px; font-weight: 500; color: var(--ink-3); letter-spacing: 0; margin-top: 2px; }
+  .range { display: inline-flex; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .range a { display: inline-block; text-decoration: none; color: var(--ink-2); font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: 999px; }
+  .range a.on { background: var(--series); color: #fff; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .kpi .label { font-size: 13px; color: var(--ink-2); font-weight: 600; }
+  .kpi .value { font-size: 30px; font-weight: 700; letter-spacing: -.02em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .kpi .delta { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+  .delta .up { color: var(--up); font-weight: 600; } .delta .down { color: var(--down); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; min-width: 0; }
+  .card.wide { grid-column: 1 / -1; }
+  .card h2 { font-size: 16px; margin: 0 0 2px; }
+  .card .sub { font-size: 13px; color: var(--ink-3); margin: 0 0 12px; }
+  .bars { display: grid; gap: 10px; }
+  .bar-row .top { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+  .bar-row .top span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar-row .top b { font-variant-numeric: tabular-nums; }
+  .bar-row .top em { font-style: normal; color: var(--ink-3); font-weight: 500; margin-left: 6px; }
+  .track { height: 8px; background: var(--grid); border-radius: 4px; margin-top: 4px; overflow: hidden; }
+  .fill { height: 100%; background: var(--series); border-radius: 4px; min-width: 2px; }
+  .chart { position: relative; }
+  .chart svg { display: block; width: 100%; height: 190px; }
+  .chart .tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--card); font-size: 13px; padding: 5px 9px; border-radius: 8px; white-space: nowrap; transform: translate(-50%, -100%); display: none; }
+  .split { display: flex; height: 12px; border-radius: 6px; overflow: hidden; gap: 2px; background: var(--card); margin: 6px 0 10px; }
+  .split div { background: var(--series); }
+  .split div + div { background: var(--series-soft); }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--ink-2); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--series); margin-right: 6px; vertical-align: -1px; }
+  .legend span + span i { background: var(--series-soft); }
+  .list { display: grid; }
+  .item { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+  .item:first-child { border-top: 0; padding-top: 2px; }
+  .item .main { min-width: 0; } .item .main b { display: block; }
+  .item .main span { color: var(--ink-2); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item .side { text-align: right; color: var(--ink-2); flex-shrink: 0; font-size: 13px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .chip { border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 13px; color: var(--ink-2); }
+  .chip b { color: var(--ink); font-size: 16px; margin-right: 4px; font-variant-numeric: tabular-nums; }
+  .empty { color: var(--ink-3); font-size: 14px; padding: 6px 0; }
+  .note { font-size: 13px; color: var(--ink-3); margin-top: 16px; }
+  .loading { color: var(--ink-3); padding: 40px 0; text-align: center; }
+  @media (max-width: 760px) {
+    .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .kpi .value { font-size: 26px; }
+    .grid { grid-template-columns: 1fr; }
+    h1 { font-size: 22px; }
+  }
+  .page { max-width: 600px; margin: 0 auto; }
+  .brand { font-family: Georgia, serif; font-size: 24px; color: var(--series); margin: 4px 0 12px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
+  .panel h2 { font-size: 20px; margin: 0 0 4px; }
+  .muted { color: var(--ink-2); font-size: 14px; }
+  .items { background: var(--page); border-radius: 10px; padding: 12px; white-space: pre-line; margin: 12px 0; }
+  table.money { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  table.money td { padding: 3px 0; vertical-align: top; }
+  table.money td.r { text-align: right; font-variant-numeric: tabular-nums; }
+  table.money tr.total td { font-weight: 700; border-top: 1px solid var(--line); padding-top: 6px; }
+  .econ { background: var(--series-soft); border-radius: 10px; padding: 10px 12px; margin: 12px 0; font-size: 14px; }
+  .btn { display: block; width: 100%; border: 0; border-radius: 999px; padding: 15px; font: inherit; font-size: 17px; font-weight: 700; text-align: center; text-decoration: none; cursor: pointer; margin-top: 10px; background: #ff0082; color: #fff; }
+  .btn.outline { background: transparent; color: var(--series); border: 2px solid var(--series); }
+  .btn.green { background: #3f7d4e; } .btn.red { background: #9a3b3b; }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .row2 { display: flex; gap: 10px; } .row2 .btn { flex: 1; }
+  textarea { width: 100%; min-height: 80px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; margin-top: 8px; background: var(--card); color: var(--ink); }
+  .result { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-weight: 600; }
+  .result.ok { background: #e7f3ea; color: #2f6b3e; } .result.err { background: #f8e8e8; color: #9a3b3b; }
+  .preview { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; }
+  .range button { border: 0; background: none; color: var(--ink-2); font: inherit; font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+  .range button.on { background: var(--series); color: #fff; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap" id="root"><p class="loading">Loading…</p></div>
 <script src="/config.js"></script>
 <script>
-  var q = location.hash.slice(1);
-  if (q && window.SUGAR_LANE_CONFIG && SUGAR_LANE_CONFIG.API_URL) location.replace(SUGAR_LANE_CONFIG.API_URL + '?' + q);
+  var API = (window.SUGAR_LANE_CONFIG || {}).API_URL;
+  var P = {};
+  location.hash.slice(1).split('&').forEach(function (kv) {
+    if (!kv) return;
+    var i = kv.indexOf('='), k = decodeURIComponent(i < 0 ? kv : kv.slice(0, i));
+    P[k] = i < 0 ? '' : decodeURIComponent(kv.slice(i + 1).replace(/\+/g, ' '));
+  });
+  var root = document.getElementById('root');
+
+  function getData(params) {
+    var q = Object.keys(params).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]); }).join('&');
+    return fetch(API + '?action=owner&' + q + '&t=' + Date.now()).then(function (r) { return r.json(); });
+  }
+  function postData(body) {
+    body.action = 'owner';
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json(); });
+  }
+  function fail(msg) { root.innerHTML = '<div class="page"><div class="brand">Sugar Lane</div><div class="panel"><p>' + esc(msg) + '</p></div></div>'; }
+  function netFail() { fail('Couldn’t reach the order system. Check your connection and refresh the page.'); }
+  /** Disable the buttons, run the request, then show the result under them. */
+  function act(btns, busyText, run, onOk) {
+    var res = document.getElementById('result');
+    btns.forEach(function (b) { b.disabled = true; });
+    res.className = 'result ok'; res.textContent = busyText;
+    run().then(function (r) {
+      if (r.ok) { res.className = 'result ok'; res.innerHTML = '<b>Done!</b> ' + esc(r.message || ''); if (onOk) onOk(r); }
+      else { res.className = 'result err'; res.textContent = r.error || 'Something went wrong.'; btns.forEach(function (b) { b.disabled = false; }); }
+    }).catch(function () { res.className = 'result err'; res.textContent = 'Couldn’t reach the order system. Please try again.'; btns.forEach(function (b) { b.disabled = false; }); });
+  }
+
+  // ---------- dashboard (drawing code shared with apps-script/Dashboard.html) ----------
+  var days = Number(P.days) || 30, last = null;
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function n(x) { return Number(x || 0).toLocaleString('en-US'); }
+  function money(x) { return '$' + Number(x || 0).toLocaleString('en-US', { maximumFractionDigits: 0 }); }
+
+  /** "12% more than the 30 days before" */
+  function delta(cur, prev) {
+    if (!prev && !cur) return 'No change';
+    if (!prev) return '<span class="up">New</span> vs the ' + days + ' days before';
+    var pct = Math.round((cur - prev) / prev * 100);
+    if (pct === 0) return 'Same as the ' + days + ' days before';
+    return '<span class="' + (pct > 0 ? 'up' : 'down') + '">' + (pct > 0 ? '▲ ' : '▼ ') + Math.abs(pct) + '%</span> vs the ' + days + ' days before';
+  }
+
+  function kpi(label, value, d) {
+    return '<div class="kpi"><div class="label">' + label + '</div><div class="value">' + value + '</div><div class="delta">' + d + '</div></div>';
+  }
+
+  /** Horizontal bars: [[label, value], ...]. Values are printed, so the bars never carry meaning alone. */
+  function bars(rows, opts) {
+    opts = opts || {};
+    if (!rows || !rows.length || !rows.some(function (r) { return r[1] > 0; })) return '<p class="empty">' + (opts.empty || 'Nothing yet.') + '</p>';
+    var max = Math.max.apply(null, rows.map(function (r) { return r[1]; })) || 1;
+    var base = opts.pctOf || 0;
+    return '<div class="bars">' + rows.map(function (r) {
+      var pct = base ? ' <em>' + Math.round(r[1] / base * 100) + '%</em>' : '';
+      return '<div class="bar-row"><div class="top"><span>' + esc(r[0]) + '</span><span><b>' + (opts.money ? money(r[1]) : n(r[1])) + '</b>' + pct + '</span></div>' +
+        '<div class="track"><div class="fill" style="width:' + (r[1] / max * 100) + '%"></div></div></div>';
+    }).join('') + '</div>';
+  }
+
+  function card(title, sub, body, wide) {
+    return '<section class="card' + (wide ? ' wide' : '') + '"><h2>' + title + '</h2>' + (sub ? '<p class="sub">' + sub + '</p>' : '') + body + '</section>';
+  }
+
+  /** Visitors per day: one series, thin rounded bars, hairline grid, tap or hover for the exact number. */
+  function dailyChart(el, daily) {
+    var w = el.clientWidth || 600, h = 190, padL = 28, padB = 22, padT = 10;
+    var max = Math.max(1, Math.max.apply(null, daily.map(function (d) { return d[1]; })));
+    var step = Math.pow(10, Math.floor(Math.log10(max))); var top = Math.ceil(max / step) * step; if (top < 4) top = 4;
+    var plotW = w - padL, plotH = h - padB - padT, slot = plotW / daily.length, bw = Math.max(2, Math.min(18, slot - 2));
+    var y = function (v) { return padT + plotH - v / top * plotH; };
+    var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Visitors per day">';
+    [0, top / 2, top].forEach(function (v) {
+      svg += '<line x1="' + padL + '" x2="' + w + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="var(--grid)" stroke-width="1"/>' +
+        '<text x="' + (padL - 6) + '" y="' + (y(v) + 4) + '" text-anchor="end" font-size="11" fill="var(--ink-3)">' + n(v) + '</text>';
+    });
+    daily.forEach(function (d, i) {
+      var x = padL + i * slot + (slot - bw) / 2, bh = d[1] / top * plotH;
+      if (d[1] > 0) {
+        var r = Math.min(4, bw / 2, bh);
+        svg += '<path data-i="' + i + '" fill="var(--series)" d="M' + x + ',' + (padT + plotH) + 'V' + (y(d[1]) + r) +
+          'q0,-' + r + ' ' + r + ',-' + r + 'H' + (x + bw - r) + 'q' + r + ',0 ' + r + ',' + r + 'V' + (padT + plotH) + 'Z"/>';
+      }
+    });
+    [0, Math.floor((daily.length - 1) / 2), daily.length - 1].forEach(function (i, k) {
+      var x = padL + i * slot + slot / 2;
+      svg += '<text x="' + x + '" y="' + (h - 5) + '" text-anchor="' + (k === 0 ? 'start' : k === 2 ? 'end' : 'middle') + '" font-size="11" fill="var(--ink-3)">' + esc(daily[i][0]) + '</text>';
+    });
+    svg += '<line id="hoverLine" x1="0" x2="0" y1="' + padT + '" y2="' + (padT + plotH) + '" stroke="var(--ink-3)" stroke-width="1" style="display:none"/></svg>';
+    el.innerHTML = svg + '<div class="tip"></div>';
+    var s = el.querySelector('svg'), tip = el.querySelector('.tip'), line = el.querySelector('#hoverLine');
+    function show(ev) {
+      var rect = s.getBoundingClientRect(), px = (ev.clientX - rect.left) * (w / rect.width);
+      var i = Math.max(0, Math.min(daily.length - 1, Math.floor((px - padL) / slot)));
+      var cx = padL + i * slot + slot / 2;
+      line.setAttribute('x1', cx); line.setAttribute('x2', cx); line.style.display = '';
+      tip.style.display = 'block';
+      tip.style.left = (cx / w * rect.width) + 'px';
+      tip.style.top = (Math.min(y(daily[i][1]), padT + plotH - 4) / h * rect.height - 6) + 'px';
+      tip.textContent = daily[i][0] + ' · ' + n(daily[i][1]) + (daily[i][1] === 1 ? ' visitor' : ' visitors');
+    }
+    s.addEventListener('pointermove', show);
+    s.addEventListener('pointerdown', show);
+    s.addEventListener('pointerleave', function () { tip.style.display = 'none'; line.style.display = 'none'; });
+  }
+
+  function render(d) {
+    last = d;
+    document.getElementById('updated').textContent = 'Last ' + d.days + ' days · updated ' + d.updated;
+    var w = d.web, o = d.orders, c = d.custom;
+    var sales = o.sales + c.sales, prevSales = o.prevSales + c.prevSales;
+    var html = '<div class="kpis">' +
+      kpi('Website visitors', w ? n(w.visitors) : '–', w ? delta(w.visitors, w.prevVisitors) : 'Not available yet') +
+      kpi('Custom requests', n(c.received), delta(c.received, c.prevReceived)) +
+      kpi('Online orders', n(o.placed), delta(o.placed, o.prevPlaced)) +
+      kpi('Sales', money(sales), delta(sales, prevSales)) +
+      '</div><div class="grid">';
+
+    if (w) {
+      html += card('Visitors per day', n(w.now) + (w.now === 1 ? ' person' : ' people') + ' on the site right now · tap a bar for the number', '<div class="chart" id="daily"></div>', true);
+      html += card('Where visitors came from', 'Visits by source', bars(w.sources, { empty: 'No visits yet. Google takes about a day to show new visits.' }));
+      html += card('Path to an order', 'Visitors who reached each step', bars(w.funnel, { pctOf: w.funnel[0][1], empty: 'No visits yet.' }) +
+        '<p class="sub" style="margin:12px 0 0">Custom order taps: <b>' + n(w.leads) + '</b> (people who opened the custom order form)</p>');
+      html += card('Most viewed pages', 'Page views', bars(w.pages, { empty: 'No page views yet.' }));
+      var dev = w.devices || [], devTotal = dev.reduce(function (t, x) { return t + x[1]; }, 0);
+      var phone = (dev.filter(function (x) { return x[0] === 'Phone'; })[0] || [0, 0])[1];
+      html += card('Phone or computer', 'Visitors by device', devTotal ?
+        '<div class="split"><div style="flex:' + phone + '"></div><div style="flex:' + (devTotal - phone) + '"></div></div>' +
+        '<div class="legend"><span><i></i>Phone ' + Math.round(phone / devTotal * 100) + '%</span><span><i></i>Computer or tablet ' + Math.round((devTotal - phone) / devTotal * 100) + '%</span></div>'
+        : '<p class="empty">No visits yet.</p>');
+      html += card('Where visitors are', 'Visitors by city', bars(w.cities, { empty: 'No visits yet.' }));
+    } else {
+      html += card('Website', '', '<p class="empty">Website numbers aren’t available right now. ' + esc(d.webError) + '</p>', true);
+    }
+
+    html += card('How customers heard about us', 'Online orders and custom requests', bars(d.heard, { empty: 'No answers yet.' }));
+    html += card('Custom requests', 'Right now, by status',
+      '<div class="chips">' + c.byStatus.map(function (s) { return '<span class="chip"><b>' + n(s[1]) + '</b>' + esc(s[0]) + '</span>'; }).join('') + '</div>' +
+      (c.recent.length ? '<div class="list">' + c.recent.map(function (r) {
+        return '<div class="item"><div class="main"><b>' + esc(r.name) + '</b><span>' + esc(r.wants) + (r.event ? ' · event ' + esc(r.event) : '') + '</span></div>' +
+          '<div class="side">' + esc(r.status) + '<br>' + esc(r.received) + '</div></div>';
+      }).join('') + '</div>' : '<p class="empty">No custom requests yet.</p>'));
+    html += card('Upcoming pickups', 'Next 2 weeks', d.upcoming.length ? '<div class="list">' + d.upcoming.map(function (u) {
+      return '<div class="item"><div class="main"><b>' + esc(u.when) + '</b><span>' + esc(u.name) + ' · ' + esc(u.what) + '</span></div><div class="side">' + esc(u.kind) + '</div></div>';
+    }).join('') + '</div>' : '<p class="empty">Nothing booked in the next 2 weeks.</p>', true);
+
+    html += '</div><p class="note">Online orders waiting for you right now: <b>' + n(o.waiting) + '</b>. Sales = approved online orders + paid custom orders. ' +
+      'Website numbers come from Google Analytics and can take up to a day to appear.</p>';
+    document.getElementById('app').innerHTML = html;
+    if (w) dailyChart(document.getElementById('daily'), w.daily);
+  }
+  function dashboard() {
+    document.title = 'Sugar Lane dashboard';
+    root.innerHTML = '<header><h1>Sugar Lane dashboard<small id="updated">Loading…</small></h1><div class="range" id="range">' +
+      [7, 30, 90].map(function (d) { return '<button data-d="' + d + '"' + (d === days ? ' class="on"' : '') + '>' + d + ' days</button>'; }).join('') +
+      '</div></header><div id="app"><p class="loading">Loading your numbers…</p></div>';
+    document.getElementById('range').onclick = function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      days = Number(b.getAttribute('data-d'));
+      [].forEach.call(this.querySelectorAll('button'), function (x) { x.classList.toggle('on', x === b); });
+      history.replaceState(null, '', '#view=dashboard&k=' + encodeURIComponent(P.k) + '&days=' + days);
+      loadDash();
+    };
+    loadDash();
+    var t;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(function () { if (last && last.web) dailyChart(document.getElementById('daily'), last.web.daily); }, 150); });
+  }
+  function loadDash() {
+    document.getElementById('updated').textContent = 'Loading…';
+    getData({ view: 'dashboard', k: P.k, days: days }).then(function (r) {
+      if (!r.ok) return fail(r.error);
+      render(r.data);
+    }).catch(netFail);
+  }
+
+  // ---------- new online order: approve or decline ----------
+  function review() {
+    document.title = 'Review order';
+    getData({ view: 'review', o: P.o, k: P.k }).then(function (r) {
+      if (!r.ok) return fail(r.error);
+      var o = r.order, waiting = o.status === 'Waiting for you';
+      document.title = 'Order ' + o.orderNo;
+      root.innerHTML = '<div class="page"><div class="brand">Sugar Lane</div><div class="panel">' +
+        '<h2>' + esc(o.name) + '</h2><div class="muted">' + esc(o.orderNo) + ' · placed ' + esc(o.placed) + '</div>' +
+        '<p style="margin:12px 0 0"><b>' + esc(o.pickup) + '</b><br>' + esc(o.location) + '</p>' +
+        '<p class="muted" style="margin:4px 0 0">' + esc(o.phone) + ' · ' + esc(o.email) + (o.contactBy ? ' · prefers ' + esc(o.contactBy) : '') + '</p>' +
+        '<div class="items">' + esc(o.items) + '</div>' + (o.notes ? '<p><b>Notes:</b> ' + esc(o.notes) + '</p>' : '') +
+        '<table class="money"><tr><td>Subtotal</td><td class="r">' + esc(o.subtotal) + '</td></tr>' +
+        (o.rush ? '<tr><td>Rush fee</td><td class="r">' + esc(o.rush) + '</td></tr>' : '') +
+        (o.delivery ? '<tr><td>Delivery</td><td class="r">' + esc(o.delivery) + '</td></tr>' : '') +
+        '<tr><td>Tax</td><td class="r">' + esc(o.tax) + '</td></tr><tr class="total"><td>Total</td><td class="r">' + esc(o.total) + '</td></tr></table>' +
+        '<div class="econ">Ingredients ~<b>' + esc(o.cost) + '</b> · ' + esc(o.hours) + ' hrs · Est. profit <b>' + esc(o.profit) + '</b>' +
+        (o.missing ? '<div class="muted">No ingredient cost yet for: ' + esc(o.missing) + '</div>' : '') + '</div>' +
+        (waiting ? '<div class="row2"><button class="btn green" id="approve">✓ Approve &amp; charge</button><button class="btn red" id="decline">✕ Decline</button></div>' +
+          '<div id="declineBox" class="hidden"><p class="muted" style="margin:16px 0 0">Optional note to the customer (e.g. "We’re fully booked that weekend – could you do the 24th?")</p>' +
+          '<textarea id="msg"></textarea><button class="btn red" id="confirmDecline">Decline &amp; release the hold</button></div>'
+          : '') +
+        '<div id="result" class="' + (waiting ? 'hidden' : 'result ok') + '">' + (waiting ? '' : 'This order is ' + esc(String(o.status).toLowerCase()) + '.') + '</div>' +
+        '</div></div>';
+      if (!waiting) return;
+      var all = function () { return [].slice.call(root.querySelectorAll('button')); };
+      var decide = function (decision, busy) {
+        act(all(), busy, function () { return postData({ op: 'decide', o: P.o, k: P.k, decision: decision, message: (document.getElementById('msg') || {}).value || '' }); });
+      };
+      document.getElementById('approve').onclick = function () { decide('approve', 'Charging the card…'); };
+      document.getElementById('decline').onclick = function () { document.getElementById('declineBox').classList.remove('hidden'); };
+      document.getElementById('confirmDecline').onclick = function () { decide('decline', 'Releasing the hold…'); };
+    }).catch(netFail);
+  }
+
+  // ---------- custom order: send the Square invoice ----------
+  function invoice() {
+    document.title = 'Send invoice';
+    getData({ view: 'invoice', id: P.id, k: P.k }).then(function (r) {
+      if (!r.ok) return fail(r.error);
+      var rows = [['Email', r.email], ['Order', r.order], ['Pickup', r.pickup], ['Price', r.price], ['Sales tax', r.tax]].filter(function (x) { return x[1]; });
+      root.innerHTML = '<div class="page"><div class="brand">Sugar Lane</div><div class="panel">' +
+        '<h2>Send invoice to ' + esc(r.name) + '?</h2>' +
+        '<table class="money">' + rows.map(function (x) { return '<tr><td class="muted">' + esc(x[0]) + '</td><td class="r">' + esc(x[1]) + '</td></tr>'; }).join('') +
+        '<tr class="total"><td>Total</td><td class="r">' + esc(r.total) + '</td></tr></table>' +
+        (r.sent ? '<div class="result ok">This invoice was already sent to ' + esc(r.email) + '.</div>' :
+          '<p class="muted">Square will email them a link to pay by card, Apple Pay or Cash App Pay.</p>' +
+          '<button class="btn" id="send">Send invoice</button><div id="result" class="hidden"></div>') +
+        '</div></div>';
+      if (r.sent) return;
+      var send = document.getElementById('send');
+      send.onclick = function () {
+        act([send], 'Sending…', function () { return postData({ op: 'invoice', id: P.id, k: P.k }); }, function () { send.classList.add('hidden'); });
+      };
+    }).catch(netFail);
+  }
+
+  // ---------- custom request: branded reply (quote, questions, decline) ----------
+  function reply() {
+    document.title = 'Send reply';
+    getData({ view: 'reply', id: P.id, k: P.k }).then(function (r) {
+      if (!r.ok) return fail(r.error);
+      root.innerHTML = '<div class="page"><div class="brand">' + esc(r.reply) + ' → ' + esc(r.name) + '</div>' +
+        '<p class="muted" style="margin:-6px 0 12px">To ' + esc(r.email) + ' · Subject: ' + esc(r.subject) + '</p>' +
+        '<div class="preview">' + r.html + '</div>' +
+        '<button class="btn" id="send">Send email</button>' +
+        (r.canText ? '<button class="btn outline" id="text">Text it instead</button>' : '') +
+        '<div id="result" class="hidden"></div>' +
+        '<p class="muted">Want to change something? Edit the Message or price on the row, then refresh this page.</p></div>';
+      var btns = [].slice.call(root.querySelectorAll('button'));
+      var done = function (res) {
+        btns.forEach(function (b) { b.classList.add('hidden'); });
+        if (res.sms) document.getElementById('result').insertAdjacentHTML('afterend', '<a class="btn" href="' + esc(res.sms) + '">Open Messages</a>');
+      };
+      document.getElementById('send').onclick = function () {
+        act(btns, 'Sending…', function () { return postData({ op: 'reply', id: P.id, k: P.k, how: 'email' }); }, done);
+      };
+      var t = document.getElementById('text');
+      if (t) t.onclick = function () {
+        act(btns, 'One sec…', function () { return postData({ op: 'reply', id: P.id, k: P.k, how: 'text' }); }, done);
+      };
+    }).catch(netFail);
+  }
+
+  if (!API || !P.k) fail('This link is missing its key. Open it again from the Sheet or the email.');
+  else if (P.view === 'dashboard') dashboard();
+  else if (P.action === 'review') review();
+  else if (P.action === 'invoice') invoice();
+  else if (P.action === 'reply') reply();
+  else fail('This link isn’t recognized.');
 </script>
-</head>
-<body style="font-family:Arial,sans-serif;color:#2b1f24;padding:24px">
-  <p>Opening…</p>
 </body>
 </html>

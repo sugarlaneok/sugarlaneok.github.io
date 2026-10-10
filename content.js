@@ -87,7 +87,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-sweet-sixteen.jpg', 'Pastel vintage sweet sixteen cake'],
         ['cupcakes-floral.jpg', 'Cupcakes with piped buttercream flowers'],
         ['cake-white-gold-bow.jpg', 'White vintage cake with a gold bow'],
-        ['cake-peach-heart.jpg', 'Peach vintage heart cake'],
+        ['cake-heart-wj.jpg', 'White vintage heart cake with gold W & J lettering'],
         ['cake-peach-rosette.jpg', 'Peach buttercream rosette cake'],
         ['cupcakes-german-chocolate.jpg', 'German chocolate cupcakes'],
         ['cake-minnie.jpg', 'Minnie Mouse ears cake with red hearts and a polka-dot bow'],
