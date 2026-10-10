@@ -18,7 +18,6 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-tropical-baby-shower.jpg', 'Tropical flamingo baby shower cookie set'],
         ['cookies-cherry-baby.jpg', '"She’s the cherry on top" baby shower cookies'],
         ['cookies-hatching-soon.jpg', '"Hatching soon" dinosaur baby shower cookies'],
-        ['cookies-sage-wedding.jpg', 'Sage and blush wedding cookies'],
         ['cookies-monogram-wedding-3.jpg', 'Pink, sage and gold monogram wedding cookies'],
         ['cookies-nurse-grad.jpg', 'Maroon nursing school graduation cookies'],
         ['cookies-boots-bubbly.jpg', '"Boots, booze and I do\'s" bachelorette cookies'],
@@ -77,6 +76,17 @@ window.SUGAR_LANE_CONTENT = {
         ['pops-dino.jpg', 'Dinosaur Oreo pops'],
         ['pops-purple-gold.jpg', 'Purple and gold Oreo pops'],
         ['pops-ice-cream.jpg', 'Ice cream cone cake pops']
+      ]
+    },
+    cupcakes: {
+      featured: 6,
+      photos: [
+        ['cupcakes-toy-story-tray.jpg', 'Toy Story character cupcakes on a marble board'],
+        ['cupcakes-rosette.jpg', 'Buttercream rosette cupcakes'],
+        ['cupcakes-floral.jpg', 'Cupcakes with piped buttercream flowers'],
+        ['cupcakes-cow-tower.jpg', 'Cow print birthday cupcake tower'],
+        ['cupcakes-german-chocolate.jpg', 'German chocolate cupcakes'],
+        ['toy-story-party.jpg', 'Toy Story party table with a cupcake tower and cake pops']
       ]
     },
     cakes: {

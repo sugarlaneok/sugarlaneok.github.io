@@ -181,7 +181,7 @@
 
   // ================= view switching =================
 
-  var PAGES = ['home', 'seasonal', 'cookies', 'cake-pops', 'cakes', 'order', 'events', 'about'];
+  var PAGES = ['home', 'seasonal', 'cookies', 'cake-pops', 'cakes', 'cupcakes', 'order', 'events', 'about'];
 
   var SEO = (function () { try { return JSON.parse(document.getElementById('seoPages').textContent); } catch (e) { return {}; } })();
 
