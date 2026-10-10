@@ -102,7 +102,7 @@ window.SUGAR_LANE_CONTENT = {
     'Specialty Cookies': 'images/flavor-cookies-styled.jpg',
     'Cupcakes': 'images/cupcakes-rosette.jpg',
     'Cake Pops': 'images/pops-honey-bee.jpg',
-    'Party Packs': ['images/flavor-assortment.jpg', 'images/pops-pink-tray.jpg', 'images/flavor-red-velvet-dipped.jpg']
+    'Party Packs': 'images/flavor-assortment.jpg'
   },
 
   // ---- Photos for individual menu items, shown when someone taps that item ----
