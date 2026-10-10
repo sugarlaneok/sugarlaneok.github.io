@@ -172,7 +172,6 @@ window.SUGAR_LANE_CONTENT = {
       ] },
     { id: 'seasonal', title: 'Seasonal presale', match: 'presale' },
     { id: 'cookies', title: 'Cookies by the dozen', match: 'cookie' },
-    { id: 'cakes', title: 'Cake Pops', match: 'cake pop' },
     { id: 'treats', title: 'Party Packs', match: '.' }
   ]
 };
