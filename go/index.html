@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Opening… | Sugar Lane</title>
+<!-- Links in Sugar Lane's own emails and Sheet point here (sugarlaneok.com/go/#view=dashboard&k=...).
+     Google's apps rewrite direct script.google.com links to /u/N/, which fails when a browser is signed
+     into several Google accounts; a link to this site isn't rewritten. The part after # never reaches the server. -->
+<script src="/config.js"></script>
+<script>
+  var q = location.hash.slice(1);
+  if (q && window.SUGAR_LANE_CONFIG && SUGAR_LANE_CONFIG.API_URL) location.replace(SUGAR_LANE_CONFIG.API_URL + '?' + q);
+</script>
+</head>
+<body style="font-family:Arial,sans-serif;color:#2b1f24;padding:24px">
+  <p>Opening…</p>
+</body>
+</html>
