@@ -118,9 +118,20 @@
   });
   var root = document.getElementById('root');
 
-  function getData(params) {
+  // Google's script server now and then hangs or returns a one-off error page, so give each try
+  // 40 seconds (the dashboard's first load of the day is slow) and retry up to 3 times.
+  function getData(params, tries) {
+    tries = tries || 1;
     var q = Object.keys(params).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]); }).join('&');
-    return fetch(API + '?action=owner&' + q + '&t=' + Date.now()).then(function (r) { return r.json(); });
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = ctrl && setTimeout(function () { ctrl.abort(); }, 40000);
+    return fetch(API + '?action=owner&' + q + '&t=' + Date.now(), ctrl ? { signal: ctrl.signal } : {})
+      .then(function (r) { return r.json(); })
+      .then(function (d) { clearTimeout(timer); return d; }, function (err) {
+        clearTimeout(timer);
+        if (tries >= 3) throw err;
+        return getData(params, tries + 1);
+      });
   }
   function postData(body) {
     body.action = 'owner';
