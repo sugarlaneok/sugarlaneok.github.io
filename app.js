@@ -182,7 +182,7 @@
   // ================= view switching =================
 
   var PAGES = ['home', 'seasonal', 'cookies', 'cake-pops', 'cakes', 'order', 'events', 'about'];
-  var PAGE_TITLES = { home: '', seasonal: 'Seasonal Presale', cookies: 'Decorated Cookies', 'cake-pops': 'Cake Pops', cakes: 'Custom Cakes', order: 'Order Online', events: 'Pop-up Events', about: 'About', checkout: 'Checkout' };
+  var PAGE_TITLES = { home: '', seasonal: 'Seasonal Presale', cookies: 'Decorated Cookies', 'cake-pops': 'Cake Pops', cakes: 'Cakes & Cupcakes', order: 'Order Online', events: 'Pop-up Events', about: 'About', checkout: 'Checkout' };
 
   function currentRoute() { return location.hash.replace(/^#\/?/, '').split('?')[0] || 'home'; }
 
@@ -198,7 +198,11 @@
   function showPage(page, full) {
     full = full || page;
     document.querySelectorAll('#shop [data-page]').forEach(function (el) { el.hidden = el.getAttribute('data-page') !== page; });
-    document.querySelectorAll('#nav [data-nav]').forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-nav') === full); });
+    // #/order/cakes still highlights Order Online.
+    document.querySelectorAll('#nav [data-nav]').forEach(function (a) {
+      var n = a.getAttribute('data-nav');
+      a.classList.toggle('active', n === full || full.indexOf(n + '/') === 0);
+    });
   }
 
   // #/order/cookies scrolls to that section once the menu has rendered.
