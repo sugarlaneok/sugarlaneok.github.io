@@ -56,6 +56,7 @@ window.SUGAR_LANE_CONTENT = {
       photos: [
         ['pops-fiesta.jpg', 'Fiesta cake pops with tiny sombreros'],
         ['minnie-pops.jpg', 'Minnie bow cake pops in a mason jar'],
+        ['pops-toy-story.jpg', 'Toy Story birthday cake pops on a white stand'],
         ['pops-honey-bee-2.jpg', 'Honey bee cake pops with honey dippers'],
         ['pops-pink-tray.jpg', 'Pink bow cake pops on a silver tray', 'tall'],
         ['pops-navy-gold-fan.jpg', 'Navy and gold graduation cake pops fanned on a plate', 'wide tall'],
@@ -76,6 +77,7 @@ window.SUGAR_LANE_CONTENT = {
       photos: [
         ['cake-wedding-tiered.jpg', 'Three-tier white vintage wedding cake'],
         ['cake-navy-floral.jpg', 'Navy cake with piped coral roses and spring flowers'],
+        ['cupcakes-toy-story-tray.jpg', 'Toy Story character cupcakes on a marble board'],
         ['drip-cake.jpg', 'Caramel drip cake with chocolate pieces'],
         ['cupcakes-rosette.jpg', 'Buttercream rosette cupcakes'],
         ['cake-black-gold.jpg', 'Black and gold birthday cake with gold leaf'],
