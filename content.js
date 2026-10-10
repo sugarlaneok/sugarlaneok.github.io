@@ -33,7 +33,6 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-electrician.jpg', 'Electrician-themed cookies with light bulbs and outlets'],
         ['cookies-washburn-grad.jpg', 'Washburn University graduation cookies'],
         ['cookies-western-bridal.jpg', 'Western cowboy boot bridal cookies'],
-        ['cookies-monogram-wedding-detail.jpg', 'J and M monogram, I Do ring and wedding cake cookies, close up'],
         ['cookies-bridal-shower.jpg', 'White and sage bridal shower cookies'],
         ['cookies-49th-birthday.jpg', 'Red and pink bow birthday cookies'],
         ['cookies-tropical-baby-2.jpg', 'Tropical baby shower cookies, close up'],

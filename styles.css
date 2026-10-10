@@ -324,7 +324,7 @@ textarea { min-height: 96px; resize: vertical; }
 .showcase.grid.expanded .small-grid .extra { display: block; }
 @media (max-width: 700px) {
   .showcase.grid .big-row { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
-  .showcase.grid .big-row img { aspect-ratio: 4 / 3; }
+  .showcase.grid .big-row img { aspect-ratio: 4 / 5; }
   .showcase.grid .small-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 }
 .showcase.grid .small-grid .tall { grid-row: span 2; }
