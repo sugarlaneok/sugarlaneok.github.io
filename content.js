@@ -57,7 +57,7 @@ window.SUGAR_LANE_CONTENT = {
         ['pops-fiesta.jpg', 'Fiesta cake pops with tiny sombreros'],
         ['minnie-pops.jpg', 'Minnie bow cake pops in a mason jar'],
         ['pops-toy-story.jpg', 'Toy Story birthday cake pops on a white stand'],
-        ['pops-honey-bee-2-ai.jpg', 'Honey bee cake pops with honey dippers'],
+        ['pops-honey-bee-2.jpg', 'Honey bee cake pops with honey dippers'],
         ['pops-pink-tray.jpg', 'Pink bow cake pops on a silver tray', 'tall'],
         ['pops-navy-gold-fan-hd.jpg', 'Navy and gold graduation cake pops fanned on a plate', 'wide tall'],
         ['pops-baby-feet.jpg', 'Pink baby feet cake pops'],
@@ -103,14 +103,14 @@ window.SUGAR_LANE_CONTENT = {
     'Classic Cookies': 'images/flavor-chocolate-chip-styled.jpg',
     'Specialty Cookies': 'images/flavor-cookies-styled.jpg',
     'Cupcakes': 'images/cupcakes-rosette.jpg',
-    'Cake Pops': 'images/pops-honey-bee-ai.jpg',
+    'Cake Pops': 'images/pops-honey-bee.jpg',
     'Party Packs': 'images/party-pack-wide.jpg'
   },
 
   // ---- Photos for individual menu items, shown when someone taps that item ----
   // Key: "Category|Item" exactly as in the Menu tab, or "Category|*" for every item in that category.
   itemPhotos: {
-    'Cake Pops|*': ['pops-honey-bee-ai.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan-hd.jpg', 'pops-honey-bee-2-ai.jpg', 'minnie-pops.jpg', 'pops-halloween.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
+    'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan-hd.jpg', 'pops-honey-bee-2.jpg', 'minnie-pops.jpg', 'pops-halloween.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
     'Cupcakes – Classic|*': ['cupcakes-rosette.jpg', 'cupcakes-floral.jpg', 'cupcakes-toy-story.jpg', 'toy-story-party.jpg'],
     'Cupcakes – Specialty|*': ['cupcakes-floral.jpg', 'cupcakes-rosette.jpg'],
     'Party Packs|*': ['flavor-assortment.jpg', 'flavor-assortment-2.jpg']
@@ -169,7 +169,7 @@ window.SUGAR_LANE_CONTENT = {
           blurb: 'Royal-iced sugar cookies in your colors, shapes and names.' },
         { name: 'Custom Cakes & Cupcakes', price: 'From $30', photo: 'images/cake-wedding-tiered.jpg', photo2: 'images/cupcakes-rosette.jpg',
           blurb: 'Round, heart, star, tiered, cookie and wedding cakes, plus cupcakes by the dozen, in Swiss meringue buttercream.' },
-        { name: 'Custom Cake Pops', price: 'From $18 / dozen', photo: 'images/tile-pops.jpg', photo2: 'images/pops-honey-bee-2-ai.jpg',
+        { name: 'Custom Cake Pops', price: 'From $18 / dozen', photo: 'images/tile-pops.jpg', photo2: 'images/pops-honey-bee-2.jpg',
           blurb: 'Dipped and decorated to match your theme.' }
       ] },
     { id: 'seasonal', title: 'Seasonal presale', match: 'presale' },
