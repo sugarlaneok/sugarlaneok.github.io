@@ -544,3 +544,11 @@ a.product { color: inherit; text-decoration: none; }
   .nav a { font-size: 14px; }
   .nav a.nav-order { padding: 7px 12px; }
 }
+
+/* Custom cards with two tall photos: side by side on wider screens, first photo only (taller card) on phones */
+.product-photo.split { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.product-photo.split img { min-width: 0; }
+@media (max-width: 600px) {
+  .product-photo.split { display: block; aspect-ratio: 4 / 5; }
+  .product-photo.split img + img { display: none; }
+}

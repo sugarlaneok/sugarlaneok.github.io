@@ -434,7 +434,9 @@
   // A card on the order page that opens the custom request form instead of the cart.
   function customCard(c, href) {
     return '<a class="product product-custom" href="' + esc(href) + '" target="_blank" rel="noopener">' +
-      '<div class="product-photo"><img src="' + esc(c.photo) + '" alt="' + esc(c.name) + '" loading="lazy">' +
+      // Tall photos sit side by side so the whole cake / pop shows in a wide card.
+      '<div class="product-photo' + (c.photo2 ? ' split' : '') + '"><img src="' + esc(c.photo) + '" alt="' + esc(c.name) + '" loading="lazy">' +
+      (c.photo2 ? '<img src="' + esc(c.photo2) + '" alt="" loading="lazy">' : '') +
       (c.tag ? '<span class="product-tag">' + esc(c.tag) + '</span>' : '') + '</div>' +
       '<div class="product-body"><h3>' + esc(c.name) + '</h3>' +
       '<div class="product-price">' + esc(c.price) + '</div>' +
