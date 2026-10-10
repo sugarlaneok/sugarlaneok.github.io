@@ -83,8 +83,10 @@ window.SUGAR_LANE_CONTENT = {
     cakes: {
       featured: 9,
       photos: [
-        ['cake-wedding-tiered.jpg', 'Three-tier white vintage wedding cake'],
+        ['cake-wedding-vintage-a.jpg', 'Vintage piped wedding cake with porcelain topper'],
         ['cake-heart-wj.jpg', 'White vintage heart cake with gold W & J lettering'],
+        ['cake-cherry-heart.jpg', 'Vintage pink heart cake with cherries'],
+        ['cake-twenty-four.jpg', 'White vintage heart cake with gold bows and Twenty four lettering'],
         ['cake-tulip-piped.jpg', 'Pink piped buttercream cake with tulips'],
         ['cake-navy-floral.jpg', 'Navy cake with piped coral roses and spring flowers'],
         ['cupcakes-toy-story-tray.jpg', 'Toy Story character cupcakes on a marble board'],
@@ -94,11 +96,9 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-boy-or-girl.jpg', '"Boy or girl?" gender reveal cake with bows'],
         ['cake-pink-smash.jpg', 'Pink ruffle smash cake'],
         ['bow-cake.jpg', 'Pink vintage cake with satin bows'],
-        ['cake-cherry-heart.jpg', 'Vintage pink heart cake with cherries'],
         ['cake-vintage-pink.jpg', 'Pink and peach vintage piped birthday cake'],
         ['cake-sweet-sixteen.jpg', 'Pastel vintage sweet sixteen cake'],
         ['cupcakes-floral.jpg', 'Cupcakes with piped buttercream flowers'],
-        ['cake-white-gold-bow.jpg', 'White vintage cake with a gold bow'],
         ['cake-peach-rosette.jpg', 'Peach buttercream rosette cake'],
         ['cake-50th-drip.jpg', '50th birthday chocolate drip cake'],
         ['cupcakes-german-chocolate.jpg', 'German chocolate cupcakes'],
@@ -108,7 +108,8 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-chocolate-ganache.jpg', 'Chocolate ganache cake'],
         ['cake-sweet-sixteen-sheet.jpg', 'Sweet sixteen license plate sheet cake'],
         ['cake-ruffle.jpg', 'White ruffle cake'],
-        ['cake-wedding-tiered-2.jpg', 'Vintage wedding cake detail']
+        ['cake-wedding-vintage-topper.jpg', 'Vintage wedding cake piping and topper, close up'],
+        ['cake-wedding-vintage-b.jpg', 'Vintage piped wedding cake, side view'],
       ]
     }
   },
@@ -183,7 +184,7 @@ window.SUGAR_LANE_CONTENT = {
       customs: [
         { name: 'Decorated Cookies', price: 'From $45 / dozen', photo: 'images/cookies-pooh-baby-shower-2.jpg', pos: '50% 85%', tag: 'Most popular',
           blurb: 'Royal-iced sugar cookies in your colors, shapes and names.' },
-        { name: 'Custom Cakes & Cupcakes', price: 'From $30', photo: 'images/cake-wedding-tiered.jpg', photo2: 'images/cupcakes-rosette.jpg',
+        { name: 'Custom Cakes & Cupcakes', price: 'From $30', photo: 'images/cake-wedding-vintage-a.jpg', photo2: 'images/cupcakes-rosette.jpg',
           blurb: 'Round, heart, star, tiered, cookie and wedding cakes, plus cupcakes by the dozen, in Swiss meringue buttercream.' },
         { name: 'Custom Cake Pops', price: 'From $18 / dozen', photo: 'images/tile-pops.jpg', photo2: 'images/pops-honey-bee-3.jpg',
           blurb: 'Dipped and decorated to match your theme.' }
