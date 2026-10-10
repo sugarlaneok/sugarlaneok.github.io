@@ -108,19 +108,9 @@ window.SUGAR_LANE_CONTENT = {
   // ---- Photos for individual menu items, shown when someone taps that item ----
   // Key: "Category|Item" exactly as in the Menu tab, or "Category|*" for every item in that category.
   itemPhotos: {
-    'Classic Cookies|Chocolate Chip': ['flavor-chocolate-chip.jpg', 'flavor-chocolate-chip-styled.jpg', 'chocolate-chip.jpg'],
-    'Classic Cookies|M&M': ['flavor-mm.jpg'],
-    'Specialty Cookies|M&M': ['flavor-mm.jpg'],
-    'Classic Cookies|Iced Lemon': ['flavor-iced-lemon.jpg'],
-    'Specialty Cookies|Big Bubba': ['big-bubba.jpg'],
-    'Specialty Cookies|Mr. Gibbs': ['flavor-mr-gibbs.jpg'],
-    'Specialty Cookies|Hey Buddies': ['flavor-hey-buddies.jpg'],
-    'Specialty Cookies|White Chocolate Dipped Red Velvet': ['flavor-red-velvet-dipped.jpg', 'flavor-red-velvet-dipped-2.jpg'],
-    'Specialty Cookies|White Chocolate Dipped Sugar Cookie': ['flavor-sugar-dipped.jpg'],
     'Cake Pops|*': ['pops-honey-bee.jpg', 'pops-fiesta.jpg', 'pops-baby-feet.jpg', 'pops-pink-tray.jpg', 'pops-navy-gold-fan.jpg', 'pops-honey-bee-2.jpg', 'minnie-pops.jpg', 'pops-halloween.jpg', 'pops-reindeer.jpg', 'pops-pink-gold.jpg', 'pops-grinch.jpg', 'pops-ice-cream.jpg'],
     'Cupcakes – Classic|*': ['cupcakes-rosette.jpg', 'cupcakes-floral.jpg', 'cupcakes-toy-story.jpg', 'toy-story-party.jpg'],
     'Cupcakes – Specialty|*': ['cupcakes-floral.jpg', 'cupcakes-rosette.jpg'],
-    'Cupcakes – Specialty|German Chocolate': ['cupcakes-german-chocolate.jpg'],
     'Party Packs|*': ['flavor-assortment.jpg', 'flavor-assortment-2.jpg']
   },
 
