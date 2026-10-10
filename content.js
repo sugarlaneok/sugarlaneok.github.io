@@ -85,7 +85,6 @@ window.SUGAR_LANE_CONTENT = {
       photos: [
         ['cake-wedding-tiered.jpg', 'Three-tier white vintage wedding cake'],
         ['cake-heart-wj.jpg', 'White vintage heart cake with gold W & J lettering'],
-        ['cake-50th-drip.jpg', '50th birthday chocolate drip cake'],
         ['cake-tulip-piped.jpg', 'Pink piped buttercream cake with tulips'],
         ['cake-navy-floral.jpg', 'Navy cake with piped coral roses and spring flowers'],
         ['cupcakes-toy-story-tray.jpg', 'Toy Story character cupcakes on a marble board'],
@@ -101,6 +100,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cupcakes-floral.jpg', 'Cupcakes with piped buttercream flowers'],
         ['cake-white-gold-bow.jpg', 'White vintage cake with a gold bow'],
         ['cake-peach-rosette.jpg', 'Peach buttercream rosette cake'],
+        ['cake-50th-drip.jpg', '50th birthday chocolate drip cake'],
         ['cupcakes-german-chocolate.jpg', 'German chocolate cupcakes'],
         ['cake-minnie.jpg', 'Minnie Mouse ears cake with red hearts and a polka-dot bow'],
         ['cake-blue-floral.jpg', 'Pale blue cake with baby’s breath flowers'],
