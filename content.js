@@ -19,7 +19,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-cherry-baby.jpg', '"She’s the cherry on top" baby shower cookies'],
         ['cookies-hatching-soon.jpg', '"Hatching soon" dinosaur baby shower cookies'],
         ['cookies-sage-wedding.jpg', 'Sage and blush wedding cookies'],
-        ['cookies-monogram-wedding-2.jpg', 'Pink, sage and gold monogram wedding cookies'],
+        ['cookies-monogram-wedding-3.jpg', 'Pink, sage and gold monogram wedding cookies'],
         ['cookies-nurse-grad.jpg', 'Maroon nursing school graduation cookies'],
         ['cookies-boots-bubbly.jpg', '"Boots, booze and I do\'s" bachelorette cookies'],
         ['cookies-navy-gold-grad.jpg', 'Navy and gold graduation cookies'],
