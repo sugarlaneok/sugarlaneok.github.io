@@ -199,9 +199,11 @@
     full = full || page;
     document.querySelectorAll('#shop [data-page]').forEach(function (el) { el.hidden = el.getAttribute('data-page') !== page; });
     // #/order/cakes still highlights Order Online.
-    document.querySelectorAll('#nav [data-nav]').forEach(function (a) {
+    var links = document.querySelectorAll('#nav [data-nav]');
+    var exact = [].some.call(links, function (a) { return a.getAttribute('data-nav') === full; });
+    links.forEach(function (a) {
       var n = a.getAttribute('data-nav');
-      a.classList.toggle('active', n === full || full.indexOf(n + '/') === 0);
+      a.classList.toggle('active', n === full || (!exact && full.indexOf(n + '/') === 0));
     });
   }
 
