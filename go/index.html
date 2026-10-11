@@ -103,7 +103,51 @@
   .range button { border: 0; background: none; color: var(--ink-2); font: inherit; font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: 999px; cursor: pointer; }
   .range button.on { background: var(--series); color: #fff; }
   .hidden { display: none; }
+  /* ---------- the phone app (view=app) ---------- */
+  body.appmode { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
+  .apptop { position: sticky; top: 0; z-index: 5; background: var(--page); display: flex; align-items: center; justify-content: space-between; padding: calc(10px + env(safe-area-inset-top)) 16px 10px; border-bottom: 1px solid var(--line); }
+  .apptop .brand { margin: 0; font-size: 22px; }
+  .apptop .upd { font-size: 12px; color: var(--ink-2); }
+  .iconbtn { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .pane { max-width: 640px; margin: 0 auto; padding: 14px 14px 20px; }
+  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; display: flex; background: var(--card); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+  .tabbar button { flex: 1; border: 0; background: none; color: var(--ink-2); font: inherit; font-size: 12px; font-weight: 600; padding: 9px 0 10px; cursor: pointer; position: relative; }
+  .tabbar button b { display: block; font-size: 20px; line-height: 1.1; }
+  .tabbar button.on { color: var(--series); }
+  .tabbar .badge { position: absolute; top: 4px; left: 50%; margin-left: 8px; background: #ff0082; color: #fff; border-radius: 999px; font-size: 11px; padding: 1px 6px; }
+  .sec { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin: 18px 4px 8px; font-weight: 700; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 10px; cursor: pointer; }
+  .card .top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .card .nm { font-weight: 700; font-size: 16px; }
+  .card .sub { color: var(--ink-2); font-size: 14px; margin-top: 2px; }
+  .pill { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 9px; background: var(--series-soft); color: var(--series); white-space: nowrap; }
+  .pill.New { background: #fff1cc; color: #8a6200; } .pill.Quoted { background: #fde7f1; color: #b0005c; }
+  .pill.Ready { background: #e3edfb; color: #2a5a9e; } .pill.Invoiced { background: #efe6fb; color: #6a3fa0; }
+  .pill.Paid { background: #e3f2e6; color: #2f6b3e; } .pill.Done, .pill.Declined, .pill.Expired { background: #eee; color: #666; }
+  .pill.Waiting { background: #fff1cc; color: #8a6200; } .pill.Approved { background: #e3f2e6; color: #2f6b3e; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; }
+  .chips button { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 7px 13px; font: inherit; font-size: 14px; white-space: nowrap; cursor: pointer; }
+  .chips button.on { background: var(--series); border-color: var(--series); color: #fff; }
+  .empty { text-align: center; color: var(--ink-2); padding: 30px 10px; }
+  .sheet { position: fixed; inset: 0; z-index: 10; background: var(--page); overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .sheet .pane { padding-bottom: 60px; }
+  .contact { display: flex; gap: 8px; margin: 12px 0; }
+  .contact a { flex: 1; text-align: center; text-decoration: none; border: 1px solid var(--line); background: var(--card); color: var(--series); border-radius: 12px; padding: 10px 4px; font-weight: 700; font-size: 14px; }
+  dl.kv { margin: 8px 0 0; display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; font-size: 15px; }
+  dl.kv dt { color: var(--ink-2); } dl.kv dd { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .photos { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .photos a img { width: 86px; height: 86px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
+  .field { margin-top: 12px; } .field label { display: block; font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 4px; }
+  .field input, .field select { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; font: inherit; font-size: 16px; background: var(--card); color: var(--ink); }
+  .two { display: flex; gap: 10px; } .two .field { flex: 1; }
+  .hint { font-size: 13px; color: var(--ink-2); margin-top: 6px; }
 </style>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sugar Lane">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ff0082">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 <div class="wrap" id="root"><p class="loading">Loading…</p></div>
@@ -141,8 +185,8 @@
   function fail(msg) { root.innerHTML = '<div class="page"><div class="brand">Sugar Lane</div><div class="panel"><p>' + esc(msg) + '</p></div></div>'; }
   function netFail() { fail('Couldn’t reach the order system. Check your connection and refresh the page.'); }
   /** Disable the buttons, run the request, then show the result under them. */
-  function act(btns, busyText, run, onOk) {
-    var res = document.getElementById('result');
+  function act(btns, busyText, run, onOk, resEl) {
+    var res = resEl || document.getElementById('result');
     btns.forEach(function (b) { b.disabled = true; });
     res.className = 'result ok'; res.textContent = busyText;
     run().then(function (r) {
@@ -382,7 +426,239 @@
     }).catch(netFail);
   }
 
+  // ---------- Laney's phone app: Orders, Custom requests, Dashboard ----------
+  var A = { data: null, tab: 'orders', filter: 'active', open: null };
+  function money(n) { return '$' + Number(n || 0).toFixed(2); }
+  function pillCls(s) { return String(s).split(' ')[0]; }
+  function digits(p) { return String(p || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, ''); }
+  function contactLinks(phone, email) {
+    var d = digits(phone);
+    return '<div class="contact">' + (d.length === 10 ? '<a href="tel:+1' + d + '">Call</a><a href="sms:+1' + d + '">Text</a>' : '') +
+      (email ? '<a href="mailto:' + esc(email) + '">Email</a>' : '') + '</div>';
+  }
+  function kv(rows) {
+    return '<dl class="kv">' + rows.filter(function (r) { return r[1]; }).map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl>';
+  }
+
+  function appView() {
+    document.title = 'Sugar Lane';
+    document.body.classList.add('appmode');
+    root.className = '';
+    root.innerHTML = '<div class="apptop"><div><div class="brand">Sugar Lane</div><div class="upd" id="upd">Loading…</div></div>' +
+      '<button class="iconbtn" id="refresh">↻ Refresh</button></div><div id="pane" class="pane"><p class="loading">Loading your orders…</p></div>' +
+      '<nav class="tabbar" id="tabbar">' +
+      '<button data-t="orders"><b>🧾</b>Orders<span class="badge hidden" id="b-orders"></span></button>' +
+      '<button data-t="custom"><b>🎂</b>Custom<span class="badge hidden" id="b-custom"></span></button>' +
+      '<button data-t="dash"><b>📈</b>Dashboard</button></nav><div id="sheet"></div>';
+    document.getElementById('refresh').onclick = function () { loadApp(); };
+    document.getElementById('tabbar').onclick = function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      A.tab = b.getAttribute('data-t'); drawApp(); window.scrollTo(0, 0);
+    };
+    document.addEventListener('visibilitychange', function () { if (!document.hidden && A.tab !== 'dash') loadApp(true); });
+    loadApp();
+  }
+  function loadApp(quiet) {
+    var u = document.getElementById('upd'); if (u && !quiet) u.textContent = 'Loading…';
+    return getData({ view: 'app', k: P.k }).then(function (r) {
+      if (!r.ok) return fail(r.error);
+      A.data = r; drawApp();
+      if (A.open) openItem(A.open.type, A.open.id, true);
+    }).catch(function () { if (!quiet) netFail(); });
+  }
+  function drawApp() {
+    [].forEach.call(document.querySelectorAll('#tabbar button'), function (b) { b.classList.toggle('on', b.getAttribute('data-t') === A.tab); });
+    var d = A.data;
+    if (d) {
+      document.getElementById('upd').textContent = 'Updated ' + d.updated;
+      var pend = d.orders.filter(function (o) { return o.status === 'Waiting for you'; }).length;
+      var fresh = d.custom.filter(function (c) { return c.status === 'New'; }).length;
+      var bo = document.getElementById('b-orders'), bc = document.getElementById('b-custom');
+      bo.textContent = pend; bo.classList.toggle('hidden', !pend);
+      bc.textContent = fresh; bc.classList.toggle('hidden', !fresh);
+    }
+    var pane = document.getElementById('pane');
+    if (A.tab === 'dash') return drawDash(pane);
+    if (!d) return;
+    pane.innerHTML = A.tab === 'orders' ? ordersHtml(d) : customHtml(d);
+    pane.onclick = function (e) {
+      var ch = e.target.closest('[data-f]');
+      if (ch) { A.filter = ch.getAttribute('data-f'); return drawApp(); }
+      var c = e.target.closest('[data-open]');
+      if (c) openItem(c.getAttribute('data-type'), c.getAttribute('data-open'));
+    };
+  }
+
+  function orderCard(o) {
+    return '<div class="card" data-type="order" data-open="' + esc(o.orderNo) + '"><div class="top"><span class="nm">' + esc(o.name) + '</span>' +
+      '<span class="pill ' + pillCls(o.status) + '">' + esc(o.status) + '</span></div>' +
+      '<div class="sub">' + esc(o.pickup) + ' · ' + esc(o.total) + '</div>' +
+      '<div class="sub">' + esc(String(o.items).split('\n').join(' · ')) + '</div></div>';
+  }
+  function ordersHtml(d) {
+    var pend = d.orders.filter(function (o) { return o.status === 'Waiting for you'; });
+    var up = d.orders.filter(function (o) { return o.status === 'Approved' && o.upcoming; });
+    var past = d.orders.filter(function (o) { return pend.indexOf(o) < 0 && up.indexOf(o) < 0; }).reverse();
+    var booked = d.custom.filter(function (c) { return ['Ready to invoice', 'Invoiced', 'Paid'].indexOf(c.status) >= 0 && c.pickupDate >= d.today; })
+      .sort(function (a, b) { return a.pickupDate < b.pickupDate ? -1 : 1; });
+    var h = '';
+    h += '<div class="sec">Needs your OK</div>' + (pend.length ? pend.map(orderCard).join('') : '<div class="empty">No orders waiting. 🎉</div>');
+    h += '<div class="sec">Upcoming pickups</div>' + (up.length ? up.map(orderCard).join('') : '<div class="empty">No upcoming online orders.</div>');
+    if (booked.length) h += '<div class="sec">Upcoming custom orders</div>' + booked.map(customCard).join('');
+    if (past.length) h += '<div class="sec">Past 3 weeks</div>' + past.map(orderCard).join('');
+    return h;
+  }
+  function customCard(c) {
+    var when = [c.pickupLabel ? 'Pickup ' + c.pickupLabel + (c.pickupTime ? ' ' + c.pickupTime : '') : (c.eventDate ? 'Event ' + c.eventDate : ''), c.quote ? money(c.quote) : ''].filter(Boolean).join(' · ');
+    return '<div class="card" data-type="custom" data-open="' + esc(c.id) + '"><div class="top"><span class="nm">' + esc(c.name) + '</span>' +
+      '<span class="pill ' + pillCls(c.status) + '">' + esc(c.status) + '</span></div>' +
+      '<div class="sub">' + esc(c.wants || 'Custom order') + (c.howMany ? ' · ' + esc(c.howMany) : '') + '</div>' +
+      (when ? '<div class="sub">' + esc(when) + '</div>' : '') + '</div>';
+  }
+  function customHtml(d) {
+    var F = [['active', 'Active'], ['New', 'New'], ['Quoted', 'Quoted'], ['booked', 'Booked'], ['closed', 'Done / declined']];
+    var pick = function (c) {
+      if (A.filter === 'active') return ['Done', 'Declined'].indexOf(c.status) < 0;
+      if (A.filter === 'booked') return ['Ready to invoice', 'Invoiced', 'Paid'].indexOf(c.status) >= 0;
+      if (A.filter === 'closed') return ['Done', 'Declined'].indexOf(c.status) >= 0;
+      return c.status === A.filter;
+    };
+    var list = d.custom.filter(pick);
+    return '<div class="chips">' + F.map(function (f) { return '<button data-f="' + f[0] + '"' + (A.filter === f[0] ? ' class="on"' : '') + '>' + f[1] + '</button>'; }).join('') + '</div>' +
+      (list.length ? list.map(customCard).join('') : '<div class="empty">Nothing here right now.</div>');
+  }
+
+  function closeSheet() { A.open = null; document.getElementById('sheet').innerHTML = ''; document.body.style.overflow = ''; }
+  function sheetShell(title, body) {
+    document.body.style.overflow = 'hidden';
+    document.getElementById('sheet').innerHTML = '<div class="sheet"><div class="apptop"><button class="iconbtn" id="back">‹ Back</button>' +
+      '<div class="upd">' + esc(title) + '</div></div><div class="pane">' + body + '</div></div>';
+    document.getElementById('back').onclick = function () { closeSheet(); drawApp(); };
+  }
+  function openItem(type, id, keepScroll) {
+    var d = A.data; A.open = { type: type, id: id };
+    var top = keepScroll && document.querySelector('.sheet') ? document.querySelector('.sheet').scrollTop : 0;
+    if (type === 'order') {
+      var o = d.orders.filter(function (x) { return x.orderNo === id; })[0]; if (!o) return closeSheet();
+      orderSheet(o);
+    } else {
+      var c = d.custom.filter(function (x) { return x.id === id; })[0]; if (!c) return closeSheet();
+      customSheet(c);
+    }
+    if (top) document.querySelector('.sheet').scrollTop = top;
+  }
+
+  function orderSheet(o) {
+    var waiting = o.status === 'Waiting for you';
+    sheetShell(o.orderNo, '<div class="panel"><div class="top" style="display:flex;justify-content:space-between;gap:8px"><h2>' + esc(o.name) + '</h2>' +
+      '<span class="pill ' + pillCls(o.status) + '">' + esc(o.status) + '</span></div>' +
+      '<div class="muted">' + esc(o.orderNo) + ' · placed ' + esc(o.placed) + '</div>' +
+      contactLinks(o.phone, o.email) +
+      kv([['Pickup', o.pickup], ['Where', o.location], ['Prefers', o.contactBy], ['Heard about us', o.heard]]) +
+      '<div class="items">' + esc(o.items) + '</div>' + (o.notes ? '<p><b>Notes:</b> ' + esc(o.notes) + '</p>' : '') +
+      '<table class="money"><tr><td>Subtotal</td><td class="r">' + esc(o.subtotal) + '</td></tr>' +
+      (o.rush ? '<tr><td>Rush fee</td><td class="r">' + esc(o.rush) + '</td></tr>' : '') +
+      (o.delivery ? '<tr><td>Delivery</td><td class="r">' + esc(o.delivery) + '</td></tr>' : '') +
+      '<tr><td>Tax</td><td class="r">' + esc(o.tax) + '</td></tr><tr class="total"><td>Total</td><td class="r">' + esc(o.total) + '</td></tr></table>' +
+      '<div class="econ">Ingredients ~<b>' + esc(o.cost) + '</b> · ' + esc(o.hours) + ' hrs · Est. profit <b>' + esc(o.profit) + '</b></div>' +
+      (waiting ? '<div class="row2"><button class="btn green" id="approve">✓ Approve &amp; charge</button><button class="btn red" id="decline">✕ Decline</button></div>' +
+        '<div id="declineBox" class="hidden"><p class="muted" style="margin:16px 0 0">Optional note to the customer</p><textarea id="msg"></textarea>' +
+        '<button class="btn red" id="confirmDecline">Decline &amp; release the hold</button></div>' : '') +
+      '<div id="result" class="hidden"></div></div>');
+    if (!waiting) return;
+    var btns = function () { return [].slice.call(document.querySelectorAll('.sheet button.btn')); };
+    var decide = function (decision, busy) {
+      act(btns(), busy, function () { return postData({ op: 'appDecide', k: P.k, o: o.orderNo, decision: decision, message: (document.getElementById('msg') || {}).value || '' }); },
+        function () { loadApp(true); });
+    };
+    document.getElementById('approve').onclick = function () { if (confirm('Approve and charge ' + o.total + '?')) decide('approve', 'Charging the card…'); };
+    document.getElementById('decline').onclick = function () { document.getElementById('declineBox').classList.remove('hidden'); };
+    document.getElementById('confirmDecline').onclick = function () { decide('decline', 'Releasing the hold…'); };
+  }
+
+  function customSheet(c) {
+    var d = A.data;
+    var opts = function (list, cur) { return list.map(function (s) { return '<option' + (s === cur ? ' selected' : '') + '>' + esc(s) + '</option>'; }).join(''); };
+    var tax = c.quote ? Math.round(c.quote * d.taxPct) / 100 : 0;
+    var invoiceBlock = c.invoiceSent ? '<div class="result ok">Invoice ' + esc(c.invoice || 'sent') + '.</div>'
+      : c.invoiceReady ? '<button class="btn" id="sendInv">Send invoice · ' + money(c.quote + tax) + '</button><div class="hint">Square emails ' + esc(c.email) + ' a link to pay by card, Apple Pay or Cash App Pay.</div>'
+      : '<div class="hint">To book it: add the price and pickup date, set Status to <b>Ready to invoice</b> and tap Save. A Send invoice button shows up here.</div>';
+    sheetShell(c.name, '<div class="panel"><div style="display:flex;justify-content:space-between;gap:8px"><h2>' + esc(c.name) + '</h2>' +
+      '<span class="pill ' + pillCls(c.status) + '">' + esc(c.status) + '</span></div>' +
+      '<div class="muted">Request received ' + esc(c.received) + '</div>' + contactLinks(c.phone, c.email) +
+      kv([['Wants', c.wants], ['How many', c.howMany], ['Event date', c.eventDate], ['Pickup / delivery', c.pickupOrDelivery], ['Cake', c.cake],
+        ['Theme & colors', c.theme], ['Wording', c.wording], ['Budget', c.budget], ['Notes', c.notes], ['Heard about us', c.heard],
+        ['Phone', c.phone], ['Email', c.email], ['Last reply', c.replied]]) +
+      (c.photos.length ? '<div class="photos">' + c.photos.map(function (u) { return '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="Inspiration photo" loading="lazy"></a>'; }).join('') + '</div>' : '') +
+      '</div>' +
+
+      '<div class="panel"><h2>Order details</h2>' +
+      '<div class="field"><label>Status</label><select id="f-status">' + opts(d.statuses, c.status) + '</select></div>' +
+      '<div class="two"><div class="field"><label>Price (before tax)</label><input id="f-quote" type="number" inputmode="decimal" step="0.01" value="' + esc(c.quote) + '" placeholder="0.00"></div>' +
+      '<div class="field"><label>Pickup time</label><input id="f-time" value="' + esc(c.pickupTime) + '" placeholder="6:30 PM"></div></div>' +
+      '<div class="field"><label>Pickup date</label><input id="f-date" type="date" value="' + esc(c.pickupDate) + '"></div>' +
+      '<button class="btn" id="save">Save</button><div id="result" class="hidden"></div>' +
+      '<div style="margin-top:14px">' + invoiceBlock + '</div><div id="result2" class="hidden"></div></div>' +
+
+      '<div class="panel"><h2>Reply to ' + esc(String(c.name).split(' ')[0]) + '</h2>' +
+      '<div class="field"><label>Reply</label><select id="r-type"><option value="">Pick a reply…</option>' + opts(d.replyTypes, '') + '</select></div>' +
+      '<div class="field"><label>Personal note (needed for Need more info)</label><textarea id="r-msg">' + esc(c.message) + '</textarea></div>' +
+      '<button class="btn outline" id="preview">Preview</button><div id="result3" class="hidden"></div><div id="pv"></div></div>');
+
+    var run = function (resultId, btns, busy, body, after) {
+      act(btns, busy, function () { return postData(body); }, function (r) { if (after) after(r); }, document.getElementById(resultId));
+    };
+    document.getElementById('save').onclick = function () {
+      run('result', [this], 'Saving…', { op: 'appSave', k: P.k, id: c.id, fields: {
+        status: document.getElementById('f-status').value, quote: document.getElementById('f-quote').value,
+        pickupDate: document.getElementById('f-date').value, pickupTime: document.getElementById('f-time').value } },
+        function () { loadApp(true); });
+    };
+    var inv = document.getElementById('sendInv');
+    if (inv) inv.onclick = function () {
+      if (!confirm('Email the ' + money(c.quote + tax) + ' invoice to ' + c.email + '?')) return;
+      run('result2', [inv], 'Sending the invoice…', { op: 'appInvoice', k: P.k, id: c.id }, function () { loadApp(true); });
+    };
+    document.getElementById('preview').onclick = function () {
+      var type = document.getElementById('r-type').value, msg = document.getElementById('r-msg').value, pbtn = this;
+      if (!type) return alert('Pick a reply first.');
+      run('result3', [pbtn], 'Making the preview…', { op: 'appPreview', k: P.k, id: c.id, reply: type, message: msg }, function (r) {
+        document.getElementById('result3').className = 'hidden';
+        document.getElementById('pv').innerHTML = '<p class="muted">To ' + esc(r.email) + ' · ' + esc(r.subject) + '</p><div class="preview">' + r.html + '</div>' +
+          '<button class="btn" id="sendR">Send email</button>' + (r.canText ? '<button class="btn outline" id="textR">Text it instead</button>' : '') + '<div id="result4" class="hidden"></div>';
+        var sb = [].slice.call(document.querySelectorAll('#pv button'));
+        var send = function (how) {
+          run('result4', sb, 'Sending…', { op: 'appReply', k: P.k, id: c.id, reply: type, message: msg, how: how }, function (res) {
+            sb.forEach(function (b) { b.classList.add('hidden'); });
+            if (res.sms) location.href = res.sms;
+            loadApp(true);
+          });
+        };
+        document.getElementById('sendR').onclick = function () { send('email'); };
+        var t = document.getElementById('textR'); if (t) t.onclick = function () { send('text'); };
+      });
+    };
+  }
+
+  function drawDash(pane) {
+    pane.innerHTML = '<header><h1 style="font-size:20px">Website &amp; sales<small id="updated">Loading…</small></h1><div class="range" id="range">' +
+      [7, 30, 90].map(function (n) { return '<button data-d="' + n + '"' + (n === days ? ' class="on"' : '') + '>' + n + ' days</button>'; }).join('') +
+      '</div></header><div id="app"><p class="loading">Loading your numbers…</p></div>';
+    pane.onclick = null;
+    document.getElementById('range').onclick = function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      days = Number(b.getAttribute('data-d'));
+      [].forEach.call(this.querySelectorAll('button'), function (x) { x.classList.toggle('on', x === b); });
+      loadDash();
+    };
+    if (last && last.days === days) render(last); else loadDash();
+  }
+
+  // The home-screen icon opens the link it was saved from; keep the key in case the # part ever gets dropped.
+  try { if (P.k) localStorage.setItem('slKey', P.k); else if (P.view === 'app') P.k = localStorage.getItem('slKey') || ''; } catch (e) {}
+
   if (!API || !P.k) fail('This link is missing its key. Open it again from the Sheet or the email.');
+  else if (P.view === 'app') appView();
   else if (P.view === 'dashboard') dashboard();
   else if (P.action === 'review') review();
   else if (P.action === 'invoice') invoice();
