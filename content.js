@@ -18,6 +18,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-teacher-2.jpg', 'Teacher appreciation cookie plate'],
         ['cookies-tropical-baby-shower.jpg', 'Tropical flamingo baby shower cookie set'],
         ['cookies-western-bridal.jpg', 'Western cowboy boot bridal cookies'],
+        ['cookies-western-bridal-tray.jpg', 'Boots, Booze & I Do’s western bridal shower cookies on a galvanized tray'],
         ['cookies-cherry-baby.jpg', '"She’s the cherry on top" baby shower cookies'],
         ['cookies-monogram-wedding-3.jpg', 'Pink, sage and gold monogram wedding cookies'],
         ['cookies-nurse-grad.jpg', 'Maroon nursing school graduation cookies'],
