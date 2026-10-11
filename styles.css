@@ -557,17 +557,3 @@ a.product { color: inherit; text-decoration: none; }
 @media (min-width: 601px) {
   .menu-grid-featured .product-photo { aspect-ratio: 8 / 5; }
 }
-
-/* Cake pop gallery: photos below the top row are staggered in different sizes */
-.showcase.grid .small-grid { display: block; columns: 4; column-gap: 14px; }
-.showcase.grid .small-grid button { display: block; width: 100%; height: auto; margin: 0 0 14px; break-inside: avoid; }
-.showcase.grid .small-grid img { width: 100%; height: auto; object-fit: cover; }
-.showcase.grid .small-grid button:nth-child(5n+1) img { aspect-ratio: 4 / 5; }
-.showcase.grid .small-grid button:nth-child(5n+2) img { aspect-ratio: 1 / 1; }
-.showcase.grid .small-grid button:nth-child(5n+3) img { aspect-ratio: 2 / 3; }
-.showcase.grid .small-grid button:nth-child(5n+4) img { aspect-ratio: 5 / 4; }
-.showcase.grid .small-grid button:nth-child(5n+5) img { aspect-ratio: 3 / 4; }
-@media (max-width: 700px) {
-  .showcase.grid .small-grid { columns: 2; column-gap: 8px; }
-  .showcase.grid .small-grid button { margin-bottom: 8px; }
-}
