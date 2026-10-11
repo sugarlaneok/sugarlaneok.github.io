@@ -140,6 +140,10 @@
   .field { margin-top: 12px; } .field label { display: block; font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 4px; }
   .field input, .field select { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; font: inherit; font-size: 16px; background: var(--card); color: var(--ink); }
   .two { display: flex; gap: 10px; } .two .field { flex: 1; }
+  /* iPhone date boxes have a built-in minimum width that overflows; let them shrink to the panel */
+  .field input[type=date] { -webkit-appearance: none; appearance: none; display: block; min-width: 0; max-width: 100%; text-align: left; min-height: 46px; }
+  .field input::-webkit-date-and-time-value { text-align: left; }
+  .two .field { min-width: 0; }
   .hint { font-size: 13px; color: var(--ink-2); margin-top: 6px; }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
