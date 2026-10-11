@@ -34,7 +34,6 @@ window.SUGAR_LANE_CONTENT = {
         ['cookies-pooh-box.jpg', 'Winnie the Pooh cookies in a gold box'],
         ['cookies-electrician.jpg', 'Electrician-themed cookies with light bulbs and outlets'],
         ['cookies-washburn-grad.jpg', 'Washburn University graduation cookies'],
-        ['cookies-bridal-shower.jpg', 'White and sage bridal shower cookies'],
         ['cookies-49th-birthday.jpg', 'Red and pink bow birthday cookies'],
         ['cookies-pink-grad-2.jpg', 'Pink graduation cookies, close up'],
         ['cookies-washburn-grad-2.jpg', 'Washburn graduation cookie plate'],
