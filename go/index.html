@@ -145,6 +145,24 @@
   .field input::-webkit-date-and-time-value { text-align: left; }
   .two .field { min-width: 0; }
   .hint { font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .pill.warn { background: #fde2e2; color: #9a3b3b; }
+  .wkbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 2px 0 12px; }
+  .wkbar .lbl { font-weight: 800; font-size: 17px; text-align: center; flex: 1; }
+  .wkbar .lbl small { display: block; font-weight: 600; font-size: 13px; color: var(--ink-2); }
+  .seg { display: flex; background: var(--page); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .seg button { flex: 1; border: 0; background: none; font: inherit; font-weight: 700; font-size: 15px; padding: 10px; border-radius: 999px; color: var(--ink-2); cursor: pointer; }
+  .seg button.on { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .seg button.on.bk { background: #ff0082; color: #fff; }
+  .bookedbar { background: #ff0082; color: #fff; border-radius: 12px; padding: 10px 14px; font-weight: 700; margin-bottom: 12px; }
+  .day { background: var(--card); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+  .day.today { border-color: var(--series); }
+  .day.blocked { background: var(--series-soft); }
+  .day h3 { margin: 0; padding: 10px 14px; font-size: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); }
+  .day h3 span { color: var(--ink-2); font-weight: 600; }
+  .ev { padding: 10px 14px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .ev:last-child { border-bottom: 0; }
+  .ev .t { font-weight: 700; } .ev .s { color: var(--ink-2); font-size: 14px; }
+  .noev { padding: 10px 14px; color: var(--ink-2); font-size: 14px; }
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -453,6 +471,7 @@
       '<nav class="tabbar" id="tabbar">' +
       '<button data-t="orders"><b>🧾</b>Orders<span class="badge hidden" id="b-orders"></span></button>' +
       '<button data-t="custom"><b>🎂</b>Custom<span class="badge hidden" id="b-custom"></span></button>' +
+      '<button data-t="cal"><b>📅</b>Calendar</button>' +
       '<button data-t="dash"><b>📈</b>Dashboard</button></nav><div id="sheet"></div>';
     document.getElementById('refresh').onclick = function () { loadApp(); };
     document.getElementById('tabbar').onclick = function (e) {
@@ -484,8 +503,13 @@
     var pane = document.getElementById('pane');
     if (A.tab === 'dash') return drawDash(pane);
     if (!d) return;
-    pane.innerHTML = A.tab === 'orders' ? ordersHtml(d) : customHtml(d);
+    pane.innerHTML = A.tab === 'orders' ? ordersHtml(d) : A.tab === 'cal' ? calHtml(d) : customHtml(d);
     pane.onclick = function (e) {
+      var wk = e.target.closest('[data-wk]');
+      if (wk) { var v = wk.getAttribute('data-wk'); A.week = v === 'today' ? mondayOf(d.today) : addDays(A.week, Number(v) * 7); A.bookDraft = null; return drawApp(); }
+      var bk = e.target.closest('[data-book]');
+      if (bk) { A.bookDraft = bk.getAttribute('data-book') === '1'; return drawApp(); }
+      if (e.target.closest('#saveWeek')) return saveWeek(e.target.closest('#saveWeek'));
       var ch = e.target.closest('[data-f]');
       if (ch) { A.filter = ch.getAttribute('data-f'); return drawApp(); }
       var c = e.target.closest('[data-open]');
@@ -502,7 +526,8 @@
   function ordersHtml(d) {
     var pend = d.orders.filter(function (o) { return o.status === 'Waiting for you'; });
     var up = d.orders.filter(function (o) { return o.status === 'Approved' && o.upcoming; });
-    var past = d.orders.filter(function (o) { return pend.indexOf(o) < 0 && up.indexOf(o) < 0; }).reverse();
+    var since = addDays(d.today, -21);
+    var past = d.orders.filter(function (o) { return pend.indexOf(o) < 0 && up.indexOf(o) < 0 && o.slot.slice(0, 10) >= since; }).reverse();
     var booked = d.custom.filter(function (c) { return ['Ready to invoice', 'Invoiced', 'Paid'].indexOf(c.status) >= 0 && c.pickupDate >= d.today; })
       .sort(function (a, b) { return a.pickupDate < b.pickupDate ? -1 : 1; });
     var h = '';
@@ -513,9 +538,9 @@
     return h;
   }
   function customCard(c) {
-    var when = [c.pickupLabel ? 'Pickup ' + c.pickupLabel + (c.pickupTime ? ' ' + c.pickupTime : '') : (c.eventDate ? 'Event ' + c.eventDate : ''), c.quote ? money(c.quote) : ''].filter(Boolean).join(' · ');
+    var when = [c.pickupLabel ? 'Pickup ' + c.pickupLabel + (c.pickupTime ? ' ' + c.pickupTime : '') : (c.eventDate ? 'Needed by ' + c.eventDate : ''), c.quote ? money(c.quote) : ''].filter(Boolean).join(' · ');
     return '<div class="card" data-type="custom" data-open="' + esc(c.id) + '"><div class="top"><span class="nm">' + esc(c.name) + '</span>' +
-      '<span class="pill ' + pillCls(c.status) + '">' + esc(c.status) + '</span></div>' +
+      '<span>' + (c.booked ? '<span class="pill warn">Booked week</span> ' : '') + '<span class="pill ' + pillCls(c.status) + '">' + esc(c.status) + '</span></span></div>' +
       '<div class="sub">' + esc(c.wants || 'Custom order') + (c.howMany ? ' · ' + esc(c.howMany) : '') + '</div>' +
       (when ? '<div class="sub">' + esc(when) + '</div>' : '') + '</div>';
   }
@@ -530,6 +555,75 @@
     var list = d.custom.filter(pick);
     return '<div class="chips">' + F.map(function (f) { return '<button data-f="' + f[0] + '"' + (A.filter === f[0] ? ' class="on"' : '') + '>' + f[1] + '</button>'; }).join('') + '</div>' +
       (list.length ? list.map(customCard).join('') : '<div class="empty">Nothing here right now.</div>');
+  }
+
+  // ---------- Calendar: one week at a time, plus marking a week fully booked ----------
+  function ymdT(s) { var p = s.split('-'); return Date.UTC(+p[0], p[1] - 1, +p[2]); }
+  function tYmd(t) { return new Date(t).toISOString().slice(0, 10); }
+  function addDays(s, n) { return tYmd(ymdT(s) + n * 864e5); }
+  function mondayOf(s) { var t = ymdT(s); return tYmd(t - ((new Date(t).getUTCDay() + 6) % 7) * 864e5); }
+  function dayLbl(s, opt) { return new Date(ymdT(s)).toLocaleDateString('en-US', Object.assign({ timeZone: 'UTC' }, opt)); }
+  function clock(hhmm) { var p = String(hhmm).split(':'), h = +p[0], m = p[1] || '00'; return (h % 12 || 12) + ':' + m + (h < 12 ? ' AM' : ' PM'); }
+  function cents(m) { return Math.round(parseFloat(String(m).replace(/[^0-9.]/g, '')) * 100) || 0; }
+  function weekEvents(d, start) {
+    var days = []; for (var i = 0; i < 7; i++) days.push({ date: addDays(start, i), ev: [] });
+    var at = function (ymd) { return days.filter(function (x) { return x.date === ymd; })[0]; };
+    d.orders.forEach(function (o) {
+      if (o.status !== 'Approved' && o.status !== 'Waiting for you') return;
+      var day = at(o.slot.slice(0, 10)); if (!day) return;
+      day.ev.push({ sort: o.slot.slice(11), time: clock(o.slot.slice(11, 16)), name: o.name, what: String(o.items).split('\n').join(' · '),
+        status: o.status, cents: cents(o.total), type: 'order', id: o.orderNo });
+    });
+    d.custom.forEach(function (c) {
+      if (['Ready to invoice', 'Invoiced', 'Paid', 'Done'].indexOf(c.status) < 0 || !c.pickupDate) return;
+      var day = at(c.pickupDate); if (!day) return;
+      var t = c.pickupTime || '', m = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      var sort = m ? ('0' + ((+m[1] % 12) + (/p/i.test(m[3]) ? 12 : 0))).slice(-2) + ':' + m[2] : '99';
+      day.ev.push({ sort: sort, time: t || 'Any time', name: c.name, what: [c.wants, c.howMany].filter(Boolean).join(' · '),
+        status: c.status, cents: Math.round((Number(c.quote) || 0) * 100), type: 'custom', id: c.id });
+    });
+    days.forEach(function (x) { x.ev.sort(function (a, b) { return a.sort < b.sort ? -1 : 1; }); });
+    return days;
+  }
+  function weekBooked(d, start) {
+    var set = {}; (d.blocked || []).forEach(function (x) { set[x] = 1; });
+    var n = 0; for (var i = 0; i < 7; i++) if (set[addDays(start, i)]) n++;
+    return { all: n === 7, some: n > 0, set: set };
+  }
+  function calHtml(d) {
+    if (!A.week) A.week = mondayOf(d.today);
+    var start = A.week, end = addDays(start, 6), days = weekEvents(d, start), wb = weekBooked(d, start);
+    var booked = A.bookDraft === null || A.bookDraft === undefined ? wb.all : A.bookDraft;
+    var changed = booked !== wb.all;
+    var count = 0, total = 0; days.forEach(function (x) { count += x.ev.length; x.ev.forEach(function (e) { total += e.cents; }); });
+    var past = end < d.today;
+    var h = '<div class="wkbar"><button class="iconbtn" data-wk="-1">‹</button><div class="lbl">' +
+      esc(dayLbl(start, { month: 'short', day: 'numeric' }) + ' – ' + dayLbl(end, { month: 'short', day: 'numeric' })) +
+      '<small>' + count + ' order' + (count === 1 ? '' : 's') + (total ? ' · ' + money(total / 100) : '') + '</small></div>' +
+      '<button class="iconbtn" data-wk="1">›</button></div>' +
+      (start !== mondayOf(d.today) ? '<div style="text-align:center;margin:-4px 0 10px"><button class="iconbtn" data-wk="today">Back to this week</button></div>' : '');
+    if (!past) {
+      h += '<div class="panel" style="padding:14px"><div class="seg"><button data-book="0" class="' + (booked ? '' : 'on') + '">Open</button>' +
+        '<button data-book="1" class="' + (booked ? 'on bk' : '') + '">Fully booked</button></div>' +
+        (changed ? '<button class="btn" id="saveWeek">Save</button>' : '') +
+        '<div class="hint">' + (booked ? 'The website won’t offer pickups this week. Orders already here stay.' : 'Flip to Fully booked and tap Save to stop new orders for this week.') +
+        (wb.some && !wb.all ? ' Some days this week are already blocked.' : '') + '</div><div id="result" class="hidden"></div></div>';
+    }
+    if (wb.all) h += '<div class="bookedbar">Fully booked · not taking new orders this week</div>';
+    days.forEach(function (x) {
+      h += '<div class="day' + (x.date === d.today ? ' today' : '') + (wb.set[x.date] ? ' blocked' : '') + '"><h3>' + esc(dayLbl(x.date, { weekday: 'long', month: 'short', day: 'numeric' })) +
+        '<span>' + (x.ev.length ? x.ev.length + ' order' + (x.ev.length === 1 ? '' : 's') : (wb.set[x.date] ? 'Blocked' : '')) + '</span></h3>' +
+        (x.ev.length ? x.ev.map(function (e) {
+          return '<div class="ev" data-type="' + e.type + '" data-open="' + esc(e.id) + '"><div class="t">' + esc(e.time) + ' · ' + esc(e.name) +
+            ' <span class="pill ' + pillCls(e.status) + '">' + esc(e.status) + '</span></div><div class="s">' + esc(e.what) + '</div></div>';
+        }).join('') : '<div class="noev">No orders</div>') + '</div>';
+    });
+    return h;
+  }
+  function saveWeek(btn) {
+    var booked = !!A.bookDraft;
+    act([btn], booked ? 'Saving…' : 'Opening the week…', function () { return postData({ op: 'appWeek', k: P.k, start: A.week, booked: booked }); },
+      function () { A.bookDraft = null; loadApp(true); }, document.getElementById('result'));
   }
 
   function closeSheet() { A.open = null; document.getElementById('sheet').innerHTML = ''; document.body.style.overflow = ''; }
@@ -590,7 +684,7 @@
     sheetShell(c.name, '<div class="panel"><div style="display:flex;justify-content:space-between;gap:8px"><h2>' + esc(c.name) + '</h2>' +
       '<span class="pill ' + pillCls(c.status) + '">' + esc(c.status) + '</span></div>' +
       '<div class="muted">Request received ' + esc(c.received) + '</div>' + contactLinks(c.phone, c.email) +
-      kv([['Wants', c.wants], ['How many', c.howMany], ['Event date', c.eventDate], ['Pickup / delivery', c.pickupOrDelivery], ['Cake', c.cake],
+      kv([['Wants', c.wants], ['How many', c.howMany], ['Needed by', c.eventDate + (c.booked ? ' (in a week you marked fully booked)' : '')], ['Pickup / delivery', c.pickupOrDelivery], ['Cake', c.cake],
         ['Theme & colors', c.theme], ['Wording', c.wording], ['Budget', c.budget], ['Notes', c.notes], ['Heard about us', c.heard],
         ['Phone', c.phone], ['Email', c.email], ['Last reply', c.replied]]) +
       (c.photos.length ? '<div class="photos">' + c.photos.map(function (u) { return '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="Inspiration photo" loading="lazy"></a>'; }).join('') + '</div>' : '') +

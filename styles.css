@@ -42,7 +42,7 @@ body.locked { overflow: hidden; }
 .nav { display: flex; gap: 22px; }
 .nav a { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 15px; }
 .nav a:hover { color: var(--pink); }
-.cart-btn { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; display: grid; place-items: center; cursor: pointer; color: var(--ink); }
+.cart-btn { position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; display: grid; place-items: center; cursor: pointer; color: var(--ink); }
 .cart-btn:hover { border-color: var(--pink); color: var(--pink); }
 .cart-count { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--pink); color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
 .cart-btn.bump { animation: bump .35s ease; }
