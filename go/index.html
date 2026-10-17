@@ -72,6 +72,7 @@
   .chip { border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 13px; color: var(--ink-2); }
   .chip b { color: var(--ink); font-size: 16px; margin-right: 4px; font-variant-numeric: tabular-nums; }
   .empty { color: var(--ink-3); font-size: 14px; padding: 6px 0; }
+  .needs { background: var(--series-soft, #fde7f1); border-radius: 12px; padding: 12px 14px; margin: 0 0 14px; font-size: 15px; }
   .note { font-size: 13px; color: var(--ink-3); margin-top: 16px; }
   .loading { color: var(--ink-3); padding: 40px 0; text-align: center; }
   @media (max-width: 760px) {
@@ -226,10 +227,10 @@
   /** "12% more than the 30 days before" */
   function delta(cur, prev) {
     if (!prev && !cur) return 'No change';
-    if (!prev) return '<span class="up">New</span> vs the ' + days + ' days before';
+    if (!prev) return '<span class="up">New</span> vs previous ' + days + ' days';
     var pct = Math.round((cur - prev) / prev * 100);
-    if (pct === 0) return 'Same as the ' + days + ' days before';
-    return '<span class="' + (pct > 0 ? 'up' : 'down') + '">' + (pct > 0 ? '▲ ' : '▼ ') + Math.abs(pct) + '%</span> vs the ' + days + ' days before';
+    if (pct === 0) return 'Same as previous ' + days + ' days';
+    return '<span class="' + (pct > 0 ? 'up' : 'down') + '">' + (pct > 0 ? '▲ ' : '▼ ') + Math.abs(pct) + '%</span> vs previous ' + days + ' days';
   }
 
   function kpi(label, value, d) {
@@ -297,21 +298,24 @@
 
   function render(d) {
     last = d;
-    document.getElementById('updated').textContent = 'Last ' + d.days + ' days · updated ' + d.updated;
+    document.getElementById('updated').textContent = 'Last ' + d.days + ' days · numbers as of ' + d.updated + ' (refreshes hourly)';
     var w = d.web, o = d.orders, c = d.custom;
     var sales = o.sales + c.sales, prevSales = o.prevSales + c.prevSales;
-    var html = '<div class="kpis">' +
-      kpi('Website visitors', w ? n(w.visitors) : '–', w ? delta(w.visitors, w.prevVisitors) : 'Not available yet') +
-      kpi('Custom requests', n(c.received), delta(c.received, c.prevReceived)) +
-      kpi('Online orders', n(o.placed), delta(o.placed, o.prevPlaced)) +
-      kpi('Sales', money(sales), delta(sales, prevSales)) +
+    var newReq = (c.byStatus.filter(function (s) { return s[0] === 'New'; })[0] || [0, 0])[1];
+    var html = (o.waiting || newReq ? '<p class="needs">Needs your OK: <b>' + n(o.waiting) + '</b> online order' + (o.waiting === 1 ? '' : 's') +
+        ' · <b>' + n(newReq) + '</b> new custom request' + (newReq === 1 ? '' : 's') + '</p>' : '') +
+      '<div class="kpis">' +
+      kpi('People who visited', w ? n(w.visitors) : '–', w ? delta(w.visitors, w.prevVisitors) : 'Not available yet') +
+      kpi('Custom order requests', n(c.received), delta(c.received, c.prevReceived)) +
+      kpi('Online orders placed', n(o.placed), delta(o.placed, o.prevPlaced)) +
+      kpi('Money earned', money(sales), delta(sales, prevSales) + '<br><span style="color:var(--ink-3)">Approved online orders + paid custom orders</span>') +
       '</div><div class="grid">';
 
     if (w) {
       html += card('Visitors per day', n(w.now) + (w.now === 1 ? ' person' : ' people') + ' on the site right now · tap a bar for the number', '<div class="chart" id="daily"></div>', true);
       html += card('Where visitors came from', 'Visits by source', bars(w.sources, { empty: 'No visits yet. Google takes about a day to show new visits.' }));
-      html += card('Path to an order', 'Visitors who reached each step', bars(w.funnel, { pctOf: w.funnel[0][1], empty: 'No visits yet.' }) +
-        '<p class="sub" style="margin:12px 0 0">Custom order taps: <b>' + n(w.leads) + '</b> (people who opened the custom order form)</p>');
+      html += card('From visit to order', 'People who reached each step', bars(w.funnel, { pctOf: w.funnel[0][1], empty: 'No visits yet.' }) +
+        '<p class="sub" style="margin:12px 0 0">Opened the custom order form: <b>' + n(w.leads) + '</b></p>');
       html += card('Most viewed pages', 'Page views', bars(w.pages, { empty: 'No page views yet.' }));
       var dev = w.devices || [], devTotal = dev.reduce(function (t, x) { return t + x[1]; }, 0);
       var phone = (dev.filter(function (x) { return x[0] === 'Phone'; })[0] || [0, 0])[1];
@@ -325,7 +329,7 @@
     }
 
     html += card('How customers heard about us', 'Online orders and custom requests', bars(d.heard, { empty: 'No answers yet.' }));
-    html += card('Custom requests', 'Right now, by status',
+    html += card('Custom requests by status', 'Right now',
       '<div class="chips">' + c.byStatus.map(function (s) { return '<span class="chip"><b>' + n(s[1]) + '</b>' + esc(s[0]) + '</span>'; }).join('') + '</div>' +
       (c.recent.length ? '<div class="list">' + c.recent.map(function (r) {
         return '<div class="item"><div class="main"><b>' + esc(r.name) + '</b><span>' + esc(r.wants) + (r.event ? ' · event ' + esc(r.event) : '') + '</span></div>' +
@@ -335,8 +339,7 @@
       return '<div class="item"><div class="main"><b>' + esc(u.when) + '</b><span>' + esc(u.name) + ' · ' + esc(u.what) + '</span></div><div class="side">' + esc(u.kind) + '</div></div>';
     }).join('') + '</div>' : '<p class="empty">Nothing booked in the next 2 weeks.</p>', true);
 
-    html += '</div><p class="note">Online orders waiting for you right now: <b>' + n(o.waiting) + '</b>. Sales = approved online orders + paid custom orders. ' +
-      'Website numbers come from Google Analytics and can take up to a day to appear.</p>';
+    html += '</div><p class="note">Website numbers come from Google Analytics and can take up to a day to appear.</p>';
     document.getElementById('app').innerHTML = html;
     if (w) dailyChart(document.getElementById('daily'), w.daily);
   }

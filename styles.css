@@ -260,6 +260,7 @@ textarea { min-height: 96px; resize: vertical; }
 .times { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
 .check { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
 .check input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--pink); flex-shrink: 0; }
+.check.optin { margin: 4px 0 18px; color: var(--ink); }
 .policy { font-size: 14px; color: var(--muted); }
 .policy p { margin: 6px 0; }
 .summary-line { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }

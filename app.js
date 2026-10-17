@@ -20,7 +20,7 @@
   function freshState() {
     return {
       view: 'shop', step: 'pickup', cart: [], slot: null, date: null, notes: '', quote: null, draftId: newId(),
-      customer: { name: '', email: '', phone: '', contactBy: 'Text', location: '', address: '', heard: '', agree: false },
+      customer: { name: '', email: '', phone: '', contactBy: 'Text', location: '', address: '', heard: '', agree: false, updates: false },
       packs: {}, done: null
     };
   }
@@ -105,6 +105,8 @@
   function subOf(category) { var p = String(category).split(/\s+[–-]\s+/); return p[1] || ''; }
   function isDelivery(loc) { return /^delivery/i.test(String(loc || '')); }
   function plural(n, unit) { return unit === 'dozen' ? n + ' dozen' : n + ' ' + unit + (n === 1 ? '' : 's'); }
+  /** The small (640px wide) copy of a photo, for thumbnails. build_pages.py makes one for every photo. */
+  function sm(f) { return /\.webp$/.test(f) ? f.replace(/\.webp$/, '-sm.webp') : f; }
   function photoFor(group) { var p = CONTENT.photos[group]; return Array.isArray(p) ? p[0] : p; }
 
   function cartLines() {
@@ -192,7 +194,13 @@
     return hashRoute() || location.pathname.replace(/index\.html$/, '').replace(/^\/+|\/+$/g, '') || 'home';
   }
   function pathFor(r) { return r === 'home' || !r ? '/' : '/' + r.replace(/\/+$/, '') + '/'; }
+  /** Each built page only carries its own section; the others are empty stubs (see build_pages.py). */
+  function isStub(r) {
+    var el = document.querySelector('#shop [data-page="' + String(r || 'home').split('/')[0] + '"]');
+    return !!(el && el.hasAttribute('data-stub'));
+  }
   function navigate(path, replace) {
+    if (isStub(path.replace(/^\/+|\/+$/g, '') || 'home')) { location[replace ? 'replace' : 'assign'](path); return; }
     if (location.pathname !== path || location.hash) history[replace ? 'replaceState' : 'pushState'](null, '', path);
     route();
   }
@@ -266,6 +274,7 @@
     var parts = r.split('/'), full = r;
     r = parts[0];
     if (PAGES.indexOf(r) < 0) r = full = 'home';
+    if (isStub(r)) { location.reload(); return; }
     showPage(r, full);
     if (data) showView('shop'); else document.getElementById('shop').hidden = false;
     document.getElementById('checkout').hidden = true;
@@ -324,8 +333,9 @@
       var hasMore = !!document.querySelector('.more-btn[data-gallery="' + key + '"]');
       var tile = function (p, i) {
         var cls = [hasMore && i >= g.featured ? 'extra' : '', g.lead && i === 0 ? 'lead' : '', p[2] || ''].join(' ').trim();
+        var full = (g.lead && i === 0) || i < (g.big || 0);
         return '<button class="' + cls + '" data-gallery="' + key + '" data-i="' + i + '" aria-label="' + esc(p[1]) + '">' +
-          '<img src="images/' + esc(p[0]) + '" alt="' + esc(p[1]) + '" loading="lazy"></button>';
+          '<img src="images/' + esc(full ? p[0] : sm(p[0])) + '" alt="' + esc(p[1]) + '" loading="lazy"></button>';
       };
       if (g.layout === 'grid') {
         el.classList.add('grid');
@@ -422,9 +432,9 @@
   function photoHtml(group, cls) {
     var p = CONTENT.photos[group.name];
     if (Array.isArray(p) && p.length > 1) {
-      return '<div class="' + cls + ' collage">' + p.slice(0, 3).map(function (src) { return '<img src="' + esc(src) + '" alt="" loading="lazy">'; }).join('') + '</div>';
+      return '<div class="' + cls + ' collage">' + p.slice(0, 3).map(function (src) { return '<img src="' + esc(sm(src)) + '" alt="" loading="lazy">'; }).join('') + '</div>';
     }
-    if (p) return '<div class="' + cls + '"><img src="' + esc(Array.isArray(p) ? p[0] : p) + '" alt="' + esc(group.name) + '" loading="lazy"></div>';
+    if (p) return '<div class="' + cls + '"><img src="' + esc(sm(Array.isArray(p) ? p[0] : p)) + '" alt="' + esc(group.name) + '" loading="lazy"></div>';
     return '<div class="' + cls + '"><div class="placeholder"><img src="images/logo-sl.png" alt=""></div></div>';
   }
 
@@ -434,6 +444,7 @@
   }
 
   function renderMenu() {
+    if (!document.getElementById('menuGrid')) return;
     var r = data.rules;
     document.getElementById('menuLead').textContent = 'Order at least ' + r.standardDays + ' days ahead' +
       (r.rushDays < r.standardDays ? ' (rush orders ' + r.rushDays + '–' + (r.standardDays - 1) + ' days out add ' + r.rushPct + '%)' : '') +
@@ -582,6 +593,7 @@
 
   function renderEvents() {
     var list = document.getElementById('eventList');
+    if (!list) return;
     var events = data.events || [];
     if (!events.length) {
       list.innerHTML = '<p class="muted">No pop-ups on the calendar right now. Follow us on social media to hear about the next one!</p>';
@@ -1020,6 +1032,8 @@
       ['Text', 'Call', 'Email'].map(function (o) {
         return '<button class="chip seg-chip' + (c.contactBy === o ? ' selected' : '') + '" data-v="' + o + '">' + o + '</button>';
       }).join('') + '</div></div>' +
+      '<label class="check optin"><input type="checkbox" id="updates"' + (c.updates ? ' checked' : '') + '> ' +
+      '<span>Email me when seasonal presales open, plus occasional specials and deals. <span class="hint">Unsubscribe anytime.</span></span></label>' +
       '<div class="field"><label for="notes">Anything we should know? <span class="hint">(optional)</span></label>' +
       '<textarea id="notes" placeholder="Colors, theme, the occasion, allergies…">' + esc(state.notes) + '</textarea></div>' +
       '<div class="field"><span class="label">How did you hear about us? <span class="hint">(optional)</span></span><div class="heard-chips">' +
@@ -1043,6 +1057,7 @@
       if (id === 'notes') state.notes = e.target.value;
       else if (id === 'heardOther') c.heardOther = e.target.value;
       else if (id === 'agree') c.agree = e.target.checked;
+      else if (id === 'updates') c.updates = e.target.checked;
       else if (Object.prototype.hasOwnProperty.call(c, id)) c[id] = e.target.value;
       save();
       renderDetailsBar();
@@ -1428,8 +1443,8 @@
       route();
     }).catch(function (err) {
       console.error(err);
-      document.getElementById('menuGrid').innerHTML = '<div class="error">The menu couldn\'t load. Please refresh the page, or email sugarlaneok@gmail.com to order.</div>';
-      document.getElementById('menuLead').textContent = '';
+      if (document.getElementById('menuGrid')) document.getElementById('menuGrid').innerHTML = '<div class="error">The menu couldn\'t load. Please refresh the page, or email sugarlaneok@gmail.com to order.</div>';
+      if (document.getElementById('menuLead')) document.getElementById('menuLead').textContent = '';
     });
   }
 
