@@ -559,3 +559,7 @@ a.product { color: inherit; text-decoration: none; }
 @media (min-width: 601px) {
   .menu-grid-featured .product-photo { aspect-ratio: 8 / 5; }
 }
+/* Plain menu baked into /order/ for crawlers; app.js swaps in the interactive menu right away. */
+.static-menu h2 { margin: 28px 0 8px; }
+.static-menu h3 { margin: 18px 0 6px; font-size: 18px; }
+.static-menu ul { margin: 0 0 12px; padding-left: 20px; line-height: 1.6; }
