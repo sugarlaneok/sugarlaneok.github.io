@@ -1036,7 +1036,7 @@
       '<span>Email me when seasonal presales open, plus occasional specials and deals. <span class="hint">Unsubscribe anytime.</span></span></label>' +
       '<div class="field"><label for="notes">Anything we should know? <span class="hint">(optional)</span></label>' +
       '<textarea id="notes" placeholder="Colors, theme, the occasion, allergies…">' + esc(state.notes) + '</textarea></div>' +
-      '<div class="field"><span class="label">How did you hear about us? <span class="hint">(optional)</span></span><div class="heard-chips">' +
+      '<div class="field"><span class="label">How did you hear about us?</span><div class="heard-chips">' +
       HEARD_OPTIONS.map(function (o) {
         return '<button class="chip heard-chip' + (c.heard === o ? ' selected' : '') + '" data-v="' + o + '">' + o + '</button>';
       }).join('') + '</div>' +
@@ -1066,9 +1066,9 @@
     app.onclick = function (e) {
       var h = e.target.closest('.heard-chip');
       if (h) {
-        // Tap again to unselect: the question is optional.
-        c.heard = c.heard === h.getAttribute('data-v') ? '' : h.getAttribute('data-v');
+        c.heard = h.getAttribute('data-v');
         save();
+        renderDetailsBar();
         app.querySelectorAll('.heard-chip').forEach(function (x) { x.classList.toggle('selected', x.getAttribute('data-v') === c.heard); });
         var other = $('#heardOther');
         other.hidden = c.heard !== 'Other';
@@ -1102,13 +1102,13 @@
   function detailsOk() {
     var c = state.customer;
     return c.name.trim().length >= 2 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email.trim()) &&
-      c.phone.replace(/\D/g, '').length >= 10 && c.agree;
+      c.phone.replace(/\D/g, '').length >= 10 && !!c.heard && (c.heard !== 'Other' || !!String(c.heardOther || '').trim()) && c.agree;
   }
 
   function renderDetailsBar() {
     var ok = detailsOk();
     setCheckoutBar('<div class="sum"><b>' + money2(subtotal()) + '</b><div>' +
-      (ok ? 'Next: review and pay' : 'Add your name, email and phone, and agree to the policies') + '</div></div>' +
+      (ok ? 'Next: review and pay' : 'Add your name, email and phone, tell us how you heard about us, and agree to the policies') + '</div></div>' +
       '<button class="btn btn-primary" id="next"' + (ok ? '' : ' disabled') + '>Review →</button>');
     $('#next').onclick = function () { goStep('pay'); };
   }
