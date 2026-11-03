@@ -140,7 +140,7 @@ window.SUGAR_LANE_CONTENT = {
   },
 
   blurbs: {
-    'Cinnamon Rolls Presale': 'Soft, gooey and generously iced. 6 for $25 or 12 for $45.',
+    'Cinnamon Rolls Presale': 'Big 4\u2033 \u00d7 4\u2033, 6 oz rolls, generously iced. 6 for $25 or 12 for $45.',
     'Classic Cookies': 'Big, soft, bakery-style cookies. The classics, done right.',
     'Specialty Cookies': 'Loaded, over-the-top cookies. Our fan favorites.',
     'Mini Cookies': 'Bite-size versions of our cookies – perfect for parties and dessert tables.',
@@ -156,7 +156,7 @@ window.SUGAR_LANE_CONTENT = {
   // Optional per-theme: intro ({date} = pickup day), hero and gallery photos, thumbs (one per box, in place of the emoji).
   seasonThemes: [
     { match: 'cinnamon', subtitle: 'November Sale', tagline: 'Warm, gooey & iced',
-      intro: 'Soft cinnamon rolls, iced and boxed up for you. Add a box and check out right here, then pick up on {date}.',
+      intro: 'Soft cinnamon rolls, 4\u2033 \u00d7 4\u2033 and 6 oz each, iced and boxed up for you. Add a box and check out right here, then pick up on {date}.',
       hero: ['images/roll-side.webp', 'Iced cinnamon roll with icing melting onto a blue plate'],
       thumbs: ['images/roll-closeup-real.webp', 'images/roll-pan-real.webp'],
       gallery: [['roll-plate-real.webp', 'Iced cinnamon roll on a blue plate'], ['roll-overhead-real.webp', 'An iced cinnamon roll from above'],

@@ -141,7 +141,9 @@
     }
     return null;
   }
-  /** Pickup days on offer: the presale's own day for seasonal boxes, otherwise the usual calendar. */
+  /** "Tue, Nov 24 or Wed, Nov 25" */
+  function seasonDays(s, sep) { return (s.pickupDates || [s.pickupDate]).map(seasonDate).join(sep || ' or '); }
+  /** Pickup days on offer: the presale's own days for seasonal boxes, otherwise the usual calendar. */
   function availSlots() { var s = cartSeason(); return s ? s.slots : data.slots; }
   /** Seasonal boxes are picked up on their own day, so they can't share a cart with other treats. */
   function cartConflict(id) {
@@ -566,7 +568,7 @@
         '<p class="season-tag">' + esc(th.tagline) + '</p>' +
         (th.hero ? '<img class="season-hero" src="' + esc(th.hero[0]) + '" alt="' + esc(th.hero[1]) + '">' : '') +
         (s.open
-          ? '<p class="season-intro">' + esc((th.intro || 'Add your boxes and check out right here. Every box is decorated by hand and picked up on {date}.').replace('{date}', seasonDate(s.pickupDate))) + '</p>'
+          ? '<p class="season-intro">' + esc((th.intro || 'Add your boxes and check out right here. Every box is decorated by hand and picked up on {date}.').replace('{date}', seasonDays(s))) + '</p>'
           : '<p class="season-closed">Orders for this presale are closed. Thank you!</p>') +
         '<div class="season-boxes">' + boxes + '</div>' +
         (mine ? '<button class="btn btn-primary season-checkout">Check out \u00b7 ' + count + (count === 1 ? ' box' : ' boxes') + ' \u00b7 ' + money2(subtotal()) + '</button>' : '') +
@@ -575,8 +577,9 @@
         }).join('') + '</div>' : '') +
         '<hr><div class="season-info">' +
         (s.close ? '<div><span>Orders close</span><b>' + esc(seasonDate(s.close)) + '</b></div>' : '') +
-        '<div><span>Pickup</span><b>' + esc(seasonDate(s.pickupDate)) + (s.time ? ' \u00b7 ' + esc(s.time.replace(/\s*-\s*/, ' \u2013 ')) : '') + '</b></div>' +
-        (spots.length ? '<div><span>Where</span><b>' + esc(spots.join(' or ')) + '</b></div>' : '') +
+        '<div><span>Pickup</span><b>' + esc(seasonDays(s, ' & ')) + (s.time ? ' \u00b7 ' + esc(s.time.replace(/\s*-\s*/, ' \u2013 ')) : '') + '</b></div>' +
+        (s.place ? '<div><span>Where</span><b>' + esc(s.place) + '</b></div>'
+          : spots.length ? '<div><span>Where</span><b>' + esc(spots.join(' or ')) + '</b></div>' : '') +
         '</div><p class="season-note">Limited quantities. We hold your card and only charge it once we confirm your order.</p>' +
         '</div></div></section>';
     }).join('');
@@ -927,24 +930,28 @@
   // ----- pickup -----
 
   function renderPickup() {
-    var cust = state.customer;
+    var cust = state.customer, season = cartSeason();
     if (state.slot && !findSlot(state.slot)) state.slot = null;
+    // A presale with its own pickup place offers only that place; other orders offer the usual spots.
+    var locs = season && season.place ? [season.place] : data.locations;
+    if (locs.indexOf(cust.location) < 0) { cust.location = locs.length === 1 ? locs[0] : ''; save(); }
     var html = '<h2>When and where?</h2>';
     if (state.slotError) { html += '<div class="error">' + esc(state.slotError) + '</div>'; state.slotError = null; }
 
     html += '<div class="panel"><div class="field" style="margin-top:0"><span class="label">Pickup location</span><div class="choices">' +
-      data.locations.map(function (loc) {
+      locs.map(function (loc) {
         var sel = cust.location === loc;
         var fee = isDelivery(loc) ? ' <span class="muted">(+' + money2(data.rules.deliveryFeeCents) + ')</span>' : '';
         return '<label class="choice' + (sel ? ' selected' : '') + '"><input type="radio" name="loc" value="' + esc(loc) + '"' + (sel ? ' checked' : '') + '><span>' + esc(loc) + fee + '</span></label>';
       }).join('') + '</div></div>' +
       '<div class="field" id="addrField"' + (isDelivery(cust.location) ? '' : ' hidden') + '>' +
       '<label for="addr">Delivery address</label><input type="text" id="addr" autocomplete="street-address" value="' + esc(cust.address) + '"></div>' +
-      '<p class="muted small" style="margin:10px 0 0">Need delivery instead? Tell us in the notes on the next step &ndash; a delivery fee may be added at Sugar Lane&rsquo;s discretion.</p></div>';
+      (season && season.place ? '' : '<p class="muted small" style="margin:10px 0 0">Need delivery instead? Tell us in the notes on the next step &ndash; a delivery fee may be added at Sugar Lane&rsquo;s discretion.</p>') + '</div>';
 
     html += '<div class="panel"><div class="field" style="margin-top:0"><span class="label">Pickup day</span>';
-    var slots = availSlots(), season = cartSeason();
-    if (season) html += '<p class="notice" style="margin:0 0 12px">' + esc(season.name) + ' presale boxes are picked up on ' + esc(seasonDate(season.pickupDate)) + '.</p>';
+    var slots = availSlots();
+    if (season) html += '<p class="notice" style="margin:0 0 12px">' + esc(season.name) + ' presale boxes are picked up on ' + esc(seasonDays(season)) +
+      (season.place ? ' at ' + esc(season.place) : '') + '.</p>';
     if (!slots.length) {
       html += '<p class="muted">There are no open pickup times right now. Please check back soon or contact us.</p>';
     } else {
