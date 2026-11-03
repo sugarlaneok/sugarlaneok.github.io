@@ -122,6 +122,7 @@ window.SUGAR_LANE_CONTENT = {
   // ---- Menu card photo for each group (part of the Menu tab's Category before " – ") ----
   // A list makes a collage. Missing = branded placeholder.
   photos: {
+    'Cinnamon Rolls Presale': 'images/roll-side.webp',
     'Classic Cookies': 'images/flavor-chocolate-chip-styled.webp',
     'Specialty Cookies': 'images/flavor-cookies-styled.webp',
     'Cupcakes': 'images/cupcakes-rosette.webp',
@@ -139,6 +140,7 @@ window.SUGAR_LANE_CONTENT = {
   },
 
   blurbs: {
+    'Cinnamon Rolls Presale': 'Soft, gooey and generously iced. 6 for $25 or 12 for $45.',
     'Classic Cookies': 'Big, soft, bakery-style cookies. The classics, done right.',
     'Specialty Cookies': 'Loaded, over-the-top cookies. Our fan favorites.',
     'Mini Cookies': 'Bite-size versions of our cookies – perfect for parties and dessert tables.',
@@ -151,7 +153,16 @@ window.SUGAR_LANE_CONTENT = {
   // "custom" adds a card that opens the custom request form.
   // ---- Seasonal presale page: the season's name in the Seasonal tab picks one of these looks ----
   // colors: one per box (white text sits on them, so keep them deep). bg/stripe: the striped page background.
+  // Optional per-theme: intro ({date} = pickup day), hero and gallery photos, thumbs (one per box, in place of the emoji).
   seasonThemes: [
+    { match: 'cinnamon', subtitle: 'November Sale', tagline: 'Warm, gooey & iced',
+      intro: 'Soft cinnamon rolls, iced and boxed up for you. Add a box and check out right here, then pick up on {date}.',
+      hero: ['images/roll-side.webp', 'Iced cinnamon roll with icing melting onto a blue plate'],
+      thumbs: ['images/roll-closeup.webp', 'images/roll-pan.webp'],
+      gallery: [['roll-angle.webp', 'Iced cinnamon roll on a blue plate'], ['roll-closeup.webp', 'Close-up of an iced cinnamon roll'],
+        ['roll-pan.webp', 'A pan of 12 cinnamon rolls']],
+      ornament: ['\ud83c\udf42', '\ud83c\udf42'], emoji: ['\ud83c\udf42'],
+      colors: ['#8a4a22', '#6b3a20'], bg: '#fbf1e4', stripe: '#f3e2cc' },
     { match: 'hallow|spooky|boo', subtitle: 'Cookie Presale', tagline: 'Spooky sweets from our kitchen',
       ornament: ['\ud83e\udd87', '\ud83e\udd87'], emoji: ['\ud83c\udf83', '\ud83d\udc7b', '\ud83d\udd78\ufe0f', '\ud83e\udd87'],
       colors: ['#c4501a', '#6f5478', '#55613f'], bg: '#fbefe0', stripe: '#f5e2c9' },

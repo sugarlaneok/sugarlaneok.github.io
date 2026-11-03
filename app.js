@@ -208,11 +208,15 @@
     var h = hashRoute();
     if (h || location.hash === '#/') history.replaceState(null, '', pathFor(h || 'home'));
   }
+  /** "Halloween" -> "Halloween Cookies"; a season already named for its treat stays as it is. */
+  function treatsName(season) {
+    return /\b(cookies?|rolls?|cakes?|cupcakes?|pies?|pops?)\b/i.test(season) ? season : season + ' Cookies';
+  }
   function pageTitle(r) {
     var p = SEO[r] || SEO[r.split('/')[0]];
     if (!p) return 'Sugar Lane – Home Bakery in Norman, OK';
     var season = (data && data.seasonal && data.seasonal[0] && data.seasonal[0].name) || 'Seasonal';
-    return p.title.replace('{season}', season);
+    return p.title.replace('{treats}', treatsName(season));
   }
 
   function showView(view) {
@@ -488,7 +492,7 @@
   function productCard(g) {
       var n = groupCount(g);
       var isPack = g.items[0].picks;
-      var unitWord = isPack ? (n === 1 ? 'pack' : 'packs') : 'dozen';
+      var unitWord = isPack ? (n === 1 ? 'pack' : 'packs') : g.items[0].presale ? (n === 1 ? 'box' : 'boxes') : 'dozen';
       return '<button class="product" data-group="' + esc(g.name) + '">' +
         photoHtml(g, 'product-photo').replace('</div>', (n ? '<span class="in-cart-badge">' + n + ' ' + unitWord + ' in cart</span>' : '') + '</div>') +
         '<div class="product-body"><h3>' + esc(g.name) + '</h3>' +
@@ -547,7 +551,8 @@
           : q ? stepperHtml(it, q) : '<button class="box-add add" data-id="' + b.id + '">Add</button>';
         var few = s.open && b.left !== null && b.left > 0 && b.left <= 5 ? ' \u00b7 only ' + b.left + ' left' : '';
         return '<div class="season-box' + (soldOut || !s.open ? ' off' : '') + '" style="--box:' + th.colors[i % th.colors.length] + '">' +
-          '<span class="box-emoji" aria-hidden="true">' + th.emoji[i % th.emoji.length] + '</span>' +
+          (th.thumbs ? '<img class="box-thumb" src="' + esc(sm(th.thumbs[i % th.thumbs.length])) + '" alt="">'
+            : '<span class="box-emoji" aria-hidden="true">' + th.emoji[i % th.emoji.length] + '</span>') +
           '<div class="box-text"><b>' + esc(b.name) + '</b><span>' + esc(b.inside) + (b.inside ? ' \u00b7 ' : '') + money(b.priceCents) + few + '</span></div>' +
           right + '</div>';
       }).join('');
@@ -559,11 +564,15 @@
         '<h1 class="season-title" style="--len:' + longestWord(s.name) + '">' + esc(s.name) + '</h1>' +
         '<p class="season-sub">' + esc(th.subtitle) + '</p>' +
         '<p class="season-tag">' + esc(th.tagline) + '</p>' +
+        (th.hero ? '<img class="season-hero" src="' + esc(th.hero[0]) + '" alt="' + esc(th.hero[1]) + '">' : '') +
         (s.open
-          ? '<p class="season-intro">Add your boxes and check out right here. Every box is decorated by hand and picked up on ' + esc(seasonDate(s.pickupDate)) + '.</p>'
+          ? '<p class="season-intro">' + esc((th.intro || 'Add your boxes and check out right here. Every box is decorated by hand and picked up on {date}.').replace('{date}', seasonDate(s.pickupDate))) + '</p>'
           : '<p class="season-closed">Orders for this presale are closed. Thank you!</p>') +
         '<div class="season-boxes">' + boxes + '</div>' +
         (mine ? '<button class="btn btn-primary season-checkout">Check out \u00b7 ' + count + (count === 1 ? ' box' : ' boxes') + ' \u00b7 ' + money2(subtotal()) + '</button>' : '') +
+        (th.gallery ? '<div class="season-gallery">' + th.gallery.map(function (p, i) {
+          return '<button data-season-photo="' + i + '" aria-label="View photo: ' + esc(p[1]) + '"><img src="images/' + esc(sm(p[0])) + '" alt="' + esc(p[1]) + '" loading="lazy"></button>';
+        }).join('') + '</div>' : '') +
         '<hr><div class="season-info">' +
         (s.close ? '<div><span>Orders close</span><b>' + esc(seasonDate(s.close)) + '</b></div>' : '') +
         '<div><span>Pickup</span><b>' + esc(seasonDate(s.pickupDate)) + (s.time ? ' \u00b7 ' + esc(s.time.replace(/\s*-\s*/, ' \u2013 ')) : '') + '</b></div>' +
@@ -575,6 +584,10 @@
       var b = e.target.closest('button');
       if (!b) return;
       if (b.classList.contains('season-checkout')) return startCheckout();
+      if (b.hasAttribute('data-season-photo')) {
+        var g = seasonTheme(seasons[0].name).gallery;
+        return openLightbox(g.map(function (p) { return { src: 'images/' + p[0], cap: p[1] }; }), Number(b.getAttribute('data-season-photo')));
+      }
       var id = b.getAttribute('data-id');
       if (!id) return;
       if (b.classList.contains('add')) changeQty(id, +1); else if (b.classList.contains('sub')) changeQty(id, -1);
