@@ -145,7 +145,7 @@ window.SUGAR_LANE_CONTENT = {
     'Cake Pops|*': ['pops-honey-bee.webp', 'pops-fiesta.webp', 'pops-baby-feet.webp', 'pops-pink-tray.webp', 'pops-navy-gold-fan-2.webp', 'pops-hunny-2.webp', 'minnie-pops.webp', 'pops-halloween.webp', 'pops-reindeer.webp', 'pops-pink-gold.webp', 'pops-grinch.webp'],
     'Cupcakes – Classic|*': ['cupcakes-rosette.webp', 'cupcakes-floral.webp', 'cupcakes-toy-story.webp', 'toy-story-party.webp'],
     'Cupcakes – Specialty|*': ['cupcakes-floral.webp', 'cupcakes-rosette.webp'],
-    'Party Packs|*': ['flavor-assortment.webp', 'flavor-assortment-2.webp']
+    'Party Packs|*': ['party-table-gold.webp', 'party-cookie-platter.webp', 'party-brownie-tower.webp', 'flavor-assortment.webp', 'flavor-assortment-2.webp']
   },
 
   blurbs: {
