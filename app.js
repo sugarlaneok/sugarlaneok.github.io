@@ -680,15 +680,15 @@
     cats.forEach(function (cat) {
       var items = g.items.filter(function (i) { return i.category === cat; });
       var first = items[0];
-      if (first.picks) {
-        items.forEach(function (it) { html += packHtml(it); });
-        return;
-      }
       var strip = categoryPhotoList(cat);
       if (strip.length) {
         html += '<div class="sheet-strip" data-strip="' + esc(cat) + '">' + strip.map(function (p, i) {
           return '<button data-i="' + i + '" aria-label="Photo ' + (i + 1) + '"><img src="' + esc(p.src) + '" alt="" loading="lazy"></button>';
         }).join('') + '</div>';
+      }
+      if (first.picks) {
+        items.forEach(function (it) { html += packHtml(it); });
+        return;
       }
       html += '<div class="sheet-sub"><b>' + esc(subOf(cat) || 'Flavors') + '</b><span class="muted small">' + priceLabel(items) +
         (first.minQty > 1 ? ' · min ' + plural(first.minQty, first.unit) + ' per flavor' : '') + '</span></div>';
