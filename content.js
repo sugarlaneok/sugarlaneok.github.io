@@ -92,18 +92,21 @@ window.SUGAR_LANE_CONTENT = {
       ]
     },
     cakes: {
-      featured: 9,
+      featured: 15,
       photos: [
         ['cake-wedding-vintage-a.webp', 'Vintage piped wedding cake with porcelain topper'],
         ['cake-teal-vintage-teri.webp', 'Teal and white vintage piped birthday cake with buttercream roses and pearls'],
         ['cake-heart-wj.webp', 'White vintage heart cake with gold W & J lettering'],
         ['cake-cherry-heart.webp', 'Vintage pink heart cake with cherries'],
+        ['cake-little-pumpkin.webp', 'White buttercream "Little Pumpkin" cake with piped orange pumpkins'],
         ['cake-twenty-four.webp', 'White vintage heart cake with gold bows and Twenty four lettering'],
         ['cake-teal-vintage-teri-2.webp', 'Vintage teal birthday cake with piped swags, roses and "Happy Birthday Teri"'],
         ['cupcakes-toy-story-tray.webp', 'Toy Story character cupcakes on a marble board'],
         ['cake-tulip-piped.webp', 'Pink piped buttercream cake with tulips'],
+        ['cake-little-pumpkin-2.webp', '"Little Pumpkin" fall cake with a piped rope border'],
         ['cake-navy-floral.webp', 'Navy cake with piped coral roses and spring flowers'],
         ['cake-teal-vintage-teri-top.webp', 'Close-up of piped "Happy Birthday Teri" lettering and teal buttercream roses'],
+        ['cake-little-pumpkin-top.webp', 'Top of the "Little Pumpkin" cake with piped lettering and pumpkins'],
         ['drip-cake.webp', 'Caramel drip cake with chocolate pieces'],
         ['cupcakes-rosette.webp', 'Buttercream rosette cupcakes'],
         ['cake-black-gold.webp', 'Black and gold birthday cake with gold leaf'],
