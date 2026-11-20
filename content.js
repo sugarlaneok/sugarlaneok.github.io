@@ -100,7 +100,7 @@ window.SUGAR_LANE_CONTENT = {
         ['cake-twenty-four.webp', 'White vintage heart cake with gold bows and Twenty four lettering'],
         ['cupcakes-toy-story-tray.webp', 'Toy Story character cupcakes on a marble board'],
         ['cake-pink-smash.webp', 'Pink ruffle smash cake'],
-        ['cake-teal-vintage-teri.webp', 'Teal and white vintage piped birthday cake with buttercream roses and pearls'],
+        ['cake-teal-teri-hero.webp', 'Teal and white vintage piped Happy Birthday cake with buttercream roses and pearls'],
         ['cake-navy-floral.webp', 'Navy cake with piped coral roses and spring flowers'],
         ['drip-cake.webp', 'Caramel drip cake with chocolate pieces'],
         ['cupcakes-rosette.webp', 'Buttercream rosette cupcakes'],
