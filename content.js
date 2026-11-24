@@ -203,11 +203,11 @@ window.SUGAR_LANE_CONTENT = {
   menuSections: [
     { id: 'custom', title: 'Custom orders', lead: 'Our specialty and most-requested treats, designed around your party. Tell us your idea and we\'ll send a quote.',
       customs: [
-        { name: 'Decorated Cookies', price: 'From $45 / dozen', photo: 'images/cookies-pooh-baby-shower-2.webp', pos: '50% 85%', tag: 'Most popular',
+        { name: 'Decorated Cookies', price: 'From $65 / dozen', photo: 'images/cookies-pooh-baby-shower-2.webp', pos: '50% 85%', tag: 'Most popular',
           blurb: 'Royal-iced sugar cookies in your colors, shapes and names.' },
-        { name: 'Custom Cakes & Cupcakes', price: 'From $30', photo: 'images/cake-wedding-vintage-a.webp', photo2: 'images/cupcakes-rosette.webp',
+        { name: 'Custom Cakes & Cupcakes', price: 'From $35', photo: 'images/cake-wedding-vintage-a.webp', photo2: 'images/cupcakes-rosette.webp',
           blurb: 'Round, heart, star, tiered, cookie and wedding cakes, plus cupcakes by the dozen, in Swiss meringue buttercream.' },
-        { name: 'Custom Cake Pops', price: 'From $18 / dozen · 2 dozen min', photo: 'images/pops-toy-story.webp', photo2: 'images/pops-hunny-2.webp',
+        { name: 'Custom Cake Pops', price: 'From $25 / dozen · 2 dozen min', photo: 'images/pops-toy-story.webp', photo2: 'images/pops-hunny-2.webp',
           blurb: 'Dipped and decorated to match your theme.' }
       ] },
     { id: 'seasonal', title: 'Seasonal presale', match: 'presale' },
