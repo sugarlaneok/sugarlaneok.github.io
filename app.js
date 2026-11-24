@@ -536,25 +536,29 @@
     var seasons = (data.seasonal || []).filter(function (s) { return s.open; });
     var soon = CONTENT.comingSoon;
     if (!seasons.length && soon) {
-      el.innerHTML = '<section class="soon-hero">' +
-        '<div class="soon-photos" aria-hidden="true">' + soon.items.map(function (b) {
-          return '<img src="' + esc(b.photo) + '" alt="">';
-        }).join('') + '</div>' +
-        '<div class="soon-text">' +
-        '<p class="soon-kicker">' + esc(soon.kicker || 'Presale') + '</p>' +
-        '<h1 class="soon-title">' + esc(soon.name) + '</h1>' +
-        '<p class="soon-sub">Coming soon</p>' +
-        '<p class="soon-items">' + soon.items.map(function (b) { return esc(b.name); }).join(' &amp; ') + '</p>' +
-        '<p class="soon-intro">' + esc(soon.intro) + '</p>' +
-        '<a class="btn soon-btn" href="#soonItems">See what’s coming</a>' +
+      var ig = 'https://www.instagram.com/sugarlane_ok/';
+      el.innerHTML =
+        '<section class="xs-hero"><img class="xs-hero-img" src="' + esc(soon.hero) + '" alt="Christmas cinnamon rolls and brownie boxes from Sugar Lane">' +
+        '<div class="xs-hero-text">' +
+        '<p class="xs-kicker">' + esc(soon.kicker) + '</p>' +
+        '<h1 class="xs-title">' + esc(soon.name) + ' Presale</h1>' +
+        '<p class="xs-soon">Coming soon</p>' +
+        '<p class="xs-intro">' + esc(soon.intro) + '</p>' +
+        '<div class="xs-actions"><a class="xs-btn" href="#xsMenu">See the menu</a>' +
+        '<a class="xs-btn xs-btn-line" href="' + ig + '" target="_blank" rel="noopener">Follow on Instagram</a></div>' +
         '</div></section>' +
-        '<section class="soon-items-sec" id="soonItems"><div class="wrap">' +
-        '<p class="soon-kicker soon-kicker-dark">On the Christmas menu</p>' +
-        '<div class="soon-grid">' + soon.items.map(function (b) {
-          return '<figure class="soon-card"><img src="' + esc(b.photo) + '" alt="' + esc(b.name) + ' by Sugar Lane" loading="lazy">' +
-            '<figcaption><h2>' + esc(b.name) + '</h2><p>' + esc(b.text || '') + '</p><span>Coming soon</span></figcaption></figure>';
-        }).join('') + '</div>' +
-        '<p class="soon-foot">Want something before then? <a href="' + esc(data.customFormUrl || CONFIG.CUSTOM_FORM_URL || '#') + '" target="_blank" rel="noopener">Send us a custom request</a>.</p>' +
+        '<section class="xs-menu" id="xsMenu"><div class="wrap">' +
+        '<p class="xs-kicker">On the Christmas menu</p><h2 class="xs-h2">Made for the holidays</h2>' +
+        soon.items.map(function (b, i) {
+          return '<article class="xs-row' + (i % 2 ? ' xs-flip' : '') + '"><img src="' + esc(b.photo) + '" alt="' + esc(b.name) + ' from Sugar Lane" loading="lazy">' +
+            '<div class="xs-copy"><span class="xs-pill">Coming soon</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.text) + '</p></div></article>';
+        }).join('') +
+        '</div></section>' +
+        '<section class="xs-how"><div class="wrap"><p class="xs-kicker">How the presale works</p><ol class="xs-steps">' +
+        (soon.steps || []).map(function (st, i) {
+          return '<li><span>' + (i + 1) + '</span><h3>' + esc(st[0]) + '</h3><p>' + esc(st[1]) + '</p></li>';
+        }).join('') + '</ol>' +
+        '<p class="xs-foot">Need something sooner? <a href="' + esc(data.customFormUrl || CONFIG.CUSTOM_FORM_URL || '#') + '" target="_blank" rel="noopener">Send us a custom request</a>.</p>' +
         '</div></section>';
       return;
     }

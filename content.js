@@ -162,11 +162,17 @@ window.SUGAR_LANE_CONTENT = {
   // Shown on the Seasonal page while no presale is open. Delete this block to go back to the plain "no presale" note.
   comingSoon: {
     name: 'Christmas',
-    kicker: 'Christmas presale 2026',
-    intro: 'Follow us on Instagram or sign up for emails at checkout to hear the moment orders open.',
+    kicker: 'Sugar Lane · Christmas 2026',
+    intro: 'Cinnamon rolls and brownie boxes, baked fresh for the holidays. The presale opens soon.',
+    hero: 'images/xmas-hero.webp',
     items: [
-      { name: 'Cinnamon Rolls', text: 'Big, soft rolls, generously iced', photo: 'images/cinnamon-rolls.webp' },
-      { name: 'Brownie Boxes', text: 'Chocolate chunk brownies, boxed for gifting', photo: 'images/party-brownie-tower.webp' }
+      { name: 'Cinnamon Rolls', text: 'Big 4″ × 4″ rolls, soft and buttery, finished with a thick layer of icing. Made for Christmas morning.', photo: 'images/xmas-rolls.webp' },
+      { name: 'Brownie Boxes', text: 'A little gift box of 4 mixed brownies, tied up with twine. An easy gift for teachers, neighbors and coworkers, or a treat for yourself.', photo: 'images/xmas-brownie-box.webp' }
+    ],
+    steps: [
+      ['Watch for the opening', 'We’ll announce the presale on Instagram and by email.'],
+      ['Order online', 'Pick your treats and a pickup day. Your card is held, not charged, until we confirm.'],
+      ['Pick up in Norman', 'Fresh for the holidays, boxed and ready to give.']
     ]
   },
   seasonThemes: [
