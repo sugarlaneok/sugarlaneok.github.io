@@ -159,6 +159,15 @@ window.SUGAR_LANE_CONTENT = {
   // ---- Seasonal presale page: the season's name in the Seasonal tab picks one of these looks ----
   // colors: one per box (white text sits on them, so keep them deep). bg/stripe: the striped page background.
   // Optional per-theme: intro ({date} = pickup day), hero and gallery photos, thumbs (one per box, in place of the emoji).
+  // Shown on the Seasonal page while no presale is open. Delete this block to go back to the plain "no presale" note.
+  comingSoon: {
+    name: 'Christmas',
+    intro: 'Our Christmas presale is coming soon. Follow us on Instagram or sign up for emails at checkout to hear the moment it opens.',
+    items: [
+      { name: 'Cinnamon Rolls', text: 'Big, soft rolls, generously iced', photo: 'images/cinnamon-rolls.webp' },
+      { name: 'Brownie Boxes', text: 'Chocolate chunk brownies, boxed for gifting', photo: 'images/party-brownie-tower.webp' }
+    ]
+  },
   seasonThemes: [
     { match: 'cinnamon', subtitle: 'November Sale', tagline: 'Warm, gooey & iced',
       intro: 'Soft cinnamon rolls, 4\u2033 \u00d7 4\u2033 and 6 oz each, iced and boxed up for you. Add a box and check out right here, then pick up on {date}.',

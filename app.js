@@ -212,12 +212,13 @@
   }
   /** "Halloween" -> "Halloween Cookies"; a season already named for its treat stays as it is. */
   function treatsName(season) {
-    return /\b(cookies?|rolls?|cakes?|cupcakes?|pies?|pops?)\b/i.test(season) ? season : season + ' Cookies';
+    return /\b(cookies?|rolls?|cakes?|cupcakes?|pies?|pops?|treats?)\b/i.test(season) ? season : season + ' Cookies';
   }
   function pageTitle(r) {
     var p = SEO[r] || SEO[r.split('/')[0]];
     if (!p) return 'Sugar Lane – Home Bakery in Norman, OK';
-    var season = (data && data.seasonal && data.seasonal[0] && data.seasonal[0].name) || 'Seasonal';
+    var openS = data && (data.seasonal || []).filter(function (s) { return s.open; })[0];
+    var season = (openS && openS.name) || (CONTENT.comingSoon ? CONTENT.comingSoon.name + ' Treats' : 'Seasonal');
     return p.title.replace('{treats}', treatsName(season));
   }
 
@@ -532,7 +533,26 @@
   function renderSeasonal() {
     var el = document.getElementById('seasonalPage');
     if (!el || !data) return;
-    var seasons = data.seasonal || [];
+    var seasons = (data.seasonal || []).filter(function (s) { return s.open; });
+    var soon = CONTENT.comingSoon;
+    if (!seasons.length && soon) {
+      var ths = seasonTheme(soon.name);
+      el.innerHTML = '<section class="season" style="' + themeVars(ths, 0) + '"><div class="wrap"><div class="season-card">' +
+        '<div class="season-orn" aria-hidden="true">' + ths.ornament[0] + '<span>✦</span>' + ths.ornament[1] + '</div>' +
+        '<p class="season-kicker">Sugar Lane</p>' +
+        '<h1 class="season-title" style="--len:' + longestWord(soon.name) + '">' + esc(soon.name) + '</h1>' +
+        '<p class="season-sub">Coming soon</p>' +
+        '<p class="season-intro">' + esc(soon.intro) + '</p>' +
+        '<div class="season-boxes">' + soon.items.map(function (b, i) {
+          return '<div class="season-box" style="--box:' + ths.colors[i % ths.colors.length] + '">' +
+            (b.photo ? '<img class="box-thumb" src="' + esc(sm(b.photo)) + '" alt="">' : '<span class="box-emoji" aria-hidden="true">' + ths.emoji[i % ths.emoji.length] + '</span>') +
+            '<div class="box-text"><b>' + esc(b.name) + '</b><span>' + esc(b.text || '') + '</span></div>' +
+            '<span class="box-flag">Coming soon</span></div>';
+        }).join('') + '</div>' +
+        '<p class="season-note">Want something sooner? <a href="' + esc(data.customFormUrl || CONFIG.CUSTOM_FORM_URL || '#') + '" target="_blank" rel="noopener">Send us a custom request</a>.</p>' +
+        '</div></div></section>';
+      return;
+    }
     if (!seasons.length) {
       var th0 = CONTENT.seasonDefault;
       el.innerHTML = '<section class="season" style="' + themeVars(th0, 0) + '"><div class="wrap"><div class="season-card">' +
