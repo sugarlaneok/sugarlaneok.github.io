@@ -162,7 +162,8 @@ window.SUGAR_LANE_CONTENT = {
   // Shown on the Seasonal page while no presale is open. Delete this block to go back to the plain "no presale" note.
   comingSoon: {
     name: 'Christmas',
-    intro: 'Our Christmas presale is coming soon. Follow us on Instagram or sign up for emails at checkout to hear the moment it opens.',
+    kicker: 'Christmas presale 2026',
+    intro: 'Follow us on Instagram or sign up for emails at checkout to hear the moment orders open.',
     items: [
       { name: 'Cinnamon Rolls', text: 'Big, soft rolls, generously iced', photo: 'images/cinnamon-rolls.webp' },
       { name: 'Brownie Boxes', text: 'Chocolate chunk brownies, boxed for gifting', photo: 'images/party-brownie-tower.webp' }
@@ -185,7 +186,7 @@ window.SUGAR_LANE_CONTENT = {
       colors: ['#a24a24', '#8a5d14', '#5f4330'], bg: '#fbf0e3', stripe: '#f3e1cb' },
     { match: 'christmas|holiday|xmas|winter|noel', subtitle: 'Cookie Presale', tagline: 'Merry little treats',
       ornament: ['\u2744\ufe0f', '\u2744\ufe0f'], emoji: ['\ud83c\udf84', '\ud83c\udf81', '\u26c4', '\ud83c\udf6a'],
-      colors: ['#b3262e', '#2d6a47', '#7a5f18'], bg: '#fbf2ee', stripe: '#f2e0da', cls: 'season-xmas' },
+      colors: ['#b3262e', '#2d6a47', '#7a5f18'], bg: '#fbf2ee', stripe: '#f2e0da' },
     { match: 'valentine|galentine|love', subtitle: 'Cookie Presale', tagline: 'Baked with love',
       ornament: ['\ud83d\udc8c', '\ud83d\udc8c'], emoji: ['\ud83d\udc95', '\ud83c\udf39', '\ud83d\udc8c', '\ud83d\udc9d'],
       colors: ['#c2185b', '#8f1838', '#a33d78'], bg: '#fff1f5', stripe: '#ffe0ea' },

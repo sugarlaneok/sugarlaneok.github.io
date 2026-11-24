@@ -536,20 +536,26 @@
     var seasons = (data.seasonal || []).filter(function (s) { return s.open; });
     var soon = CONTENT.comingSoon;
     if (!seasons.length && soon) {
-      var ths = seasonTheme(soon.name);
-      el.innerHTML = '<section class="season' + (ths.cls ? ' ' + ths.cls : '') + '" style="' + themeVars(ths, 0) + '"><div class="wrap"><div class="season-card">' +
-        '<p class="season-kicker">Sugar Lane</p>' +
-        '<h1 class="season-title" style="--len:' + longestWord(soon.name) + '">' + esc(soon.name) + '</h1>' +
-        '<p class="season-sub">Coming soon</p>' +
-        '<p class="season-intro">' + esc(soon.intro) + '</p>' +
-        '<div class="season-boxes">' + soon.items.map(function (b, i) {
-          return '<div class="season-box" style="--box:' + ths.colors[i % ths.colors.length] + '">' +
-            (b.photo ? '<img class="box-thumb" src="' + esc(sm(b.photo)) + '" alt="">' : '<span class="box-emoji" aria-hidden="true">' + ths.emoji[i % ths.emoji.length] + '</span>') +
-            '<div class="box-text"><b>' + esc(b.name) + '</b><span>' + esc(b.text || '') + '</span></div>' +
-            '<span class="box-flag">Coming soon</span></div>';
+      el.innerHTML = '<section class="soon-hero">' +
+        '<div class="soon-photos" aria-hidden="true">' + soon.items.map(function (b) {
+          return '<img src="' + esc(b.photo) + '" alt="">';
         }).join('') + '</div>' +
-        '<p class="season-note">Want something sooner? <a href="' + esc(data.customFormUrl || CONFIG.CUSTOM_FORM_URL || '#') + '" target="_blank" rel="noopener">Send us a custom request</a>.</p>' +
-        '</div></div></section>';
+        '<div class="soon-text">' +
+        '<p class="soon-kicker">' + esc(soon.kicker || 'Presale') + '</p>' +
+        '<h1 class="soon-title">' + esc(soon.name) + '</h1>' +
+        '<p class="soon-sub">Coming soon</p>' +
+        '<p class="soon-items">' + soon.items.map(function (b) { return esc(b.name); }).join(' &amp; ') + '</p>' +
+        '<p class="soon-intro">' + esc(soon.intro) + '</p>' +
+        '<a class="btn soon-btn" href="#soonItems">See what’s coming</a>' +
+        '</div></section>' +
+        '<section class="soon-items-sec" id="soonItems"><div class="wrap">' +
+        '<p class="soon-kicker soon-kicker-dark">On the Christmas menu</p>' +
+        '<div class="soon-grid">' + soon.items.map(function (b) {
+          return '<figure class="soon-card"><img src="' + esc(b.photo) + '" alt="' + esc(b.name) + ' by Sugar Lane" loading="lazy">' +
+            '<figcaption><h2>' + esc(b.name) + '</h2><p>' + esc(b.text || '') + '</p><span>Coming soon</span></figcaption></figure>';
+        }).join('') + '</div>' +
+        '<p class="soon-foot">Want something before then? <a href="' + esc(data.customFormUrl || CONFIG.CUSTOM_FORM_URL || '#') + '" target="_blank" rel="noopener">Send us a custom request</a>.</p>' +
+        '</div></section>';
       return;
     }
     if (!seasons.length) {
