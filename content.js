@@ -185,7 +185,7 @@ window.SUGAR_LANE_CONTENT = {
       colors: ['#a24a24', '#8a5d14', '#5f4330'], bg: '#fbf0e3', stripe: '#f3e1cb' },
     { match: 'christmas|holiday|xmas|winter|noel', subtitle: 'Cookie Presale', tagline: 'Merry little treats',
       ornament: ['\u2744\ufe0f', '\u2744\ufe0f'], emoji: ['\ud83c\udf84', '\ud83c\udf81', '\u26c4', '\ud83c\udf6a'],
-      colors: ['#b3262e', '#2d6a47', '#7a5f18'], bg: '#fbf2ee', stripe: '#f2e0da' },
+      colors: ['#b3262e', '#2d6a47', '#7a5f18'], bg: '#fbf2ee', stripe: '#f2e0da', cls: 'season-xmas' },
     { match: 'valentine|galentine|love', subtitle: 'Cookie Presale', tagline: 'Baked with love',
       ornament: ['\ud83d\udc8c', '\ud83d\udc8c'], emoji: ['\ud83d\udc95', '\ud83c\udf39', '\ud83d\udc8c', '\ud83d\udc9d'],
       colors: ['#c2185b', '#8f1838', '#a33d78'], bg: '#fff1f5', stripe: '#ffe0ea' },

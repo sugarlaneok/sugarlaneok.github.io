@@ -537,8 +537,7 @@
     var soon = CONTENT.comingSoon;
     if (!seasons.length && soon) {
       var ths = seasonTheme(soon.name);
-      el.innerHTML = '<section class="season" style="' + themeVars(ths, 0) + '"><div class="wrap"><div class="season-card">' +
-        '<div class="season-orn" aria-hidden="true">' + ths.ornament[0] + '<span>✦</span>' + ths.ornament[1] + '</div>' +
+      el.innerHTML = '<section class="season' + (ths.cls ? ' ' + ths.cls : '') + '" style="' + themeVars(ths, 0) + '"><div class="wrap"><div class="season-card">' +
         '<p class="season-kicker">Sugar Lane</p>' +
         '<h1 class="season-title" style="--len:' + longestWord(soon.name) + '">' + esc(soon.name) + '</h1>' +
         '<p class="season-sub">Coming soon</p>' +
@@ -580,7 +579,7 @@
       }).join('');
       var mine = inCart && inCart.key === s.key;
       var count = mine ? state.cart.reduce(function (t, c) { return t + c.qty; }, 0) : 0;
-      return '<section class="season" style="' + themeVars(th, si) + '"><div class="wrap"><div class="season-card">' +
+      return '<section class="season' + (th.cls ? ' ' + th.cls : '') + '" style="' + themeVars(th, si) + '"><div class="wrap"><div class="season-card">' +
         '<div class="season-orn" aria-hidden="true">' + th.ornament[0] + '<span>\u2726</span>' + th.ornament[1] + '</div>' +
         '<p class="season-kicker">Sugar Lane</p>' +
         '<h1 class="season-title" style="--len:' + longestWord(s.name) + '">' + esc(s.name) + '</h1>' +
