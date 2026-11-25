@@ -538,7 +538,7 @@
     if (!seasons.length && soon) {
       var ig = 'https://www.instagram.com/sugarlane_ok/';
       el.innerHTML =
-        '<section class="xs-hero"><img class="xs-hero-img" src="' + esc(soon.hero) + '" alt="Christmas cinnamon rolls and a treat box from Sugar Lane">' +
+        '<section class="xs-hero"><img class="xs-hero-img" src="' + esc(soon.hero) + '" alt="Christmas cinnamon rolls from Sugar Lane">' +
         '<div class="xs-hero-text">' +
         '<p class="xs-kicker">' + esc(soon.kicker) + '</p>' +
         '<h1 class="xs-title">' + esc(soon.name) + ' Presale</h1>' +
@@ -551,7 +551,11 @@
         '<p class="xs-kicker">On the Christmas menu</p><h2 class="xs-h2">Made for the holidays</h2>' +
         soon.items.map(function (b, i) {
           return '<article class="xs-row' + (i % 2 ? ' xs-flip' : '') + '"><img src="' + esc(b.photo) + '" alt="' + esc(b.name) + ' from Sugar Lane" loading="lazy">' +
-            '<div class="xs-copy"><span class="xs-pill">Coming soon</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.text) + '</p></div></article>';
+            '<div class="xs-copy"><span class="xs-pill">Coming soon</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.text) + '</p>' +
+            (b.list ? '<ul class="xs-list">' + b.list.map(function (l) {
+              var k = l.indexOf(':');
+              return '<li>' + (k > 0 ? '<b>' + esc(l.slice(0, k)) + '</b>' + esc(l.slice(k)) : esc(l)) + '</li>';
+            }).join('') + '</ul>' : '') + '</div></article>';
         }).join('') +
         '</div></section>' +
         '<section class="xs-how"><div class="wrap"><p class="xs-kicker">How the presale works</p><ol class="xs-steps">' +
