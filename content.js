@@ -163,11 +163,11 @@ window.SUGAR_LANE_CONTENT = {
   comingSoon: {
     name: 'Christmas',
     kicker: 'Sugar Lane · Christmas 2026',
-    intro: 'Cinnamon rolls and brownie boxes, baked fresh for the holidays. The presale opens soon.',
-    hero: 'images/xmas-hero-3.webp',
+    intro: 'Cinnamon rolls and Christmas treat boxes, made fresh for the holidays. The presale opens soon.',
+    hero: 'images/xmas-hero-4.webp',
     items: [
       { name: 'Cinnamon Rolls', text: 'Big 4″ × 4″ rolls, soft and buttery, finished with a thick layer of icing. Made for Christmas morning.', photo: 'images/xmas-rolls-3.webp' },
-      { name: 'Brownie Boxes', text: 'A little gift box of 4 mixed brownies (M&M, Reese’s, classic and powdered sugar), tied up with twine. An easy gift for teachers, neighbors and coworkers, or a treat for yourself.', photo: 'images/xmas-brownie-box-3.webp' }
+      { name: 'Christmas Treat Boxes', text: 'A big box packed with individually wrapped Christmas treats: cookies, reindeer and Grinch cake pops, Grinch Rice Krispie treats, brownies and more, with marshmallows and Christmas kisses tucked in between. Made for sharing, gifting or the office party.', photo: 'images/xmas-treat-box.webp' }
     ],
     steps: [
       ['Watch for the opening', 'We’ll announce the presale on Instagram and by email.'],
