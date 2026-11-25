@@ -538,7 +538,7 @@
     if (!seasons.length && soon) {
       var ig = 'https://www.instagram.com/sugarlane_ok/';
       el.innerHTML =
-        '<section class="xs-hero"><img class="xs-hero-img" src="' + esc(soon.hero) + '" alt="Christmas cinnamon rolls and brownie boxes from Sugar Lane">' +
+        '<section class="xs-hero"><img class="xs-hero-img" src="' + esc(soon.hero) + '" alt="Christmas cinnamon rolls and a treat box from Sugar Lane">' +
         '<div class="xs-hero-text">' +
         '<p class="xs-kicker">' + esc(soon.kicker) + '</p>' +
         '<h1 class="xs-title">' + esc(soon.name) + ' Presale</h1>' +
