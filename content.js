@@ -164,7 +164,7 @@ window.SUGAR_LANE_CONTENT = {
     name: 'Christmas',
     kicker: 'Sugar Lane · Christmas 2026',
     intro: 'Cinnamon rolls and Christmas treat boxes, made fresh for the holidays. The presale opens soon.',
-    hero: 'images/xmas-hero-5.webp',
+    hero: 'images/xmas-hero-6.webp',
     items: [
       { name: 'Cinnamon Rolls', text: 'Big 4″ × 4″ rolls, soft and buttery, finished with a thick layer of icing. Made for Christmas morning.', photo: 'images/xmas-rolls-3.webp' },
       { name: 'Christmas Treat Boxes', text: 'A mix of individually wrapped Christmas treats, made for sharing, gifting or the office party.', list: ['Cookies: Big Bubba, Churro Snickerdoodle, white chocolate dipped Red Velvet and our new Campfire cookie', 'Cake pops: vanilla, chocolate and strawberry', 'Dipped Rice Krispie treats'], photo: 'images/xmas-treats-2.webp' }
