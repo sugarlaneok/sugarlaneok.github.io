@@ -167,7 +167,7 @@ window.SUGAR_LANE_CONTENT = {
     hero: 'images/xmas-hero-5.webp',
     items: [
       { name: 'Cinnamon Rolls', text: 'Big 4″ × 4″ rolls, soft and buttery, finished with a thick layer of icing. Made for Christmas morning.', photo: 'images/xmas-rolls-3.webp' },
-      { name: 'Christmas Treat Boxes', text: 'A mix of individually wrapped Christmas treats, made for sharing, gifting or the office party.', list: ['Cookies: Big Bubba, Churro Snickerdoodle, white chocolate dipped Red Velvet and our new Campfire cookie', 'Cake pops: vanilla, chocolate and strawberry', 'Dipped Rice Krispie treats'], photo: 'images/xmas-treats.webp' }
+      { name: 'Christmas Treat Boxes', text: 'A mix of individually wrapped Christmas treats, made for sharing, gifting or the office party.', list: ['Cookies: Big Bubba, Churro Snickerdoodle, white chocolate dipped Red Velvet and our new Campfire cookie', 'Cake pops: vanilla, chocolate and strawberry', 'Dipped Rice Krispie treats'], photo: 'images/xmas-treats-2.webp' }
     ],
     steps: [
       ['Watch for the opening', 'We’ll announce the presale on Instagram and by email.'],
